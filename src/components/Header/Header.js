@@ -17,6 +17,8 @@ import Menu from "@material-ui/icons/Menu";
 // core components
 import styles from "src/assets/jss/nextjs-material-kit/components/headerStyle.js";
 
+// import { useSession, signIn, signOut } from 'next-auth/client'
+
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
@@ -66,8 +68,26 @@ export default function Header(props) {
       <Button className={classes.title}>{brand}</Button>
     </Link>
   );
+
+  // const handleSignin = (e) => {
+  //   e.preventDefault()
+  //   signIn()
+  // }
+  // const handleSignout = (e) => {
+  //   e.preventDefault()
+  //   signOut()
+  // }
+
   return (
     <AppBar className={appBarClasses}>
+      {/*<div className='header'>*/}
+      {/*  <Link href='/'>*/}
+      {/*    <a className='logo'>NextAuth.js</a>*/}
+      {/*  </Link>*/}
+      {/*  {session && <a href="#" onClick={handleSignout} className="btn-signin">Sign out</a>  }*/}
+      {/*  {!session && <a href="#" onClick={handleSignin}  className="btn-signin">Sign in</a>  }*/}
+      {/*</div>*/}
+
       <Toolbar className={classes.container}>
         {leftLinks !== undefined ? brandComponent : null}
         <div className={classes.flex}>

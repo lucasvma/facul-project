@@ -3292,7 +3292,7 @@ var _error = /*#__PURE__*/function (_Component) {
     _this = _super.call.apply(_super, [this].concat(args));
 
     Object(_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_2__["default"])(_this), "componentDidMount", function () {
-      next_router__WEBPACK_IMPORTED_MODULE_8___default.a.push("/components");
+      next_router__WEBPACK_IMPORTED_MODULE_8___default.a.push("/home");
     });
 
     return _this;

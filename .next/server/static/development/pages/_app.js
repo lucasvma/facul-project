@@ -404,7 +404,7 @@ const defaultFont = {
   fontWeight: "300",
   lineHeight: "1.5em"
 };
-const primaryColor = "#9c27b0";
+const primaryColor = "#8257e5";
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
 const successColor = "#4caf50";
@@ -643,23 +643,6 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-/*!
-
-=========================================================
-* NextJS Material Kit v1.1.0 based on Material Kit Free - v2.0.2 (Bootstrap 4.0.0 Final Edition) and Material Kit React v1.8.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/nextjs-material-kit
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/nextjs-material-kit/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 
 
 
@@ -675,7 +658,7 @@ next_router__WEBPACK_IMPORTED_MODULE_4___default.a.events.on("routeChangeStart",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 32,
+      lineNumber: 15,
       columnNumber: 5
     }
   }), document.getElementById("page-transition"));
@@ -690,23 +673,7 @@ next_router__WEBPACK_IMPORTED_MODULE_4___default.a.events.on("routeChangeError",
 });
 class MyApp extends next_app__WEBPACK_IMPORTED_MODULE_2___default.a {
   componentDidMount() {
-    let comment = document.createComment(`
-
-=========================================================
-* NextJS Material Kit v1.1.0 based on Material Kit Free - v2.0.2 (Bootstrap 4.0.0 Final Edition) and Material Kit React v1.8.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/nextjs-material-kit
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/nextjs-material-kit/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-`);
+    let comment = document.createComment(``);
     document.insertBefore(comment, document.documentElement);
   }
 
@@ -735,28 +702,28 @@ class MyApp extends next_app__WEBPACK_IMPORTED_MODULE_2___default.a {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 79,
+        lineNumber: 46,
         columnNumber: 7
       }
     }, __jsx(next_head__WEBPACK_IMPORTED_MODULE_3___default.a, {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 80,
+        lineNumber: 47,
         columnNumber: 9
       }
     }, __jsx("title", {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 81,
+        lineNumber: 48,
         columnNumber: 11
       }
-    }, "NextJS Material Kit by Lucas Ventura")), __jsx(Component, _extends({}, pageProps, {
+    }, "Share Info")), __jsx(Component, _extends({}, pageProps, {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 83,
+        lineNumber: 50,
         columnNumber: 9
       }
     })));

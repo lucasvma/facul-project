@@ -1,1 +1,0 @@
-{"version":1,"pages404":true,"basePath":"","redirects":[],"rewrites":[],"headers":[],"dynamicRoutes":[{"page":"/api/auth/[...nextauth]","regex":"^\\/api\\/auth\\/(.+?)(?:\\/)?$","namedRegex":"^/api/auth/(?<nextauth>.+?)(?:/)?$","routeKeys":["nextauth"]}]}

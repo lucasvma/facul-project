@@ -119,7 +119,7 @@ class _error extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     super(...args);
 
     _defineProperty(this, "componentDidMount", () => {
-      next_router__WEBPACK_IMPORTED_MODULE_1___default.a.push("/components");
+      next_router__WEBPACK_IMPORTED_MODULE_1___default.a.push("/home");
     });
   }
 

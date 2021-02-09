@@ -237,10 +237,12 @@ function _inherits(subClass, superClass) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _inheritsLoose; });
+/* harmony import */ var _babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/setPrototypeOf */ "./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js");
+
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
+  Object(_babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__["default"])(subClass, superClass);
 }
 
 /***/ }),
@@ -16083,9 +16085,9 @@ exports.getRouteRegex = getRouteRegex;
 
 var _classCallCheck = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/next/node_modules/@babel/runtime/helpers/classCallCheck.js");
 
-var _assertThisInitialized = __webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/next/node_modules/@babel/runtime/helpers/assertThisInitialized.js");
-
 var _createClass = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/next/node_modules/@babel/runtime/helpers/createClass.js");
+
+var _assertThisInitialized = __webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/next/node_modules/@babel/runtime/helpers/assertThisInitialized.js");
 
 var _inherits = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/next/node_modules/@babel/runtime/helpers/inherits.js");
 
@@ -16124,17 +16126,6 @@ exports["default"] = function () {
 
     var _super = _createSuper(_class);
 
-    _createClass(_class, null, [{
-      key: "rewind",
-      // Used when server rendering
-      value: function rewind() {
-        var recordedState = state;
-        state = undefined;
-        mountedInstances.clear();
-        return recordedState;
-      }
-    }]);
-
     function _class(props) {
       var _this;
 
@@ -16171,6 +16162,15 @@ exports["default"] = function () {
       key: "render",
       value: function render() {
         return null;
+      }
+    }], [{
+      key: "rewind",
+      value: // Used when server rendering
+      function rewind() {
+        var recordedState = state;
+        state = undefined;
+        mountedInstances.clear();
+        return recordedState;
       }
     }]);
 
@@ -16433,10 +16433,10 @@ var App = /*#__PURE__*/function (_react$default$Compon) {
 
   _createClass(App, [{
     key: "componentDidCatch",
-    // Kept here for backwards compatibility.
+    value: // Kept here for backwards compatibility.
     // When someone ended App they could call `super.componentDidCatch`.
     // @deprecated This method is no longer needed. Errors are caught at the top level
-    value: function componentDidCatch(error, _errorInfo) {
+    function componentDidCatch(error, _errorInfo) {
       throw error;
     }
   }, {
@@ -21266,7 +21266,7 @@ var defaultFont = {
   fontWeight: "300",
   lineHeight: "1.5em"
 };
-var primaryColor = "#9c27b0";
+var primaryColor = "#8257e5";
 var warningColor = "#ff9800";
 var dangerColor = "#f44336";
 var successColor = "#4caf50";
@@ -21512,23 +21512,6 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-/*!
-
-=========================================================
-* NextJS Material Kit v1.1.0 based on Material Kit Free - v2.0.2 (Bootstrap 4.0.0 Final Edition) and Material Kit React v1.8.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/nextjs-material-kit
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/nextjs-material-kit/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 
 
 
@@ -21544,7 +21527,7 @@ next_router__WEBPACK_IMPORTED_MODULE_11___default.a.events.on("routeChangeStart"
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 32,
+      lineNumber: 15,
       columnNumber: 5
     }
   }), document.getElementById("page-transition"));
@@ -21572,7 +21555,7 @@ var MyApp = /*#__PURE__*/function (_App) {
   Object(_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(MyApp, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var comment = document.createComment("\n\n=========================================================\n* NextJS Material Kit v1.1.0 based on Material Kit Free - v2.0.2 (Bootstrap 4.0.0 Final Edition) and Material Kit React v1.8.0\n=========================================================\n\n* Product Page: https://www.creative-tim.com/product/nextjs-material-kit\n* Copyright 2020 Creative Tim (https://www.creative-tim.com)\n* Licensed under MIT (https://github.com/creativetimofficial/nextjs-material-kit/blob/master/LICENSE.md)\n\n* Coded by Creative Tim\n\n=========================================================\n\n* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\n");
+      var comment = document.createComment("");
       document.insertBefore(comment, document.documentElement);
     }
   }, {
@@ -21585,28 +21568,28 @@ var MyApp = /*#__PURE__*/function (_App) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 79,
+          lineNumber: 46,
           columnNumber: 7
         }
       }, __jsx(next_head__WEBPACK_IMPORTED_MODULE_10___default.a, {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 80,
+          lineNumber: 47,
           columnNumber: 9
         }
       }, __jsx("title", {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 81,
+          lineNumber: 48,
           columnNumber: 11
         }
-      }, "NextJS Material Kit by Lucas Ventura")), __jsx(Component, Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({}, pageProps, {
+      }, "Share Info")), __jsx(Component, Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({}, pageProps, {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 83,
+          lineNumber: 50,
           columnNumber: 9
         }
       })));

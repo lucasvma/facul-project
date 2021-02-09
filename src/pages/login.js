@@ -27,11 +27,14 @@ const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  const [email, setEmail] = React.useState()
+  const [password, setPassword] = React.useState()
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
+
   return (
     <div>
       <Header
@@ -55,7 +58,7 @@ export default function LoginPage(props) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
                   <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Login</h4>
+                    <h4>Faça seu Login na Plataforma</h4>
                     <div className={classes.socialLine}>
                       <Button
                         justIcon
@@ -82,30 +85,21 @@ export default function LoginPage(props) {
                         color="transparent"
                         onClick={e => e.preventDefault()}
                       >
-                        <i className={"fab fa-google-plus-g"} />
+                        <i className={"fab fa-github"} />
                       </Button>
                     </div>
                   </CardHeader>
-                  <p className={classes.divider}>Or Be Classical</p>
-                  <CardBody>
+                  <p className={classes.divider}>Ou Insira os Dados</p>
+                  <CardBody
+                      as="form"
+                      method="post"
+                      action="/api/auth/callback/credentials"
+                  >
                     <CustomInput
-                      labelText="First Name..."
-                      id="first"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: "text",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <People className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                    <CustomInput
-                      labelText="Email..."
-                      id="email"
+                      labelText="E-mail"
+                      name="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -119,8 +113,10 @@ export default function LoginPage(props) {
                       }}
                     />
                     <CustomInput
-                      labelText="Password"
-                      id="pass"
+                      labelText="Senha"
+                      name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -139,7 +135,7 @@ export default function LoginPage(props) {
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
                     <Button simple color="primary" size="lg">
-                      Get started
+                      Entrar
                     </Button>
                   </CardFooter>
                 </form>
