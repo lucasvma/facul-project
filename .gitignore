@@ -68,6 +68,8 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
+package-lock.json
+
 # dotenv environment variables file
 .env
 .env.local
@@ -105,7 +107,4 @@ dist
 
 # TernJS port file
 .tern-port
-/.idea/jsLibraryMappings.xml
-/.idea/modules.xml
-/.idea/nextjs-material-kit-master.iml
-/.idea/vcs.xml
+.idea
