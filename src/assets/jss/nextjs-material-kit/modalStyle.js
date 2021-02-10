@@ -30,8 +30,8 @@ const modalStyle = {
     float: "right"
   },
   modalClose: {
-    width: "16px",
-    height: "16px"
+    width: "100px",
+    height: "100px"
   },
   modalBody: {
     paddingTop: "24px",
@@ -41,7 +41,7 @@ const modalStyle = {
     position: "relative"
   },
   modalFooter: {
-    padding: "15px",
+    padding: "10px",
     textAlign: "right",
     paddingTop: "0",
     margin: "0"

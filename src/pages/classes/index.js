@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import Header from "src/components/Header/Header.js";
@@ -8,6 +8,7 @@ import GridContainer from "src/components/Grid/GridContainer.js";
 import GridItem from "src/components/Grid/GridItem.js";
 import HeaderLinks from "src/components/Header/HeaderLinks.js";
 import Parallax from "src/components/Parallax/Parallax.js";
+import axios from 'axios';
 
 import profile from "src/assets/img/apple-icon.png";
 
@@ -15,32 +16,13 @@ import styles from "src/assets/jss/nextjs-material-kit/pages/profilePage.js";
 
 import fs from 'fs';
 import matter from 'gray-matter'
-import Link from 'next/link'
 import path from 'path'
-import Layout from '../../components/Layout'
 import { classFilePaths, CLASSES_PATH } from '../../utils/mdxUtils'
+import Modal from "../../components/Modal";
+import ListClasses from "../../components/ListClasses";
+// import ReactMarkdown from 'react-markdown'
 
 const useStyles = makeStyles(styles);
-
-function ClassDescription({ classes }) {
-  return (
-      <Layout>
-        <h1>Home Page</h1>
-        <ul>
-          {classes.map((_class) => (
-              <li key={_class.filePath}>
-                <Link
-                    as={`/classes/${_class.filePath.replace(/\.mdx?$/, '')}`}
-                    href={`/classes/[slug]`}
-                >
-                  <a>{_class.data.title}</a>
-                </Link>
-              </li>
-          ))}
-        </ul>
-      </Layout>
-  );
-}
 
 export default function ClassesPage(props) {
   const classes = useStyles();
@@ -49,7 +31,25 @@ export default function ClassesPage(props) {
     classes.imgRaised,
     classes.imgRoundedCircle,
     classes.imgFluid
-  );
+  )
+
+  const [modal, setModal] = useState(false)
+  const [grade, setGrades] = useState([])
+
+  useEffect(() => {
+    handleClasses()
+  }, [])
+
+  async function handleClasses() {
+    const response = await axios
+        .get('/api/classes')
+        .then((response) => response)
+
+    if (response) {
+      setGrades(response.data.classes)
+    }
+  }
+
   return (
     <div>
       <Header
@@ -74,22 +74,21 @@ export default function ClassesPage(props) {
                     <img src={profile} alt="..." className={imageClasses} />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title}>Course Name</h3>
-                    <h6>Subtitle</h6>
-                    <Button justIcon link className={classes.margin5}>
-                      <i className={"fab fa-twitter"} />
+                    <h3 className={classes.title}>Cadastro de Aula</h3>
+                  </div>
+
+                  <div>
+                    <Button color="primary" round onClick={() => setModal(true)}>
+                        Nova Aula
                     </Button>
-                    <Button justIcon link className={classes.margin5}>
-                      <i className={"fab fa-instagram"} />
-                    </Button>
-                    <Button justIcon link className={classes.margin5}>
-                      <i className={"fab fa-facebook"} />
-                    </Button>
+
+                    <Modal modal={modal} setModal={setModal} listClasses={handleClasses} classes={classes} />
                   </div>
                 </div>
               </GridItem>
             </GridContainer>
-            <ClassDescription classes={props.classes} />
+
+            <ListClasses classes={grade} />
           </div>
         </div>
       </div>
