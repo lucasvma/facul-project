@@ -11,7 +11,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
-import {Class, PeopleAlt, PictureAsPdf, PlaylistPlay, Settings} from "@material-ui/icons";
+import {Class, ExitToApp, PeopleAlt, PictureAsPdf, PlaylistPlay, Settings} from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -39,23 +39,17 @@ export default function HeaderLinks(props) {
         router.push('/classes')
     }
 
+    const handleClickProfile = (e) => {
+        e.preventDefault()
+        router.push('/profile')
+    }
+
   return (
     <List className={classes.list}>
         <ListItem className={classes.listItem}>
             <Button
-                href="#pablo"
-                className={classes.navLink + " " + classes.navLinkActive}
-                onClick={e => e.preventDefault()}
-                color="transparent"
-            >
-                <Explore className={classes.icons} /> Explorar
-            </Button>
-        </ListItem>
-        <ListItem className={classes.listItem}>
-            <Button
-                href="/profile"
                 className={classes.navLink}
-                onClick={e => e.preventDefault()}
+                onClick={handleClickProfile}
                 color="transparent"
             >
                 <AccountCircle className={classes.icons} /> Perfil
@@ -110,6 +104,16 @@ export default function HeaderLinks(props) {
                             className={classes.navLink}
                         >
                             <PictureAsPdf className={classes.icons} /> Relatórios
+                        </Button>
+                    </ListItem>,
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            href="/login"
+                            color="transparent"
+                            target="_blank"
+                            className={classes.navLink}
+                        >
+                            <ExitToApp className={classes.icons} /> Sair
                         </Button>
                     </ListItem>,
                 ]}

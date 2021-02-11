@@ -83,16 +83,17 @@ export default function TeamSection() {
                 <img src={team2} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
-                Christian Louboutin
+                Lucas Ventura
                 <br />
-                <small className={classes.smallTitle}>Designer</small>
+                <small className={classes.smallTitle}>Full Stack Developer</small>
               </h4>
               <CardBody>
                 <p className={classes.description}>
-                  You can write here details about one of your team members. You
-                  can give more details about what they do. Feel free to add
-                  some <a href="#pablo">links</a> for people to be able to
-                  follow them outside the site.
+                  Estudante de Ciência da Computação. Entusiasta de Cyber Segurança e Inteligência Artificial.
+                  Desenvolvedor Full Stack. Trabalho com tecnologias como: Java API e Angular. Eu estudo PHP, JQuery,
+                  NodeJs, ReactJs e SQL / NoSQL em projetos pessoais. Eu participo da comunidade de desenvolvedores
+                  no <a href="https://twitter.com/LucasVenturaRJ">Twitter</a> e disponibilizo alguns projetos pessoais e de
+                  estudos no meu <a href="https://github.com/lucasvma">GitHub</a>.
                 </p>
               </CardBody>
               <CardFooter className={classes.justifyCenter}>

@@ -8,13 +8,9 @@ import Link from 'next/link'
 import path from 'path'
 import CustomLink from '../../components/CustomLink'
 import Layout from '../../components/Layout'
-import { coursesFilePaths, COURSES_PATH } from '../../utils/mdxUtils'
 import Header from "../../components/Header/Header";
 import HeaderLinks from "../../components/Header/HeaderLinks";
 import Parallax from "../../components/Parallax/Parallax";
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
-import profile from "../../assets/img/apple-icon.png";
 import Footer from "../../components/Footer/Footer";
 import React from "react";
 
@@ -77,7 +73,7 @@ export default function CoursePage(props) {
         <div>
             <Header
                 color="transparent"
-                brand="NextJS Material Kit"
+                brand="Share Info"
                 rightLinks={<HeaderLinks />}
                 fixed
                 changeColorOnScroll={{
@@ -100,36 +96,17 @@ export default function CoursePage(props) {
 }
 
 export const getStaticProps = async ({ params }) => {
-    const coursesFilePaths = path.join(COURSES_PATH, `${params.slug}.mdx`)
-    const source = fs.readFileSync(coursesFilePaths)
-
-    const { content, data } = matter(source)
-
-    const mdxSource = await renderToString(content, {
-        components,
-        // Optionally pass remark/rehype plugins
-        mdxOptions: {
-            remarkPlugins: [],
-            rehypePlugins: [],
-        },
-        scope: data,
-    })
-
     return {
         props: {
-            source: mdxSource,
-            frontMatter: data,
+            source: 'mdxSource',
+            frontMatter: false,
         },
     }
 }
 
 export const getStaticPaths = async () => {
-    const paths = coursesFilePaths
-        .map((path) => path.replace(/\.mdx?$/, ''))
-        .map((slug) => ({ params: { slug } }))
-
     return {
-        paths,
+        paths: '',
         fallback: false,
     }
 }

@@ -12,12 +12,8 @@ import profile from "src/assets/img/apple-icon.png";
 
 import styles from "src/assets/jss/nextjs-material-kit/pages/profilePage.js";
 
-import fs from 'fs';
-import matter from 'gray-matter'
 import Link from 'next/link'
-import path from 'path'
 import Layout from '../../components/Layout'
-import { coursesFilePaths, COURSES_PATH } from '../../utils/mdxUtils'
 
 const useStyles = makeStyles(styles);
 
@@ -56,7 +52,7 @@ export default function CoursesPage(props) {
     <div>
       <Header
         color="transparent"
-        brand="NextJS Material Kit"
+        brand="Share Info"
         rightLinks={<HeaderLinks />}
         fixed
         changeColorOnScroll={{
@@ -91,16 +87,5 @@ export default function CoursesPage(props) {
 }
 
 export function getStaticProps() {
-  const courses = coursesFilePaths.map((filePath) => {
-    const source = fs.readFileSync(path.join(COURSES_PATH, filePath))
-    const { content, data } = matter(source)
-
-    return {
-      content,
-      data,
-      filePath,
-    }
-  })
-
-  return { props: { courses } }
+  return { props: { courses: '' } }
 }

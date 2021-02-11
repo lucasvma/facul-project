@@ -1,14 +1,9 @@
-import fs from 'fs'
-import matter from 'gray-matter'
 import hydrate from 'next-mdx-remote/hydrate'
-import renderToString from 'next-mdx-remote/render-to-string'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Link from 'next/link'
-import path from 'path'
 import CustomLink from '../../components/CustomLink'
 import Layout from '../../components/Layout'
-import { classFilePaths, CLASSES_PATH } from '../../utils/mdxUtils'
 
 const components = {
     a: CustomLink,
@@ -51,38 +46,19 @@ export default function ClassPage({ source, frontMatter }) {
 }
 
 export const getStaticProps = async ({ params }) => {
-    const classFilePath = path.join(CLASSES_PATH, `${params.slug}.mdx`)
-    const source = fs.readFileSync(classFilePath)
-
-    const { content, data } = matter(source)
-
-    const mdxSource = await renderToString(content, {
-        components,
-        // Optionally pass remark/rehype plugins
-        mdxOptions: {
-            remarkPlugins: [],
-            rehypePlugins: [],
-        },
-        scope: data,
-    })
-
     return {
         props: {
-            source: mdxSource,
-            frontMatter: data,
+            source: '',
+            frontMatter: false,
         },
     }
 }
 
 export const getStaticPaths = async () => {
-    const paths = classFilePaths
-        // Remove file extensions for page paths
-        .map((path) => path.replace(/\.mdx?$/, ''))
-        // Map the path into the static paths object required by Next.js
-        .map((slug) => ({ params: { slug } }))
+    const classes = [{}]
 
     return {
-        paths,
+        classes,
         fallback: false,
     }
 }

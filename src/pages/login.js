@@ -22,25 +22,32 @@ import CustomInput from "src/components/CustomInput/CustomInput.js";
 import styles from "src/assets/jss/nextjs-material-kit/pages/loginPage.js";
 
 import image from "src/assets/img/bg7.jpg";
+import Router from "next/router";
+import SnackbarContent from "../components/Snackbar/SnackbarContent";
 
 const useStyles = makeStyles(styles);
 
+
 export default function LoginPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-  const [email, setEmail] = React.useState()
-  const [password, setPassword] = React.useState()
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
 
+  function handleLogin() {
+      Router.push("/home");
+  }
+
   return (
     <div>
       <Header
         absolute
         color="transparent"
-        brand="NextJS Material Kit"
+        brand="Share Info"
         rightLinks={<HeaderLinks />}
         {...rest}
       />
@@ -133,8 +140,8 @@ export default function LoginPage(props) {
                       }}
                     />
                   </CardBody>
-                  <CardFooter className={classes.cardFooter}>
-                    <Button simple color="primary" size="lg">
+                  <CardFooter className={classes.cardFooter} onClick={() => handleLogin()}>
+                    <Button simple color="primary" size="lg" >
                       Entrar
                     </Button>
                   </CardFooter>

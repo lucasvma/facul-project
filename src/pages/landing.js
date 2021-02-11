@@ -34,7 +34,7 @@ export default function LandingPage(props) {
       <Header
         color="transparent"
         routes={dashboardRoutes}
-        brand="NextJS Material Kit"
+        brand="Share Info"
         rightLinks={<HeaderLinks />}
         fixed
         changeColorOnScroll={{
