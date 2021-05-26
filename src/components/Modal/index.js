@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 // material-ui components
 import Slide from "@material-ui/core/Slide";
 import Dialog from "@material-ui/core/Dialog";

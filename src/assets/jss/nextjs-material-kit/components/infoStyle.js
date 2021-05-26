@@ -1,12 +1,12 @@
 import {
-  primaryColor,
-  warningColor,
-  dangerColor,
-  successColor,
-  infoColor,
-  roseColor,
-  grayColor,
-  title
+    dangerColor,
+    grayColor,
+    infoColor,
+    primaryColor,
+    roseColor,
+    successColor,
+    title,
+    warningColor
 } from "src/assets/jss/nextjs-material-kit.js";
 
 const infoStyle = {

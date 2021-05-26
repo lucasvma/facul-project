@@ -1,4 +1,4 @@
-import { cardTitle, title } from "src/assets/jss/nextjs-material-kit.js";
+import {cardTitle, title} from "src/assets/jss/nextjs-material-kit.js";
 import imagesStyle from "src/assets/jss/nextjs-material-kit/imagesStyles.js";
 
 const teamStyle = {

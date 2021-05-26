@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
 import styles from "src/assets/jss/nextjs-material-kit/components/paginationStyle.js";

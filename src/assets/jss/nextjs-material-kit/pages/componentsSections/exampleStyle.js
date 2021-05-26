@@ -1,4 +1,4 @@
-import { conatinerFluid } from "src/assets/jss/nextjs-material-kit.js";
+import {conatinerFluid} from "src/assets/jss/nextjs-material-kit.js";
 
 import imagesStyle from "src/assets/jss/nextjs-material-kit/imagesStyles.js";
 

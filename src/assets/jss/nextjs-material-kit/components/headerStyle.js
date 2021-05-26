@@ -1,16 +1,16 @@
 import {
-  container,
-  hexToRGBAlpha,
-  defaultFont,
-  primaryColor,
-  infoColor,
-  successColor,
-  warningColor,
-  dangerColor,
-  roseColor,
-  transition,
-  boxShadow,
-  drawerWidth
+    boxShadow,
+    container,
+    dangerColor,
+    defaultFont,
+    drawerWidth,
+    hexToRGBAlpha,
+    infoColor,
+    primaryColor,
+    roseColor,
+    successColor,
+    transition,
+    warningColor
 } from "src/assets/jss/nextjs-material-kit.js";
 
 const headerStyle = {

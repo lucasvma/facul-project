@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 // core components
 import styles from "src/assets/jss/nextjs-material-kit/components/customLinearProgressStyle.js";

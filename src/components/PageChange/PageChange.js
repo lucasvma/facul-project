@@ -1,11 +1,11 @@
 import React from "react";
 
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 // core components
-import { infoColor, title } from "src/assets/jss/nextjs-material-kit.js";
+import {infoColor, title} from "src/assets/jss/nextjs-material-kit.js";
 
 const useStyles = makeStyles({
   progress: {

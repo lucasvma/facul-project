@@ -1,4 +1,4 @@
-import { container, title } from "src/assets/jss/nextjs-material-kit.js";
+import {container, title} from "src/assets/jss/nextjs-material-kit.js";
 
 import modalStyle from "src/assets/jss/nextjs-material-kit/modalStyle.js";
 import tooltipsStyle from "src/assets/jss/nextjs-material-kit/tooltipsStyle.js";

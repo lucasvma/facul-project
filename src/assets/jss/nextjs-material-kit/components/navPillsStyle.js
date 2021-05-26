@@ -1,11 +1,11 @@
 import {
-  hexToRGBAlpha,
-  roseColor,
-  primaryColor,
-  infoColor,
-  successColor,
-  warningColor,
-  dangerColor
+    dangerColor,
+    hexToRGBAlpha,
+    infoColor,
+    primaryColor,
+    roseColor,
+    successColor,
+    warningColor
 } from "src/assets/jss/nextjs-material-kit.js";
 
 const navPillsStyle = theme => ({

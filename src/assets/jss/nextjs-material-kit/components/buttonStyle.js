@@ -1,12 +1,12 @@
 import {
-  hexToRGBAlpha,
-  grayColor,
-  roseColor,
-  primaryColor,
-  infoColor,
-  successColor,
-  warningColor,
-  dangerColor
+    dangerColor,
+    grayColor,
+    hexToRGBAlpha,
+    infoColor,
+    primaryColor,
+    roseColor,
+    successColor,
+    warningColor
 } from "src/assets/jss/nextjs-material-kit.js";
 
 const buttonStyle = {

@@ -1,24 +1,16 @@
 import React, {useEffect, useState} from "react";
 import classNames from "classnames";
-import Link from "next/link";
-import { makeStyles } from "@material-ui/core/styles";
-import url from 'url'
+import {makeStyles} from "@material-ui/core/styles";
 
 import styles from "src/assets/jss/nextjs-material-kit/pages/components.js";
-import Layout from "../components/Layout";
-import { MongoClient } from "mongodb";
+import {MongoClient} from "mongodb";
 import axios from "axios";
 import Header from "../components/Header/Header";
 import HeaderLinks from "../components/Header/HeaderLinks";
 import Parallax from "../components/Parallax/Parallax";
-import GridContainer from "../components/Grid/GridContainer";
-import GridItem from "../components/Grid/GridItem";
-import profile from "../assets/img/apple-icon.png";
-import Button from "../components/CustomButtons/Button";
-import Modal from "../components/Modal";
-import ListClasses from "../components/ListClasses";
 import Footer from "../components/Footer/Footer";
 import Home from "../components/Home";
+import { useSession } from 'next-auth/client'
 
 const useStyles = makeStyles(styles);
 
@@ -33,6 +25,9 @@ export default function Components(props) {
 
     const [modal, setModal] = useState(false)
     const [grade, setGrades] = useState([])
+
+    const [session, loading] = useSession()
+    console.log('session', session)
 
     useEffect(() => {
         handleClasses()

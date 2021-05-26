@@ -1,4 +1,4 @@
-import { defaultFont } from "src/assets/jss/nextjs-material-kit.js";
+import {defaultFont} from "src/assets/jss/nextjs-material-kit.js";
 
 import tooltip from "src/assets/jss/nextjs-material-kit/tooltipsStyle.js";
 

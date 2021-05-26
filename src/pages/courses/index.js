@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import Header from "src/components/Header/Header.js";
 import Footer from "src/components/Footer/Footer.js";
 import GridContainer from "src/components/Grid/GridContainer.js";

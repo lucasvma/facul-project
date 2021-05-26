@@ -1,11 +1,11 @@
 import {
-  primaryColor,
-  warningColor,
-  dangerColor,
-  successColor,
-  infoColor,
-  roseColor,
-  grayColor
+    dangerColor,
+    grayColor,
+    infoColor,
+    primaryColor,
+    roseColor,
+    successColor,
+    warningColor
 } from "src/assets/jss/nextjs-material-kit.js";
 
 const customLinearProgressStyle = {

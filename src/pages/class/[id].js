@@ -8,10 +8,10 @@ import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import Footer from "../../components/Footer/Footer";
 import ListClass from "../../components/ListClass";
-import { MongoClient, ObjectId } from "mongodb";
+import {MongoClient, ObjectId} from "mongodb";
 
 import styles from "src/assets/jss/nextjs-material-kit/pages/profilePage.js";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(styles);
 

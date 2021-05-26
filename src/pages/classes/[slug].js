@@ -48,17 +48,18 @@ export default function ClassPage({ source, frontMatter }) {
 export const getStaticProps = async ({ params }) => {
     return {
         props: {
-            source: '',
+            source: params.slug,
             frontMatter: false,
         },
     }
 }
 
 export const getStaticPaths = async () => {
-    const classes = [{}]
-
     return {
-        classes,
+        paths: [
+            { params: { slug: 'slug-1'} },
+            { params: { slug: 'slug-2'} }
+        ],
         fallback: false,
     }
 }

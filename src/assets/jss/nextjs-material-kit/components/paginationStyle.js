@@ -1,12 +1,12 @@
 import {
-  hexToRGBAlpha,
-  grayColor,
-  primaryColor,
-  infoColor,
-  successColor,
-  warningColor,
-  dangerColor,
-  roseColor
+    dangerColor,
+    grayColor,
+    hexToRGBAlpha,
+    infoColor,
+    primaryColor,
+    roseColor,
+    successColor,
+    warningColor
 } from "src/assets/jss/nextjs-material-kit.js";
 
 const paginationStyle = {

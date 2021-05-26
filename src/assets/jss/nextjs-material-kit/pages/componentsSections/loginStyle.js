@@ -1,4 +1,4 @@
-import { container } from "src/assets/jss/nextjs-material-kit.js";
+import {container} from "src/assets/jss/nextjs-material-kit.js";
 
 import image from "src/assets/img/sign.jpg";
 

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import classNames from "classnames";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import Header from "src/components/Header/Header.js";
 import Footer from "src/components/Footer/Footer.js";
 import Button from "src/components/CustomButtons/Button.js";
@@ -16,6 +16,7 @@ import styles from "src/assets/jss/nextjs-material-kit/pages/profilePage.js";
 
 import Modal from "../../components/Modal";
 import ListClasses from "../../components/ListClasses";
+import {useSession} from "next-auth/client";
 
 const useStyles = makeStyles(styles);
 
@@ -30,6 +31,9 @@ export default function ClassesPage(props) {
 
   const [modal, setModal] = useState(false)
   const [grade, setGrades] = useState([])
+
+  const [session, loading] = useSession()
+  console.log('session', session)
 
   useEffect(() => {
     handleClasses()

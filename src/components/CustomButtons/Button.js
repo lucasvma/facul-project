@@ -9,7 +9,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button";
 
 // core components
-
 import buttonStyle from "src/assets/jss/nextjs-material-kit/components/buttonStyle.js";
 
 const makeComponentStyles = makeStyles(() => ({

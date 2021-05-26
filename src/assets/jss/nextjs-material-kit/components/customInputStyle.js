@@ -1,9 +1,4 @@
-import {
-  primaryColor,
-  dangerColor,
-  successColor,
-  defaultFont
-} from "src/assets/jss/nextjs-material-kit.js";
+import {dangerColor, defaultFont, primaryColor, successColor} from "src/assets/jss/nextjs-material-kit.js";
 
 const customInputStyle = {
   disabled: {
