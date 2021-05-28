@@ -102,7 +102,10 @@ export const getStaticProps = async ({ params }) => {
 
 export const getStaticPaths = async () => {
     return {
-        paths: '',
+        paths: [
+            { params: { slug: 'slug-1'} },
+            { params: { slug: 'slug-2'} }
+        ],
         fallback: false,
     }
 }
