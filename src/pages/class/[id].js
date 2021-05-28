@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 import Header from "../../components/Header/Header";
 import HeaderLinks from "../../components/Header/HeaderLinks";
@@ -12,11 +12,19 @@ import {MongoClient, ObjectId} from "mongodb";
 
 import styles from "src/assets/jss/nextjs-material-kit/pages/profilePage.js";
 import {makeStyles} from "@material-ui/core/styles";
+import {dbHandler} from "../api/db/db";
+import {TextareaAutosize} from "@material-ui/core";
+import Button from "../../components/CustomButtons/Button";
 
 const useStyles = makeStyles(styles);
 
 export default function ClassPage({ grade }) {
-    const classes = useStyles();
+    const classes = useStyles()
+    const [comment, setComment] = useState(false)
+
+    function handleComment() {
+
+    }
 
     return (
         <div>
@@ -38,13 +46,38 @@ export default function ClassPage({ grade }) {
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className={classes.profile}>
                                     <div className={classes.name}>
-                                        <h3 className={classes.title}></h3>
+                                        <h3 className={classes.title} />
                                     </div>
                                 </div>
                             </GridItem>
                         </GridContainer>
 
                         <ListClass title={grade[0].title} description={grade[0].description} />
+
+                        <GridItem xs={12}>
+                            <TextareaAutosize
+                                aria-label="minimum height"
+                                rowsMin={5}
+                                placeholder="Adicione um comentário"
+                                style={{
+                                    width: "80%",
+                                    padding: "10px"
+                                }}
+                                onChange={(e) => setComment(e.target.value)}
+                            />
+
+                            <Button
+                                color="primary"
+                                round
+                                onClick={handleComment()}
+                                style={{
+                                    justifyContent: "flex-end",
+                                    alignItems: "flex-end"
+                                }}
+                            >
+                                Comentar
+                            </Button>
+                        </GridItem>
                     </div>
                 </div>
             </div>
@@ -78,7 +111,7 @@ export async function getStaticPaths() {
         useUnifiedTopology: true
     })
 
-    const db = client.db('share-info')
+    const db = await dbHandler()
     const collection = db.collection('classes')
     const grades = await collection.find().toArray()
 

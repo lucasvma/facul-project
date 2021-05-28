@@ -22,22 +22,23 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Modal(props) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
+    const type = props.classes !== undefined ? 'classes' : 'courses'
 
     function handleCreate(e) {
         e.preventDefault()
 
-        axios.post('/api/classes', { title, description })
+        axios.post(`/api/${type}`, { title, description })
 
         props.setModal(false)
 
-        props.listClasses()
+        type === 'classes' ? props.listClasses() : this.props.listCourses()
     }
 
     return (
         <Dialog
             classes={{
-                root: props.classes.center,
-                paper: props.classes.modal
+                root: type === 'classes' ? props.classes.center : props.courses.center,
+                paper: type === 'classes' ? props.classes.modal : props.courses.modal
             }}
             open={props.modal}
             TransitionComponent={Transition}
@@ -50,22 +51,22 @@ export default function Modal(props) {
             <DialogTitle
                 id="classic-modal-slide-title"
                 disableTypography
-                className={props.classes.modalHeader}
+                className={type === 'classes' ? props.classes.modalHeader : props.courses.modalHeader}
             >
                 <IconButton
-                    className={props.classes.modalCloseButton}
+                    className={type === 'classes' ? props.classes.modalCloseButton : props.courses.modalCloseButton}
                     key="close"
                     aria-label="Close"
                     color="inherit"
                     onClick={() => props.setModal(false)}
                 >
-                    <Close className={props.classes.modalClose} />
+                    <Close className={type === 'classes' ? props.classes.modalClose : props.courses.modalClose} />
                 </IconButton>
-                <h4 className={props.classes.modalTitle}>Cadastre uma nova aula</h4>
+                <h4 className={type === 'classes' ? props.classes.modalTitle : props.courses.modalTitle}>Cadastre uma nova aula</h4>
             </DialogTitle>
             <DialogContent
                 id="modal-slide-description"
-                className={props.classes.modalBody}
+                className={type === 'classes' ? props.classes.modalBody : props.courses.modalBody}
             >
             <GridItem xs={12}>
                 <CustomInput
@@ -86,7 +87,7 @@ export default function Modal(props) {
                     aria-label="minimum height"
                     rowsMin={20}
                     placeholder="Descrição da Aula .MD"
-                    className={props.classes.textarea}
+                    className={type === 'classes' ? props.classes.textarea : props.courses.textarea}
                     style={{
                         width: "100%",
                         padding: "10px"
@@ -98,7 +99,8 @@ export default function Modal(props) {
 
             </DialogContent>
             <DialogActions
-                className={props.classes.modalFooter + " " + props.classes.modalFooterCenter}
+                className={type === 'classes' ? props.classes.modalFooter : props.courses.modalFooter + " " +
+                            type === 'classes' ? props.classes.modalFooterCenter : props.courses.modalFooterCenter}
             >
                 <Button onClick={() => props.setModal(false)}>Fechar</Button>
                 <Button onClick={(e) => handleCreate(e)} color="success">

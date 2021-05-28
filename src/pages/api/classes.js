@@ -25,7 +25,7 @@ const connectToDatabase = async (uri) => {
 export default async (request, response) => {
     const {
         method,
-        body: { title, description }
+        body: { title, description, publicClass }
     } = request
 
     const db = await connectToDatabase(process.env.MONGODB_URI)
@@ -44,13 +44,13 @@ export default async (request, response) => {
             await collection.insertOne({
                 title,
                 description,
+                publicClass,
                 createdAt: new Date()
             })
 
             return response
                 .status(201)
                 .json({ message: 'A Aula foi cadastrada com sucesso' })
-            break
         default:
             response.setHeader('Allow', ['GET', 'POS', 'PUT'])
             response.status(405).end(`Method ${method} Not Allowed`)

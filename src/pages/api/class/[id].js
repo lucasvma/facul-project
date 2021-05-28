@@ -1,37 +1,13 @@
-import {MongoClient} from 'mongodb'
-import url from 'url'
-
-let cachedDb = null
-
-const connectToDatabase = async (uri) => {
-    if (cachedDb) {
-        return cachedDb
-    }
-
-    const client = await MongoClient.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-
-    const dbName = url.parse(uri).pathname.substr(1)
-
-    const db = client.db(dbName)
-
-    cachedDb = db
-
-    return db
-}
-
 export default async (request, response) => {
     const {
         method,
         query: { id },
-        body: { title, description }
+        body: { title, description, publicClass }
     } = request
 
     console.log('there')
 
-    const db = await connectToDatabase(process.env.MONGODB_URI)
+    const db = await db()
 
     const collection = db.collection('classes')
 
@@ -55,7 +31,7 @@ export default async (request, response) => {
             //     .json({ message: 'A Aula foi cadastrada com sucesso' })
             // break
         default:
-            response.setHeader('Allow', ['GET', 'POS', 'PUT'])
+            response.setHeader('Allow', ['GET'])
             response.status(405).end(`Method ${method} Not Allowed`)
     }
 }

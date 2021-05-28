@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import classNames from "classnames";
 import {makeStyles} from "@material-ui/core/styles";
 import Header from "src/components/Header/Header.js";
@@ -12,31 +12,88 @@ import profile from "src/assets/img/apple-icon.png";
 
 import styles from "src/assets/jss/nextjs-material-kit/pages/profilePage.js";
 
-import Link from 'next/link'
 import Layout from '../../components/Layout'
+import Button from "../../components/CustomButtons/Button";
+import Modal from "../../components/Modal";
+import ListCourses from "../../components/ListCourses";
+import {useSession} from "next-auth/client";
+import axios from "axios";
 
 const useStyles = makeStyles(styles);
 
-function CoursesDescription({ courses }) {
+function CoursesDescription(props) {
+    const courses = useStyles();
+    const { ...rest } = props;
+    const imageCourses = classNames(
+        courses.imgRaised,
+        courses.imgRoundedCircle,
+        courses.imgFluid
+    )
+
+    const [modal, setModal] = useState(false)
+    const [grade, setGrades] = useState([])
+
+    const [session, loading] = useSession()
+    console.log('session', session)
+
+    useEffect(() => {
+        handleCourses()
+    }, [])
+
+    async function handleCourses() {
+        const response = await axios
+            .get('/api/courses')
+            .then((response) => response)
+
+        if (response) {
+            setGrades(response.data.courses)
+        }
+    }
+
   return (
-      <Layout>
-        <h4>
-          Selecione um curso do seu interesse:
-        </h4>
-        <ul>
-          {courses.map((course) => (
-              <li key={course.filePath}>
-                  {console.log(course)}
-                <Link
-                    as={`/courses/${course.filePath.replace(/\.mdx?$/, '')}`}
-                    href={`/courses/[slug]`}
-                >
-                  <a>{course.filePath}</a>
-                </Link>
-              </li>
-          ))}
-        </ul>
-      </Layout>
+      <div>
+          <Header
+              color="transparent"
+              brand="Share Info"
+              rightLinks={<HeaderLinks />}
+              fixed
+              changeColorOnScroll={{
+                  height: 200,
+                  color: "white"
+              }}
+              {...rest}
+          />
+          <Parallax small filter image={require("src/assets/img/profile-bg.jpg")} />
+          <div className={classNames(courses.main, courses.mainRaised)}>
+              <div>
+                  <div className={courses.container}>
+                      <GridContainer justify="center">
+                          <GridItem xs={12} sm={12} md={6}>
+                              <div className={courses.profile}>
+                                  <div>
+                                      <img src={profile} alt="..." className={imageCourses} />
+                                  </div>
+                                  <div className={courses.name}>
+                                      <h3 className={courses.title}>Cadastro do Curso</h3>
+                                  </div>
+
+                                  <div>
+                                      <Button color="primary" round onClick={() => setModal(true)}>
+                                          Novo Curso
+                                      </Button>
+
+                                      <Modal modal={modal} setModal={setModal} listCourses={handleCourses} courses={courses} />
+                                  </div>
+                              </div>
+                          </GridItem>
+                      </GridContainer>
+
+                      <ListCourses courses={grade} />
+                  </div>
+              </div>
+          </div>
+          <Footer />
+      </div>
   );
 }
 
@@ -87,5 +144,5 @@ export default function CoursesPage(props) {
 }
 
 export function getStaticProps() {
-  return { props: { courses: '' } }
+  return { props: { courses: { 'test' : 123 } } }
 }

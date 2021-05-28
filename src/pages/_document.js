@@ -31,7 +31,7 @@ class MyDocument extends Document {
           />
         </Head>
         <body>
-          <div id="page-transition"></div>
+          <div id="page-transition"/>
           <Main />
           <NextScript />
         </body>

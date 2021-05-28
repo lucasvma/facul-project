@@ -17,14 +17,11 @@ export default NextAuth({
         // verifyRequest: '/auth/verify-request',
         // newUser: null
     },
-    // A database is optional, but required to persist accounts in a database
-    // database: process.env.DATABASE_URL,
+    // A db is optional, but required to persist accounts in a db
+    // db: process.env.DATABASE_URL,
     callbacks: {
         redirect: async (url, baseUrl) => {
             return baseUrl
-            // return url.startsWith(baseUrl)
-            //     ? Promise.resolve(url)
-            //     : Promise.resolve(baseUrl)
         }
     }
 })

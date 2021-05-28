@@ -23,7 +23,7 @@ const connectToDatabase = async (uri) => {
 }
 
 export default async (request, response) => {
-    const { title, description } = request.body
+    const { title, description, publicCourse, classes } = request.body
 
     const db = await connectToDatabase(process.env.MONGODB_URI)
 
@@ -32,6 +32,8 @@ export default async (request, response) => {
     await collection.insertOne({
         title,
         description,
+        publicCourse,
+        classes,
         createdAt: new Date()
     })
 
