@@ -15,10 +15,11 @@ import {makeStyles} from "@material-ui/core/styles";
 import {dbHandler} from "../api/db/db";
 import {TextareaAutosize} from "@material-ui/core";
 import Button from "../../components/CustomButtons/Button";
+import axios from "axios";
 
 const useStyles = makeStyles(styles);
 
-export default function ClassPage({ grade }) {
+export default function ClassPage({ course }) {
     const classes = useStyles()
     const [comment, setComment] = useState(false)
 
@@ -52,7 +53,7 @@ export default function ClassPage({ grade }) {
                             </GridItem>
                         </GridContainer>
 
-                        <ListClass title={grade[0].title} description={grade[0].description} />
+                        <ListClass title={course[0].title} description={course[0].description} />
 
                         <GridItem xs={12}>
                             <TextareaAutosize
@@ -86,7 +87,7 @@ export default function ClassPage({ grade }) {
     )
 }
 
-export const getStaticProps = async ({ params }) => {
+export async function getStaticProps({ params }) {
     const uri = process.env.MONGODB_URI
     const client = await MongoClient.connect(uri, {
         useNewUrlParser: true,
@@ -94,26 +95,28 @@ export const getStaticProps = async ({ params }) => {
     })
 
     const db = client.db('share-info')
-    const collection = db.collection('classes')
-    const grade = await collection.find(ObjectId(params.id)).toArray()
+    const collection = db.collection('courses')
+    const courseData = await collection.find(ObjectId(params.id)).toArray()
+
+    const courseProgress = await fetch('http://localhost:3000/api/courseProgress')
+
+    const course = {...courseData, ...courseProgress}
 
     return {
         props: {
-            grade: JSON.parse(JSON.stringify(grade))
-        },
+            course: JSON.parse(JSON.stringify(course))
+        }
     }
 }
 
 export async function getStaticPaths() {
-    const uri = process.env.MONGODB_URI
-
     const db = await dbHandler()
-    const collection = db.collection('classes')
-    const grades = await collection.find().toArray()
+    const collection = db.collection('courses')
+    const courses = await collection.find().toArray()
 
     const paths = []
 
-    JSON.parse(JSON.stringify(grades)).forEach(grade => paths.push({ params: { id: grade._id }}))
+    JSON.parse(JSON.stringify(courses)).forEach(course => paths.push({ params: { id: course._id }}))
 
     return {
         fallback: false,

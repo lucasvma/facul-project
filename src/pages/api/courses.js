@@ -23,21 +23,35 @@ const connectToDatabase = async (uri) => {
 }
 
 export default async (request, response) => {
-    const { title, description, publicCourse, classes } = request.body
+    const {
+        method,
+        body: { title, description, publicCourse, classes }
+    } = request
 
     const db = await connectToDatabase(process.env.MONGODB_URI)
 
     const collection = db.collection('courses')
 
-    await collection.insertOne({
-        title,
-        description,
-        publicCourse,
-        classes,
-        createdAt: new Date()
-    })
+    switch (method) {
+        case 'GET':
+            const courses = await collection.find().toArray()
 
-    return response
-        .status(201)
-        .json({ message: 'O Curso foi cadastrado com sucesso' })
+            return response.status(200).json({ courses })
+        case 'POST':
+            await collection.insertOne({
+                title,
+                description,
+                publicCourse,
+                classes,
+                createdAt: new Date()
+            })
+
+            return response
+                .status(201)
+                .json({ message: 'O Curso foi cadastrado com sucesso' })
+        default:
+            response.setHeader('Allow', ['GET', 'POS'])
+            response.status(405).end(`Method ${method} Not Allowed`)
+    }
+
 }

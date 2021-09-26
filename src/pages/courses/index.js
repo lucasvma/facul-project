@@ -12,7 +12,6 @@ import profile from "src/assets/img/apple-icon.png";
 
 import styles from "src/assets/jss/nextjs-material-kit/pages/profilePage.js";
 
-import Layout from '../../components/Layout'
 import Button from "../../components/CustomButtons/Button";
 import Modal from "../../components/Modal";
 import ListCourses from "../../components/ListCourses";
@@ -21,7 +20,7 @@ import axios from "axios";
 
 const useStyles = makeStyles(styles);
 
-function CoursesDescription(props) {
+export default function CoursesPage(props) {
     const courses = useStyles();
     const { ...rest } = props;
     const imageCourses = classNames(
@@ -31,10 +30,9 @@ function CoursesDescription(props) {
     )
 
     const [modal, setModal] = useState(false)
-    const [grade, setGrades] = useState([])
+    const [course, setCourse] = useState([])
 
     const [session, loading] = useSession()
-    console.log('session', session)
 
     useEffect(() => {
         handleCourses()
@@ -46,7 +44,7 @@ function CoursesDescription(props) {
             .then((response) => response)
 
         if (response) {
-            setGrades(response.data.courses)
+            setCourse(response.data.courses)
         }
     }
 
@@ -88,7 +86,7 @@ function CoursesDescription(props) {
                           </GridItem>
                       </GridContainer>
 
-                      <ListCourses courses={grade} />
+                      <ListCourses courses={course} />
                   </div>
               </div>
           </div>
@@ -97,52 +95,6 @@ function CoursesDescription(props) {
   );
 }
 
-export default function CoursesPage(props) {
-  const courses = useStyles();
-  const { ...rest } = props;
-  const imageCourses = classNames(
-    courses.imgRaised,
-    courses.imgRoundedCircle,
-    courses.imgFluid
-  );
-  return (
-    <div>
-      <Header
-        color="transparent"
-        brand="Share Info"
-        rightLinks={<HeaderLinks />}
-        fixed
-        changeColorOnScroll={{
-          height: 200,
-          color: "white"
-        }}
-        {...rest}
-      />
-      <Parallax small filter image={require("src/assets/img/profile-bg.jpg")} />
-      <div className={classNames(courses.main, courses.mainRaised)}>
-        <div>
-          <div className={courses.container}>
-            <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={6}>
-                <div className={courses.profile}>
-                  <div>
-                    <img src={profile} alt="..." className={imageCourses} />
-                  </div>
-                  <div className={courses.name}>
-                    <h2 className={courses.title}>Cursos</h2>
-                  </div>
-                </div>
-              </GridItem>
-            </GridContainer>
-            <CoursesDescription courses={props.courses} />
-          </div>
-        </div>
-      </div>
-      <Footer />
-    </div>
-  );
-}
-
 export function getStaticProps() {
-  return { props: { courses: { 'test' : 123 } } }
+  return { props: { courses: '' } }
 }

@@ -16,7 +16,6 @@ import styles from "src/assets/jss/nextjs-material-kit/pages/profilePage.js";
 
 import Modal from "../../components/Modal";
 import ListClasses from "../../components/ListClasses";
-import {useSession} from "next-auth/client";
 
 const useStyles = makeStyles(styles);
 
@@ -30,21 +29,19 @@ export default function ClassesPage(props) {
   )
 
   const [modal, setModal] = useState(false)
-  const [grade, setGrades] = useState([])
-
-  const [session, loading] = useSession()
+  const [course, setCourse] = useState([])
 
   useEffect(() => {
-    handleClasses()
+    handleCourses()
   }, [])
 
-  async function handleClasses() {
+  async function handleCourses() {
     const response = await axios
-        .get('/api/classes')
+        .get('/api/courses')
         .then((response) => response)
 
     if (response) {
-      setGrades(response.data.classes)
+      setCourse(response.data.courses)
     }
   }
 
@@ -72,21 +69,21 @@ export default function ClassesPage(props) {
                     <img src={profile} alt="..." className={imageClasses} />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title}>Cadastro de Aula</h3>
+                    <h3 className={classes.title}>Cadastro do Curso</h3>
                   </div>
 
                   <div>
                     <Button color="primary" round onClick={() => setModal(true)}>
-                        Nova Aula
+                        Novo Curso
                     </Button>
 
-                    <Modal modal={modal} setModal={setModal} listClasses={handleClasses} classes={classes} />
+                    <Modal modal={modal} setModal={setModal} listClasses={handleCourses} classes={classes} />
                   </div>
                 </div>
               </GridItem>
             </GridContainer>
 
-            <ListClasses classes={grade} />
+            <ListClasses classes={course} />
           </div>
         </div>
       </div>
@@ -96,5 +93,5 @@ export default function ClassesPage(props) {
 }
 
 export function getStaticProps() {
-  return { props: { classes: '' } }
+  return { props: { courses: '' } }
 }

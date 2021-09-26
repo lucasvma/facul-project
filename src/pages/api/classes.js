@@ -36,10 +36,9 @@ export default async (request, response) => {
         case 'GET':
             const classes = await collection.find().toArray()
 
-            response
-                .status(200)
-                .json({ classes })
-            break
+            return response
+                    .status(200)
+                    .json({ classes })
         case 'POST':
             await collection.insertOne({
                 title,
@@ -52,7 +51,7 @@ export default async (request, response) => {
                 .status(201)
                 .json({ message: 'A Aula foi cadastrada com sucesso' })
         default:
-            response.setHeader('Allow', ['GET', 'POS', 'PUT'])
+            response.setHeader('Allow', ['GET', 'POST', 'PUT'])
             response.status(405).end(`Method ${method} Not Allowed`)
     }
 }
