@@ -1,10 +1,10 @@
 # Share info
 
 >Share Info system, a forum in which people can teach a specific content to another through textual
-> classes. Through a paradigm shift caused by COVID-19 in the context of learning, the need to 
+> classes. Through a paradigm shift caused by COVID-19 in the context of learning, the need to
 > develop a  virtual and remote learning system, in order to promote information sharing of the
-> most varied people, like students, teachers, scientists, researchers, among others. Information 
-> can be exchanged between disciplines, specific subjects or topics, that will be separated by 
+> most varied people, like students, teachers, scientists, researchers, among others. Information
+> can be exchanged between disciplines, specific subjects or topics, that will be separated by
 > specific categories.
 
 ### Tools and Technologies
@@ -77,18 +77,18 @@ facul-project
 │   │   └── courses.js
 │   ├── class
 │   │   ├── [id].js
-│   │   └── index.js
+│   │   └── Home.js
 │   ├── classes
 │   │   ├── [slug].js
-│   │   └── index.js
+│   │   └── Home.js
 │   ├── courses
 │   │   ├── [slug].js
-│   │   └── index.js
+│   │   └── Home.js
 │   ├── _app.js
 │   ├── _document.js
 │   ├── _error.js
 │   ├── components.js
-│   ├── index.js
+│   ├── Home.js
 │   ├── landingpage.js
 │   ├── loginpage.js
 │   └── profilepage.js
