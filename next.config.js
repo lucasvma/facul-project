@@ -4,10 +4,6 @@ const webpack = require("webpack");
 const path = require("path");
 
 module.exports = withPlugins([[withImages]], {
-<<<<<<< HEAD
-  webpack(config, options) {
-    config.resolve.modules.push(path.resolve("./"));
-=======
   images: {
     disableStaticImages: true,
   },
@@ -23,7 +19,6 @@ module.exports = withPlugins([[withImages]], {
       zlib: require.resolve("browserify-zlib"),
       http: require.resolve("stream-http")
     }
->>>>>>> master
     return config;
   },
 });
