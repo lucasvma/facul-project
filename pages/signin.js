@@ -21,21 +21,12 @@ import { signIn, getProviders } from 'next-auth/client'
 
 import styles from "styles/jss/nextjs-material-kit/pages/loginPage";
 
-<<<<<<< HEAD
-import image from "../img/bg7.jpg";
-import Router from "next/router";
-
-const useStyles = makeStyles(styles);
-
-function SignIn(props) {
-=======
 import image from "public/img/bg7.jpg";
 import { useRouter } from "next/router";
 
 const useStyles = makeStyles(styles);
 
 export default function SignIn(props) {
->>>>>>> master
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
@@ -44,19 +35,12 @@ export default function SignIn(props) {
     }, 700);
     const classes = useStyles();
     const { providers, ...rest } = props;
-<<<<<<< HEAD
-=======
     const router = useRouter();
->>>>>>> master
 
     console.log('providers', providers)
 
     function handleLogin() {
-<<<<<<< HEAD
-        Router.push("/home");
-=======
         router.push("/home");
->>>>>>> master
     }
 
     return (
@@ -160,9 +144,6 @@ export default function SignIn(props) {
                                             }}
                                         />
                                     </CardBody>
-<<<<<<< HEAD
-                                    <CardFooter className={classes.cardFooter} onClick={() => handleLogin()}>
-=======
                                     <CardFooter
                                         className={classes.cardFooter}
                                         onClick={(e) => {
@@ -170,7 +151,6 @@ export default function SignIn(props) {
                                             handleLogin()
                                         }}
                                     >
->>>>>>> master
                                         <Button simple color="primary" size="lg" >
                                             Entrar
                                         </Button>

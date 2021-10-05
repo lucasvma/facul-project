@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-import hydrate from 'next-mdx-remote/hydrate'
-import dynamic from 'next/dynamic'
-import Head from 'next/head'
-import Link from 'next/link'
-import CustomLink from '../../components/CustomLink'
-import Layout from '../../components/Layout/Layout'
-import Header from "../../components/Header/Header";
-import HeaderLinks from "../../components/Header/HeaderLinks";
-import Parallax from "../../components/Parallax/Parallax";
-import Footer from "../../components/Footer/Footer";
-=======
 import { serialize } from 'next-mdx-remote/serialize'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -19,19 +7,10 @@ import Header from "components/Header/Header";
 import HeaderLinks from "components/Header/HeaderLinks";
 import Parallax from "components/Parallax/Parallax";
 import Footer from "components/Footer/Footer";
->>>>>>> master
 import React from "react";
 
 import classNames from "classnames";
 
-<<<<<<< HEAD
-import styles from "jss/nextjs-material-kit/pages/components.js";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-
-const components = {
-    a: CustomLink,
-    TestComponent: dynamic(() => import('../../components/TestComponent')),
-=======
 import styles from "styles/jss/nextjs-material-kit/pages/components.js";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import dynamic from "next/dynamic";
@@ -40,7 +19,6 @@ import {dbHandler} from "../api/db/db";
 const components = {
     a: CustomLink,
     TestComponent: dynamic(() => import('components/TestComponent/TestComponent')),
->>>>>>> master
     Head,
 }
 
@@ -80,11 +58,7 @@ function CourseDescription({ content, frontMatter }) {
 const useStyles = makeStyles(styles);
 
 export default function CoursePage(props) {
-<<<<<<< HEAD
-    const content = hydrate(props.source, { components })
-=======
     const content = serialize(props.source, { components })
->>>>>>> master
     const courses = useStyles();
     const { ...rest } = props;
     const imageCourses = classNames(
@@ -129,14 +103,6 @@ export const getStaticProps = async ({ params }) => {
 }
 
 export const getStaticPaths = async () => {
-<<<<<<< HEAD
-    return {
-        paths: [
-            { params: { slug: 'slug-1'} },
-            { params: { slug: 'slug-2'} }
-        ],
-        fallback: false,
-=======
     const db = await dbHandler()
     const collection = db.collection('courses')
     const courses = await collection.find().toArray()
@@ -148,6 +114,5 @@ export const getStaticPaths = async () => {
     return {
         paths,
         fallback: false
->>>>>>> master
     }
 }
