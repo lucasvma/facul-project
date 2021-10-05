@@ -1,0 +1,57 @@
+import {MongoClient} from 'mongodb'
+import url from 'url'
+
+let cachedDb = null
+
+const connectToDatabase = async (uri) => {
+    if (cachedDb) {
+        return cachedDb
+    }
+
+    const client = await MongoClient.connect(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+
+    const dbName = url.parse(uri).pathname.substr(1)
+
+    const db = client.db(dbName)
+
+    cachedDb = db
+
+    return db
+}
+
+export default async (request, response) => {
+    const {
+        method,
+        body: { title, description, publicCourse, classes }
+    } = request
+
+    const db = await connectToDatabase(process.env.MONGODB_URI)
+
+    const collection = db.collection('courses')
+
+    switch (method) {
+        case 'GET':
+            const courses = await collection.find().toArray()
+
+            return response.status(200).json({ courses })
+        case 'POST':
+            await collection.insertOne({
+                title,
+                description,
+                publicCourse,
+                classes,
+                createdAt: new Date()
+            })
+
+            return response
+                .status(201)
+                .json({ message: 'O Curso foi cadastrado com sucesso' })
+        default:
+            response.setHeader('Allow', ['GET', 'POS'])
+            response.status(405).end(`Method ${method} Not Allowed`)
+    }
+
+}
