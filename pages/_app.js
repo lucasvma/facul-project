@@ -30,6 +30,7 @@ export default class MyApp extends App {
     let comment = document.createComment(``);
     document.insertBefore(comment, document.documentElement);
   }
+<<<<<<< HEAD
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
 
@@ -39,6 +40,17 @@ export default class MyApp extends App {
 
     return { pageProps };
   }
+=======
+  // static async getInitialProps({ Component, router, ctx }) {
+  //   let pageProps = {};
+  //
+  //   if (Component.getInitialProps) {
+  //     pageProps = await Component.getInitialProps(ctx);
+  //   }
+  //
+  //   return { pageProps };
+  // }
+>>>>>>> master
   render() {
     const { Component, pageProps } = this.props;
 

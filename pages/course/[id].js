@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, {useState} from "react";
+=======
+import React, { useState } from "react";
+>>>>>>> master
 
 import Header from "../../components/Header/Header";
 import HeaderLinks from "../../components/Header/HeaderLinks";

@@ -8,7 +8,16 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+<<<<<<< HEAD
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && rm -rf .next/ && npm install && npm run dev"
+=======
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && rm -rf .next/ && npm install && npm run dev",
+    "lint": "next lint"
+  },
+  "browser": {
+    "child_process": false,
+    "fs": false
+>>>>>>> master
   },
   "repository": {
     "type": "git",
@@ -37,12 +46,26 @@
     "@material-ui/icons": "4.11.2",
     "axios": "^0.21.4",
     "classnames": "2.3.1",
+<<<<<<< HEAD
     "moment": "2.29.1",
     "mongodb": "^4.1.2",
     "next": "10.2.0",
     "next-auth": "^3.29.0",
     "next-compose-plugins": "2.2.1",
     "next-images": "1.7.0",
+=======
+    "dns": "file:./mock/dns",
+    "moment": "2.29.1",
+    "mongodb": "^4.1.2",
+    "net": "^1.0.2",
+    "next": "^11.1.2",
+    "next-auth": "^3.29.0",
+    "next-compose-plugins": "2.2.1",
+    "next-images": "1.7.0",
+    "next-mdx-remote": "^3.0.5",
+    "next-remote-watch": "^1.0.0",
+    "next-transpile-modules": "^8.0.0",
+>>>>>>> master
     "nextjs-redirect": "5.0.2",
     "node-sass": "5.0.0",
     "nouislider": "15.1.0",
@@ -54,6 +77,11 @@
     "react-markdown": "^7.0.1",
     "react-slick": "0.28.1",
     "styled-components": "5.3.0",
+<<<<<<< HEAD
     "webpack": "4.46.0"
+=======
+    "tls": "^0.0.1",
+    "webpack": "^5.56.1"
+>>>>>>> master
   }
 }

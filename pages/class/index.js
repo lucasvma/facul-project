@@ -10,12 +10,21 @@ import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
 import axios from 'axios';
 
+<<<<<<< HEAD
 import profile from "../../img/apple-icon.png";
 
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
 import Modal from "../../components/Modal/Modal";
 import ListClasses from "../../components/ListClasses/ListClasses";
+=======
+import profile from "public/img/apple-icon.jpg";
+
+import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
+
+import Modal from "components/Modal/Modal";
+import ListClasses from "components/ListClasses/ListClasses";
+>>>>>>> master
 
 const useStyles = makeStyles(styles);
 

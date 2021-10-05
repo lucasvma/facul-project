@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+<<<<<<< HEAD
 import Header from "../../components/Header/Header";
 import HeaderLinks from "../../components/Header/HeaderLinks";
 import Parallax from "../../components/Parallax/Parallax";
@@ -8,13 +9,27 @@ import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import Footer from "../../components/Footer/Footer";
 import ListClass from "../../components/ListClass/ListClass";
+=======
+import Header from "components/Header/Header";
+import HeaderLinks from "components/Header/HeaderLinks";
+import Parallax from "components/Parallax/Parallax";
+import classNames from "classnames";
+import GridContainer from "components/Grid/GridContainer";
+import GridItem from "components/Grid/GridItem";
+import Footer from "components/Footer/Footer";
+import ListClass from "components/ListClass/ListClass";
+>>>>>>> master
 import {MongoClient, ObjectId} from "mongodb";
 
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 import {makeStyles} from "@material-ui/core/styles";
 import {dbHandler} from "../api/db/db";
 import {TextareaAutosize} from "@material-ui/core";
+<<<<<<< HEAD
 import Button from "../../components/CustomButtons/Button";
+=======
+import Button from "components/CustomButtons/Button";
+>>>>>>> master
 
 const useStyles = makeStyles(styles);
 
@@ -38,7 +53,11 @@ export default function ClassPage({ grade }) {
                     color: "white"
                 }}
             />
+<<<<<<< HEAD
             <Parallax small filter responsive image="/img/landing-bg.jpg">
+=======
+            <Parallax small filter responsive image="img/landing-bg.jpg">
+>>>>>>> master
                 <div className={classNames(classes.main, classes.mainRaised)}>
                 <div>
                     <div className={classes.container}>
@@ -106,8 +125,11 @@ export const getStaticProps = async ({ params }) => {
 }
 
 export async function getStaticPaths() {
+<<<<<<< HEAD
     const uri = process.env.MONGODB_URI
 
+=======
+>>>>>>> master
     const db = await dbHandler()
     const collection = db.collection('classes')
     const grades = await collection.find().toArray()

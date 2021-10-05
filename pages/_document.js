@@ -13,7 +13,11 @@ class MyDocument extends Document {
           <link
             rel="apple-touch-icon"
             sizes="76x76"
+<<<<<<< HEAD
             href="/img/apple-icon.png"
+=======
+            href="/img/apple-icon.jpg"
+>>>>>>> master
           />
           {/* Fonts and icons */}
           <link

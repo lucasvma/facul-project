@@ -8,7 +8,11 @@ import GridItem from "components/Grid/GridItem.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
 
+<<<<<<< HEAD
 import profile from "public/img/apple-icon.png";
+=======
+import profile from "public/img/apple-icon.jpg";
+>>>>>>> master
 
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
