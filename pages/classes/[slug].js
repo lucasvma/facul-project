@@ -4,8 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import CustomLink from 'components/CustomLink/CustomLink'
 import Layout from 'components/Layout/Layout'
-import {MongoClient, ObjectId} from "mongodb";
-import {dbHandler} from "../api/db/db";
+import {connectToDatabase} from "../api/db/mongodb";
 
 const components = {
     a: CustomLink,
@@ -57,7 +56,7 @@ export const getStaticProps = async ({ params }) => {
 }
 
 export const getStaticPaths = async () => {
-    const db = await dbHandler()
+    const { db } = await connectToDatabase();
     const collection = db.collection('classes')
     const grades = await collection.find().toArray()
 

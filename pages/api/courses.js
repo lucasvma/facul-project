@@ -1,26 +1,4 @@
-import {MongoClient} from 'mongodb'
-import url from 'url'
-
-let cachedDb = null
-
-const connectToDatabase = async (uri) => {
-    if (cachedDb) {
-        return cachedDb
-    }
-
-    const client = await MongoClient.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-
-    const dbName = url.parse(uri).pathname.substr(1)
-
-    const db = client.db(dbName)
-
-    cachedDb = db
-
-    return db
-}
+import {connectToDatabase} from "./db/mongodb";
 
 export default async (request, response) => {
     const {
@@ -28,7 +6,7 @@ export default async (request, response) => {
         body: { title, description, publicCourse, classes }
     } = request
 
-    const db = await connectToDatabase(process.env.MONGODB_URI)
+    const { db } = await connectToDatabase();
 
     const collection = db.collection('courses')
 

@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {dbHandler as db} from "./db/db";
+import {connectToDatabase} from "./db/mongodb";
 import { useSession } from 'next-auth/client'
 
 export default async (request, response) => {
@@ -9,7 +9,7 @@ export default async (request, response) => {
         body: { comment, classId }
     } = request
 
-    const db = await db()
+    const { db } = await connectToDatabase();
 
     const collection = db.collection('classes')
 

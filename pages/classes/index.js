@@ -39,13 +39,9 @@ export default function ClassesPage(props) {
   }, [])
 
   async function handleClasses() {
-    const response = await axios
+    await axios
         .get('/api/classes')
-        .then((response) => response)
-
-    if (response) {
-      setGrades(response.data.classes)
-    }
+        .then((response) => setGrades(response.data.classes))
   }
 
   return (

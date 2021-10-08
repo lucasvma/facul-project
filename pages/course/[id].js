@@ -12,7 +12,7 @@ import {MongoClient, ObjectId} from "mongodb";
 
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 import {makeStyles} from "@material-ui/core/styles";
-import {dbHandler} from "../api/db/db";
+import {connectToDatabase} from "../api/db/mongodb";
 import {TextareaAutosize} from "@material-ui/core";
 import Button from "../../components/CustomButtons/Button";
 import axios from "axios";
@@ -89,13 +89,8 @@ export default function ClassPage({ course }) {
 }
 
 export async function getStaticProps({ params }) {
-    const uri = process.env.MONGODB_URI
-    const client = await MongoClient.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
+    const { db } = await connectToDatabase();
 
-    const db = client.db('share-info')
     const collection = db.collection('courses')
     const courseData = await collection.find(ObjectId(params.id)).toArray()
 
@@ -111,7 +106,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-    const db = await dbHandler()
+    const { db } = await connectToDatabase();
     const collection = db.collection('courses')
     const courses = await collection.find().toArray()
 

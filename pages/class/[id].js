@@ -8,11 +8,11 @@ import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
 import Footer from "components/Footer/Footer";
 import ListClass from "components/ListClass/ListClass";
-import {MongoClient, ObjectId} from "mongodb";
+import {ObjectId} from "mongodb";
 
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 import {makeStyles} from "@material-ui/core/styles";
-import {dbHandler} from "../api/db/db";
+import {connectToDatabase} from "../api/db/mongodb";
 import {TextareaAutosize} from "@material-ui/core";
 import Button from "components/CustomButtons/Button";
 
@@ -38,63 +38,55 @@ export default function ClassPage({ grade }) {
                     color: "white"
                 }}
             />
-            <Parallax small filter responsive image="img/landing-bg.jpg">
-                <div className={classNames(classes.main, classes.mainRaised)}>
-                <div>
-                    <div className={classes.container}>
-                        <GridContainer justify="center">
-                            <GridItem xs={12} sm={12} md={6}>
-                                <div className={classes.profile}>
-                                    <div className={classes.name}>
-                                        <h3 className={classes.title} />
-                                    </div>
+            <Parallax small filter responsive image="/img/landing-bg.jpg" />
+            <div className={classNames(classes.main, classes.mainRaised)}>
+                <div className={classes.container}>
+                    <GridContainer justify="center">
+                        <GridItem xs={12} sm={12} md={6}>
+                            <div className={classes.profile}>
+                                <div className={classes.name}>
+                                    <h3 className={classes.title} />
                                 </div>
-                            </GridItem>
-                        </GridContainer>
-
-                        <ListClass title={grade[0].title} description={grade[0].description} />
-
-                        <GridItem xs={12}>
-                            <TextareaAutosize
-                                aria-label="minimum height"
-                                rowsMin={5}
-                                placeholder="Adicione um comentário"
-                                style={{
-                                    width: "80%",
-                                    padding: "10px"
-                                }}
-                                onChange={(e) => setComment(e.target.value)}
-                            />
-
-                            <Button
-                                color="primary"
-                                round
-                                onClick={handleComment()}
-                                style={{
-                                    justifyContent: "flex-end",
-                                    alignItems: "flex-end"
-                                }}
-                            >
-                                Comentar
-                            </Button>
+                            </div>
                         </GridItem>
-                    </div>
+                    </GridContainer>
+
+                    <ListClass title={grade[0].title} description={grade[0].description} />
+
+                    <GridItem xs={6}>
+                        <TextareaAutosize
+                            aria-label="minimum height"
+                            rowsMin={5}
+                            placeholder="Adicione um comentário"
+                            style={{
+                                width: "80%",
+                                padding: "10px"
+                            }}
+                            onChange={(e) => setComment(e.target.value)}
+                        />
+                    </GridItem>
+                    <GridItem xs={12}>
+                        <Button
+                            color="primary"
+                            round
+                            onClick={handleComment()}
+                            style={{
+                                justifyContent: "flex-end",
+                                alignItems: "flex-end"
+                            }}
+                        >
+                            Comentar
+                        </Button>
+                    </GridItem>
                 </div>
             </div>
-            </Parallax>
             <Footer />
         </div>
     )
 }
 
 export const getStaticProps = async ({ params }) => {
-    const uri = process.env.MONGODB_URI
-    const client = await MongoClient.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-
-    const db = client.db('share-info')
+    const { db } = await connectToDatabase();
     const collection = db.collection('classes')
     const grade = await collection.find(ObjectId(params.id)).toArray()
 
@@ -106,7 +98,7 @@ export const getStaticProps = async ({ params }) => {
 }
 
 export async function getStaticPaths() {
-    const db = await dbHandler()
+    const { db } = await connectToDatabase();
     const collection = db.collection('classes')
     const grades = await collection.find().toArray()
 

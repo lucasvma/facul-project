@@ -14,7 +14,7 @@ import classNames from "classnames";
 import styles from "styles/jss/nextjs-material-kit/pages/components.js";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import dynamic from "next/dynamic";
-import {dbHandler} from "../api/db/db";
+import {connectToDatabase} from "../api/db/mongodb";
 
 const components = {
     a: CustomLink,
@@ -103,7 +103,7 @@ export const getStaticProps = async ({ params }) => {
 }
 
 export const getStaticPaths = async () => {
-    const db = await dbHandler()
+    const { db } = await connectToDatabase();
     const collection = db.collection('courses')
     const courses = await collection.find().toArray()
 

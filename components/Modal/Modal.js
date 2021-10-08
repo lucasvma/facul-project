@@ -24,6 +24,7 @@ export default function Modal(props) {
     const [description, setDescription] = useState('')
     const [courseClasses, setCourseClasses] = useState('')
     const [publicAccess, setPublicAccess] = useState(false)
+    const isUpdate = false
 
     let type = {
         classes: props.classes !== undefined,
@@ -32,13 +33,27 @@ export default function Modal(props) {
 
     const modalName = type.classes ? 'Cadastre uma nova aula' : 'Cadastre um novo curso'
 
-    function handleCreate(e) {
-        e.preventDefault()
-
-        axios.post('/api/' + (type.classes ? 'classes' : 'courses'),
+    async function handleCreate(e) {
+        await axios.post('/api/' + (type.classes ? 'classes' : 'courses'),
             { title, description, publicAccess, courseClasses })
             .then(r => console.log('then', r.data))
             .catch(e => console.log('catch', e))
+
+        props.setModal(false)
+
+        type.classes ? props.listClasses() : props.listCourses()
+    }
+
+    async function handleUpdate(id) {
+        const isUpdate = true
+
+        let dataToUpdate = await axios.get(`/api/${id}` + (type.classes ? 'classes' : 'courses'))
+            .then(r => console.log('then', r.data))
+            .catch(e => console.log('catch', e))
+
+        props.setModal(true)
+
+        // TODO edit modal
 
         props.setModal(false)
 
@@ -118,7 +133,7 @@ export default function Modal(props) {
                         : props.courses.modalFooter + " " +  props.courses.modalFooterCenter}
             >
                 <Button onClick={() => props.setModal(false)}>Fechar</Button>
-                <Button onClick={(e) => handleCreate(e)} color="success">
+                <Button onClick={(e) => !isUpdate ? handleCreate(e) : handleUpdate(e)} color="success">
                     Cadastrar
                 </Button>
             </DialogActions>

@@ -70,7 +70,7 @@ facul-project
 │   │   ├── course
 │   │   │   └── [id].js
 │   │   ├── db
-│   │   │   └── db.js
+│   │   │   └── mongodb.js
 │   │   ├── classes.js
 │   │   ├── comments.js
 │   │   ├── courseProgress.js

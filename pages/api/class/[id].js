@@ -1,3 +1,6 @@
+import {connectToDatabase} from "../db/mongodb";
+import {ObjectId} from "mongodb";
+
 export default async (request, response) => {
     const {
         method,
@@ -7,7 +10,7 @@ export default async (request, response) => {
 
     console.log('there')
 
-    const db = await db()
+    const { db } = await connectToDatabase();
 
     const collection = db.collection('classes')
 
@@ -19,15 +22,22 @@ export default async (request, response) => {
                 .status(200)
                 .json({ grade })
         case 'PUT':
-            // await collection.insertOne({
-            //     title,
-            //     description,
-            //     createdAt: new Date()
-            // })
-            //
-            // return response
-            //     .status(201)
-            //     .json({ message: 'A Aula foi cadastrada com sucesso' })
+            await collection.update({
+                _id: id,
+                title,
+                description,
+                updateAt: new Date()
+            })
+            console.log(`updated: ${id}`)
+            return response
+                .status(204)
+                .json({ message: 'A Aula foi cadastrada com sucesso' })
+        case 'DELETE':
+            await collection.deleteOne({ _id: ObjectId(id) })
+            console.log(`deleted: ${id}`)
+            return response
+                .status(200)
+                .json({ message: 'A Aula foi removida com sucesso' })
         default:
             response.setHeader('Allow', ['GET'])
             response.status(405).end(`Method ${method} Not Allowed`)

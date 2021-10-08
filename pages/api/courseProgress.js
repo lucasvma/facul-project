@@ -1,4 +1,4 @@
-import { dbHandler as db } from './db/db'
+import {connectToDatabase} from './db/mongodb'
 import { useSession } from 'next-auth/client'
 
 export default async (request, response) => {
@@ -8,7 +8,7 @@ export default async (request, response) => {
         body: { courseId, classId }
     } = request
 
-    const db = await db()
+    const { db } = await connectToDatabase();
 
     const courseProgressCollection = db.collection('courseProgress')
     const coursesCollection = db.collection('courses')

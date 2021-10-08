@@ -1,3 +1,5 @@
+import {connectToDatabase} from "../db/mongodb";
+
 export default async (request, response) => {
     const {
         method,
@@ -5,7 +7,7 @@ export default async (request, response) => {
         body: { title, description, publicClass }
     } = request
 
-    const db = await db()
+    const { db } = await connectToDatabase();
 
     const collection = db.collection('courses')
 
