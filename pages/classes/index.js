@@ -31,6 +31,7 @@ export default function ClassesPage(props) {
 
   const [modal, setModal] = useState(false)
   const [grade, setGrades] = useState([])
+  const [data, setData] = useState("")
 
   const [session, loading] = useSession()
 
@@ -38,7 +39,7 @@ export default function ClassesPage(props) {
     handleClasses()
   }, [])
 
-  async function handleClasses() {
+  const handleClasses = async () => {
     await axios
         .get('/api/classes')
         .then((response) => setGrades(response.data.classes))
@@ -76,13 +77,13 @@ export default function ClassesPage(props) {
                         Nova Aula
                     </Button>
 
-                    <Modal modal={modal} setModal={setModal} listClasses={handleClasses} classes={classes} />
+                    <Modal modal={modal} setModal={setModal} handleClasses={handleClasses} classes={classes} dataToChange={data} />
                   </div>
                 </div>
               </GridItem>
             </GridContainer>
 
-            <ListClasses classes={grade} />
+            <ListClasses setModal={setModal} handleClasses={handleClasses} classes={grade} setData={setData} />
           </div>
         </div>
       </div>

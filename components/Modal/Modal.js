@@ -24,7 +24,16 @@ export default function Modal(props) {
     const [description, setDescription] = useState('')
     const [courseClasses, setCourseClasses] = useState('')
     const [publicAccess, setPublicAccess] = useState(false)
-    const isUpdate = false
+    const isUpdate = props.dataToChange !== "";
+    let data = ''
+
+    if (isUpdate) {
+        data = props.dataToChange
+        setTitle(data.title)
+        setDescription(data.description)
+
+        console.log('data to change', props.dataToChange)
+    }
 
     let type = {
         classes: props.classes !== undefined,
@@ -33,7 +42,7 @@ export default function Modal(props) {
 
     const modalName = type.classes ? 'Cadastre uma nova aula' : 'Cadastre um novo curso'
 
-    async function handleCreate(e) {
+    async function handleCreate() {
         await axios.post('/api/' + (type.classes ? 'classes' : 'courses'),
             { title, description, publicAccess, courseClasses })
             .then(r => console.log('then', r.data))
@@ -41,13 +50,13 @@ export default function Modal(props) {
 
         props.setModal(false)
 
-        type.classes ? props.listClasses() : props.listCourses()
+        type.classes ? props.handleClasses() : props.listCourses()
     }
 
-    async function handleUpdate(id) {
-        const isUpdate = true
-
-        let dataToUpdate = await axios.get(`/api/${id}` + (type.classes ? 'classes' : 'courses'))
+    async function handleUpdate() {
+        console.log('handleUpdate', data)
+        return false
+        let dataToUpdate = await axios.put(`/api/${id}` + (type.classes ? 'classes' : 'courses'), data)
             .then(r => console.log('then', r.data))
             .catch(e => console.log('catch', e))
 
@@ -57,7 +66,7 @@ export default function Modal(props) {
 
         props.setModal(false)
 
-        type.classes ? props.listClasses() : props.listCourses()
+        type.classes ? props.handleClasses() : props.listCourses()
     }
 
     return (
@@ -102,9 +111,7 @@ export default function Modal(props) {
                     formControlProps={{
                         fullWidth: true,
                         required: true,
-                        onChange: (e) => {
-                            setTitle(e.target.value)
-                        }
+                        onChange: (e) => setTitle(e.target.value)
                     }}
                     value={title}
                 />
@@ -133,8 +140,8 @@ export default function Modal(props) {
                         : props.courses.modalFooter + " " +  props.courses.modalFooterCenter}
             >
                 <Button onClick={() => props.setModal(false)}>Fechar</Button>
-                <Button onClick={(e) => !isUpdate ? handleCreate(e) : handleUpdate(e)} color="success">
-                    Cadastrar
+                <Button onClick={() => !isUpdate ? handleCreate() : handleUpdate()} color="success">
+                    {!isUpdate ? 'Cadastrar' : 'Atualizar'}
                 </Button>
             </DialogActions>
         </Dialog>

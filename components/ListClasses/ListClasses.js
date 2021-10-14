@@ -1,69 +1,59 @@
-import Layout from "../Layout/Layout";
 import React from "react";
-import DeleteIcon from '@material-ui/icons/Delete';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import EditIcon from '@material-ui/icons/Edit';
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/navbarsStyle";
-import {Link} from "@material-ui/core";
-import Button from "../CustomButtons/Button";
+import {List, Link, ListItem, ListItemAvatar, Avatar, ListItemText} from "@material-ui/core";
 import axios from "axios";
+import Grid from "@material-ui/core/Grid";
+import CommonActions from "../CommonActions/CommonActions";
 
 const useStyles = makeStyles(styles);
 
 export default function ListClasses(props) {
     const classes = useStyles();
 
-    async function handleUpdateClass(id) {
+    const handleUpdate = async (data) => {
+        props.setData(data)
         props.setModal(true)
     }
 
-    async function handleRemoveClass(id) {
+    const handleRemove = async (id) => {
         await axios
             .delete(`/api/class/${id}`)
-            .then(() => props.handleClasses)
+            .then(() => props.handleClasses())
+    }
+
+    const handleVisible = async (id) => {
+        console.log('Remove visibility of class for all readers')
     }
 
     return (
-        <Layout>
-            <ul>
+        <Grid item xs={12} md={12}>
+            <List className={classes.list}>
                 {props.classes.map((grade) => (
-                    <li>
-                        <div key={grade._id !== undefined ? grade._id : ''} className={classes.listItem}>
-                            <Link
-                                href={`/class/${grade._id !== undefined ? grade._id : ''}`}
-                                className={classes.navLink}
-                                color="transparent"
-                            >
-                                {grade.title !== undefined ? grade.title : ''}
-                            </Link>
-                        </div>
-                        <div className={classes.listItem} id={grade._id}>
-                            <Button
-                                justIcon
-                                color="transparent"
-                                onClick={(e) => handleRemoveClass(grade._id)}
-                            >
-                                <VisibilityIcon />
-                            </Button>
-                            <Button
-                                justIcon
-                                color="transparent"
-                                onClick={(e) => handleUpdateClass(grade._id)}
-                            >
-                                <EditIcon />
-                            </Button>
-                            <Button
-                                justIcon
-                                color="transparent"
-                                onClick={(e) => handleRemoveClass(grade._id)}
-                            >
-                                <DeleteIcon />
-                            </Button>
-                        </div>
-                    </li>
+                    <ListItem>
+                        <ListItemAvatar>
+                            <Avatar alt="Class Image" src="public/img/faces/kendall.jpg" />
+                        </ListItemAvatar>
+
+                        <ListItemText
+                            primary={
+                                <Link
+                                    href={`/class/${grade._id !== undefined ? grade._id : ''}`}
+                                    className={classes.navLink}
+                                    color="transparent"
+                                >
+                                    {grade.title !== undefined ? grade.title : ''}
+                                </Link>
+                            }
+                            secondary="Simple class description"
+                            key={grade._id !== undefined ? grade._id : ''}
+                            className={classes.listItem}
+                        />
+
+                        <CommonActions grade={grade} handleUpdate={handleUpdate} handleRemove={handleRemove} handleVisible={handleVisible} />
+                    </ListItem>
                 ))}
-            </ul>
-        </Layout>
+            </List>
+        </Grid>
     )
 }
