@@ -5,7 +5,7 @@ export default async (request, response) => {
     const {
         method,
         query: { id },
-        body: { title, description, publicClass }
+        body: { title, description, visibility }
     } = request
 
     console.log('there')
@@ -22,8 +22,7 @@ export default async (request, response) => {
                 .status(200)
                 .json({ grade })
         case 'PUT':
-            await collection.update({
-                _id: id,
+            await collection.updateOne({ _id: ObjectId(id) }, {
                 title,
                 description,
                 updateAt: new Date()

@@ -51,29 +51,39 @@ export default function ClassPage({ grade }) {
                         </GridItem>
                     </GridContainer>
 
-                    <ListClass title={grade[0].title} description={grade[0].description} />
+                    <ListClass grade={grade[0]} />
 
-                    <GridItem xs={6}>
+                    <GridItem
+                        style={{
+                            marginLeft: 350
+                        }}
+                        xs={6}
+                    >
                         <TextareaAutosize
                             aria-label="minimum height"
                             rowsMin={5}
                             placeholder="Adicione um comentário"
                             style={{
                                 width: "80%",
-                                padding: "10px"
+                                padding: "10px",
                             }}
                             onChange={(e) => setComment(e.target.value)}
                         />
                     </GridItem>
-                    <GridItem xs={12}>
+                    <GridItem
+                        xs={12}
+                          style={{
+                              justifyContent: "center",
+                              alignItems: "flex-center",
+                              textAlign: "center",
+                              marginLeft: 150
+                          }}
+                    >
                         <Button
                             color="primary"
                             round
                             onClick={handleComment()}
-                            style={{
-                                justifyContent: "flex-end",
-                                alignItems: "flex-end"
-                            }}
+
                         >
                             Comentar
                         </Button>

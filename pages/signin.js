@@ -23,6 +23,7 @@ import styles from "styles/jss/nextjs-material-kit/pages/loginPage";
 
 import image from "public/img/bg7.jpg";
 import { useRouter } from "next/router";
+import {Link} from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
@@ -151,6 +152,7 @@ export default function SignIn(props) {
                                             handleLogin()
                                         }}
                                     >
+                                        <small>Não é cadastrado? <Link href="/signup">Clique aqui</Link></small>
                                         <Button simple color="primary" size="lg" >
                                             Entrar
                                         </Button>

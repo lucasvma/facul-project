@@ -5,6 +5,7 @@ import Button from "../CustomButtons/Button";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import {VisibilityOff} from "@material-ui/icons";
 
 export default function CommonActions({ grade, handleUpdate, handleRemove, handleVisible }) {
     const id = grade._id
@@ -13,9 +14,10 @@ export default function CommonActions({ grade, handleUpdate, handleRemove, handl
             <Button
                 justIcon
                 color="transparent"
-                onClick={() => handleVisible(id)}
+                aria-label="ocultar"
+                onClick={() => handleVisible(id, grade.visibility)}
             >
-                <VisibilityIcon />
+                {grade.visibility ? <VisibilityIcon /> : <VisibilityOff />}
             </Button>
 
             <Button

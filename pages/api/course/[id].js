@@ -4,7 +4,7 @@ export default async (request, response) => {
     const {
         method,
         query: { id },
-        body: { title, description, publicClass }
+        body: { title, description, visibility }
     } = request
 
     const { db } = await connectToDatabase();

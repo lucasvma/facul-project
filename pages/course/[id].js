@@ -53,7 +53,7 @@ export default function ClassPage({ course }) {
                             </GridItem>
                         </GridContainer>
 
-                        <ListClass title={course[0].title} description={course[0].description} />
+                        <ListClass grade={course[0]} />
 
                         <GridItem xs={12}>
                             <TextareaAutosize

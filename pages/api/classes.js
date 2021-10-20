@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 export default async (request, response) => {
     const {
         method,
-        body: { title, description, publicClass }
+        body: { title, description, visibility }
     } = request
 
     const { db } = await connectToDatabase();
@@ -22,7 +22,7 @@ export default async (request, response) => {
             await collection.insertOne({
                 title,
                 description,
-                publicClass,
+                visibility: true,
                 createdAt: new Date()
             })
 
@@ -32,13 +32,14 @@ export default async (request, response) => {
         case 'PUT':
             const router = useRouter()
 
-            await collection.update({
-                _id: router.query.id,
+            await collection.updateOne({ _id: router.query.id }, {
                 title,
                 description,
-                publicClass,
+                visibility,
                 updateAt: new Date()
             })
+
+            console.log('A Aula foi atualizada com sucesso')
 
             return response
                 .status(200)

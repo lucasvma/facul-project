@@ -24,15 +24,17 @@ export default function Modal(props) {
     const [description, setDescription] = useState('')
     const [courseClasses, setCourseClasses] = useState('')
     const [publicAccess, setPublicAccess] = useState(false)
-    const isUpdate = props.dataToChange !== "";
+    let isUpdate = props.dataToChange !== '';
     let data = ''
 
     if (isUpdate) {
-        data = props.dataToChange
-        setTitle(data.title)
-        setDescription(data.description)
-
-        console.log('data to change', props.dataToChange)
+        // data = props.dataToChange
+        // if (title !== data.title) {
+        //     setTitle(data.title)
+        // }
+        // if (description !== data.description) {
+        //     setDescription(data.description)
+        // }
     }
 
     let type = {
@@ -43,26 +45,34 @@ export default function Modal(props) {
     const modalName = type.classes ? 'Cadastre uma nova aula' : 'Cadastre um novo curso'
 
     async function handleCreate() {
+        console.log('handleCreate')
         await axios.post('/api/' + (type.classes ? 'classes' : 'courses'),
-            { title, description, publicAccess, courseClasses })
+            {title, description, publicAccess, courseClasses})
             .then(r => console.log('then', r.data))
             .catch(e => console.log('catch', e))
 
-        props.setModal(false)
+        closeModal()
 
         type.classes ? props.handleClasses() : props.listCourses()
     }
 
     async function handleUpdate() {
-        console.log('handleUpdate', data)
-        return false
-        let dataToUpdate = await axios.put(`/api/${id}` + (type.classes ? 'classes' : 'courses'), data)
-            .then(r => console.log('then', r.data))
-            .catch(e => console.log('catch', e))
+        if (data.title !== title || data.description !== description) {
+            console.log('handleUpdate', data)
+            await axios.put(`/api/${id}` + (type.classes ? 'classes' : 'courses'), data)
+                .then(r => console.log('then', r.data))
+                .catch(e => console.log('catch', e))
 
-        props.setModal(true)
+            closeModal()
 
-        // TODO edit modal
+            type.classes ? props.handleClasses() : props.listCourses()
+        }
+    }
+
+    function closeModal() {
+        isUpdate = false
+        Object.assign(props.dataToChange, {})
+        data = ''
 
         props.setModal(false)
 
@@ -79,7 +89,10 @@ export default function Modal(props) {
             TransitionComponent={Transition}
             keepMounted
             fullWidth={true}
-            onClose={() => props.setModal(false)}
+            onClose={() => {
+                props.setModal(false)
+                isUpdate = false
+            }}
             aria-labelledby="modal-slide-title"
             aria-describedby="modal-slide-description"
         >
@@ -93,7 +106,7 @@ export default function Modal(props) {
                     key="close"
                     aria-label="Close"
                     color="inherit"
-                    onClick={() => props.setModal(false)}
+                    onClick={() => closeModal()}
                 >
                     <Close className={type.classes ? props.classes.modalClose : props.courses.modalClose} />
                 </IconButton>
@@ -108,6 +121,7 @@ export default function Modal(props) {
             <GridItem xs={12}>
                 <CustomInput
                     labelText="Insira um título"
+                    className={type.classes ? props.classes.textarea : props.courses.textarea}
                     formControlProps={{
                         fullWidth: true,
                         required: true,
@@ -139,7 +153,7 @@ export default function Modal(props) {
                         ? props.classes.modalFooter  + " " + props.classes.modalFooterCenter
                         : props.courses.modalFooter + " " +  props.courses.modalFooterCenter}
             >
-                <Button onClick={() => props.setModal(false)}>Fechar</Button>
+                <Button onClick={() => closeModal()} color="danger">Fechar</Button>
                 <Button onClick={() => !isUpdate ? handleCreate() : handleUpdate()} color="success">
                     {!isUpdate ? 'Cadastrar' : 'Atualizar'}
                 </Button>

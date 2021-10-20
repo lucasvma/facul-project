@@ -3,7 +3,7 @@ import {connectToDatabase} from "./db/mongodb";
 export default async (request, response) => {
     const {
         method,
-        body: { title, description, publicCourse, classes }
+        body: { title, description, classes }
     } = request
 
     const { db } = await connectToDatabase();
@@ -19,7 +19,7 @@ export default async (request, response) => {
             await collection.insertOne({
                 title,
                 description,
-                publicCourse,
+                visibility: 1,
                 classes,
                 createdAt: new Date()
             })

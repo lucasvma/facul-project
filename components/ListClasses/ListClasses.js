@@ -12,6 +12,7 @@ export default function ListClasses(props) {
     const classes = useStyles();
 
     const handleUpdate = async (data) => {
+        console.log('handleUpdate')
         props.setData(data)
         props.setModal(true)
     }
@@ -22,8 +23,10 @@ export default function ListClasses(props) {
             .then(() => props.handleClasses())
     }
 
-    const handleVisible = async (id) => {
-        console.log('Remove visibility of class for all readers')
+    const handleVisible = async (id, visibility) => {
+        await axios
+            .patch(`/api/class/visibility/${id}`, { visibility })
+            .then(() => props.handleClasses())
     }
 
     return (
@@ -45,7 +48,7 @@ export default function ListClasses(props) {
                                     {grade.title !== undefined ? grade.title : ''}
                                 </Link>
                             }
-                            secondary="Simple class description"
+                            secondary="Visível"
                             key={grade._id !== undefined ? grade._id : ''}
                             className={classes.listItem}
                         />
