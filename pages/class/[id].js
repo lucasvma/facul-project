@@ -53,41 +53,41 @@ export default function ClassPage({ grade }) {
 
                     <ListClass grade={grade[0]} />
 
-                    <GridItem
-                        style={{
-                            marginLeft: 350
-                        }}
-                        xs={6}
-                    >
-                        <TextareaAutosize
-                            aria-label="minimum height"
-                            rowsMin={5}
-                            placeholder="Adicione um comentário"
-                            style={{
-                                width: "80%",
-                                padding: "10px",
-                            }}
-                            onChange={(e) => setComment(e.target.value)}
-                        />
-                    </GridItem>
-                    <GridItem
-                        xs={12}
-                          style={{
-                              justifyContent: "center",
-                              alignItems: "flex-center",
-                              textAlign: "center",
-                              marginLeft: 150
-                          }}
-                    >
-                        <Button
-                            color="primary"
-                            round
-                            onClick={handleComment()}
+                    {/*<GridItem*/}
+                    {/*    style={{*/}
+                    {/*        marginLeft: 350*/}
+                    {/*    }}*/}
+                    {/*    xs={6}*/}
+                    {/*>*/}
+                    {/*    <TextareaAutosize*/}
+                    {/*        aria-label="minimum height"*/}
+                    {/*        rowsMin={5}*/}
+                    {/*        placeholder="Adicione um comentário"*/}
+                    {/*        style={{*/}
+                    {/*            width: "80%",*/}
+                    {/*            padding: "10px",*/}
+                    {/*        }}*/}
+                    {/*        onChange={(e) => setComment(e.target.value)}*/}
+                    {/*    />*/}
+                    {/*</GridItem>*/}
+                    {/*<GridItem*/}
+                    {/*    xs={12}*/}
+                    {/*      style={{*/}
+                    {/*          justifyContent: "center",*/}
+                    {/*          alignItems: "flex-center",*/}
+                    {/*          textAlign: "center",*/}
+                    {/*          marginLeft: 150*/}
+                    {/*      }}*/}
+                    {/*>*/}
+                    {/*    <Button*/}
+                    {/*        color="primary"*/}
+                    {/*        round*/}
+                    {/*        onClick={handleComment()}*/}
 
-                        >
-                            Comentar
-                        </Button>
-                    </GridItem>
+                    {/*    >*/}
+                    {/*        Comentar*/}
+                    {/*    </Button>*/}
+                    {/*</GridItem>*/}
                 </div>
             </div>
             <Footer />

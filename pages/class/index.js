@@ -14,7 +14,7 @@ import profile from "public/img/apple-icon.jpg";
 
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
-import Modal from "components/Modal/Modal";
+import ModalClass from "components/ModalClass/ModalClass";
 import ListClasses from "components/ListClasses/ListClasses";
 
 const useStyles = makeStyles(styles);
@@ -29,7 +29,7 @@ export default function ClassesPage(props) {
   )
 
   const [modal, setModal] = useState(false)
-  const [grade, setGrades] = useState([])
+  const [grade, setGrade] = useState([])
 
   useEffect(() => {
     handleClasses()
@@ -38,11 +38,7 @@ export default function ClassesPage(props) {
   async function handleClasses() {
     const response = await axios
         .get('/api/classes')
-        .then((response) => response)
-
-    if (response) {
-      setGrades(response.data.classes)
-    }
+        .then((response) => setGrade(response.data.classes))
   }
 
   return (
@@ -77,7 +73,7 @@ export default function ClassesPage(props) {
                         Nova Aula
                     </Button>
 
-                    <Modal modal={modal} setModal={setModal} listClasses={handleClasses} classes={classes} />
+                    <ModalClass modal={modal} setModal={setModal} listClasses={handleClasses} classes={classes} />
                   </div>
                 </div>
               </GridItem>

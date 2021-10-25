@@ -14,7 +14,7 @@ import profile from "public/img/apple-icon.jpg";
 
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
-import Modal from "../../components/Modal/Modal";
+import ModalClass from "../../components/ModalClass/ModalClass";
 import ListClasses from "../../components/ListClasses/ListClasses";
 import { useSession } from "next-auth/client";
 
@@ -30,14 +30,20 @@ export default function ClassesPage(props) {
   )
 
   const [modal, setModal] = useState(false)
-  const [grade, setGrades] = useState([])
-  const [data, setData] = useState("")
+  const [grades, setGrades] = useState([])
+  const [data, setData] = useState(null)
 
   const [session, loading] = useSession()
 
   useEffect(() => {
     handleClasses()
   }, [])
+
+  useEffect(() => {
+    if (data != null) {
+      setModal(true)
+    }
+  }, [data])
 
   const handleClasses = async () => {
     await axios
@@ -73,17 +79,17 @@ export default function ClassesPage(props) {
                   </div>
 
                   <div>
-                    <Button color="primary" round onClick={() => setModal(true)}>
+                    <Button color="primary" round onClick={() => setData(false)}>
                         Nova Aula
                     </Button>
 
-                    <Modal modal={modal} setModal={setModal} handleClasses={handleClasses} classes={classes} dataToChange={data} />
+                    <ModalClass modal={modal} setModal={setModal} handleClasses={handleClasses} classes={classes} dataToChange={data} />
                   </div>
                 </div>
               </GridItem>
             </GridContainer>
 
-            <ListClasses setModal={setModal} handleClasses={handleClasses} classes={grade} setData={setData} />
+            <ListClasses setModal={setModal} handleClasses={handleClasses} classes={grades} setData={setData} />
           </div>
         </div>
       </div>

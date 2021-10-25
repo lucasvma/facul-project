@@ -8,8 +8,6 @@ export default async (request, response) => {
         body: { title, description, visibility }
     } = request
 
-    console.log('there')
-
     const { db } = await connectToDatabase();
 
     const collection = db.collection('classes')
@@ -22,12 +20,12 @@ export default async (request, response) => {
                 .status(200)
                 .json({ grade })
         case 'PUT':
-            await collection.updateOne({ _id: ObjectId(id) }, {
-                title,
-                description,
-                updateAt: new Date()
+            console.log('updating', id)
+            await collection.updateOne(
+                { _id: ObjectId(id) },
+                { $set: { title, description, updateAt: new Date() }
             })
-            console.log(`updated: ${id}`)
+            console.log(`class was updated: ${id}`)
             return response
                 .status(204)
                 .json({ message: 'A Aula foi cadastrada com sucesso' })

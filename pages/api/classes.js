@@ -32,11 +32,9 @@ export default async (request, response) => {
         case 'PUT':
             const router = useRouter()
 
-            await collection.updateOne({ _id: router.query.id }, {
-                title,
-                description,
-                visibility,
-                updateAt: new Date()
+            await collection.updateOne(
+                { _id: router.query.id },
+                { $set: { title, description, visibility, updateAt: new Date() }
             })
 
             console.log('A Aula foi atualizada com sucesso')

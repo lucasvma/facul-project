@@ -55,30 +55,31 @@ export default function ClassPage({ course }) {
 
                         <ListClass grade={course[0]} />
 
-                        <GridItem xs={12}>
-                            <TextareaAutosize
-                                aria-label="minimum height"
-                                rowsMin={5}
-                                placeholder="Adicione um comentário"
-                                style={{
-                                    width: "80%",
-                                    padding: "10px"
-                                }}
-                                onChange={(e) => setComment(e.target.value)}
-                            />
+                        {/*Commenting the commenting area*/}
+                        {/*<GridItem xs={12}>*/}
+                        {/*    <TextareaAutosize*/}
+                        {/*        aria-label="minimum height"*/}
+                        {/*        rowsMin={5}*/}
+                        {/*        placeholder="Adicione um comentário"*/}
+                        {/*        style={{*/}
+                        {/*            width: "80%",*/}
+                        {/*            padding: "10px"*/}
+                        {/*        }}*/}
+                        {/*        onChange={(e) => setComment(e.target.value)}*/}
+                        {/*    />*/}
 
-                            <Button
-                                color="primary"
-                                round
-                                onClick={handleComment()}
-                                style={{
-                                    justifyContent: "flex-end",
-                                    alignItems: "flex-end"
-                                }}
-                            >
-                                Comentar
-                            </Button>
-                        </GridItem>
+                        {/*    <Button*/}
+                        {/*        color="primary"*/}
+                        {/*        round*/}
+                        {/*        onClick={handleComment()}*/}
+                        {/*        style={{*/}
+                        {/*            justifyContent: "flex-end",*/}
+                        {/*            alignItems: "flex-end"*/}
+                        {/*        }}*/}
+                        {/*    >*/}
+                        {/*        Comentar*/}
+                        {/*    </Button>*/}
+                        {/*</GridItem>*/}
                     </div>
                 </div>
             </div>

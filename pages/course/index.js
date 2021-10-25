@@ -14,12 +14,14 @@ import profile from "public/img/apple-icon.jpg";
 
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
-import Modal from "components/Modal/Modal";
+import ModalClass from "components/ModalClass/ModalClass";
 import ListClasses from "components/ListClasses/ListClasses";
+import ModalCourse from "../../components/ModalCourse/ModalCourse";
+import ListCourses from "../../components/ListCourses/ListCourses";
 
 const useStyles = makeStyles(styles);
 
-export default function ClassesPage(props) {
+export default function CoursesPage(props) {
   const classes = useStyles();
   const { ...rest } = props;
   const imageClasses = classNames(
@@ -38,11 +40,7 @@ export default function ClassesPage(props) {
   async function handleCourses() {
     const response = await axios
         .get('/api/courses')
-        .then((response) => response)
-
-    if (response) {
-      setCourse(response.data.courses)
-    }
+        .then((response) => setCourse(response.data.courses))
   }
 
   return (
@@ -77,13 +75,13 @@ export default function ClassesPage(props) {
                         Novo Curso
                     </Button>
 
-                    <Modal modal={modal} setModal={setModal} listClasses={handleCourses} classes={classes} />
+                    <ModalCourse modal={modal} setModal={setModal} listClasses={handleCourses} classes={classes} />
                   </div>
                 </div>
               </GridItem>
             </GridContainer>
 
-            <ListClasses classes={course} />
+            <ListCourses courses={course} />
           </div>
         </div>
       </div>

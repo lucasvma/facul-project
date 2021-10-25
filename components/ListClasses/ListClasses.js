@@ -4,7 +4,7 @@ import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSection
 import {List, Link, ListItem, ListItemAvatar, Avatar, ListItemText} from "@material-ui/core";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
-import CommonActions from "../CommonActions/CommonActions";
+import CommonActionsClass from "../CommonActionsClass/CommonActionsClass";
 
 const useStyles = makeStyles(styles);
 
@@ -14,7 +14,6 @@ export default function ListClasses(props) {
     const handleUpdate = async (data) => {
         console.log('handleUpdate')
         props.setData(data)
-        props.setModal(true)
     }
 
     const handleRemove = async (id) => {
@@ -48,12 +47,12 @@ export default function ListClasses(props) {
                                     {grade.title !== undefined ? grade.title : ''}
                                 </Link>
                             }
-                            secondary="Visível"
+                            secondary=""
                             key={grade._id !== undefined ? grade._id : ''}
                             className={classes.listItem}
                         />
 
-                        <CommonActions grade={grade} handleUpdate={handleUpdate} handleRemove={handleRemove} handleVisible={handleVisible} />
+                        <CommonActionsClass grade={grade} handleUpdate={handleUpdate} handleRemove={handleRemove} handleVisible={handleVisible} />
                     </ListItem>
                 ))}
             </List>

@@ -7,7 +7,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {VisibilityOff} from "@material-ui/icons";
 
-export default function CommonActions({ grade, handleUpdate, handleRemove, handleVisible }) {
+export default function CommonActionsClass({ grade, handleUpdate, handleRemove, handleVisible }) {
     const id = grade._id
     return (
         <div id={id} >
@@ -39,4 +39,4 @@ export default function CommonActions({ grade, handleUpdate, handleRemove, handl
     );
 }
 
-CommonActions.propTypes = {};
+CommonActionsClass.propTypes = {};

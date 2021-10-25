@@ -13,24 +13,25 @@ import profile from "public/img/apple-icon.jpg";
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
 import Button from "../../components/CustomButtons/Button";
-import Modal from "../../components/Modal/Modal";
 import ListCourses from "../../components/ListCourses/ListCourses";
 import {useSession} from "next-auth/client";
 import axios from "axios";
+import ModalCourse from "../../components/ModalCourse/ModalCourse";
 
 const useStyles = makeStyles(styles);
 
 export default function CoursesPage(props) {
-    const courses = useStyles();
+    const classes = useStyles();
     const { ...rest } = props;
     const imageCourses = classNames(
-        courses.imgRaised,
-        courses.imgRoundedCircle,
-        courses.imgFluid
+        classes.imgRaised,
+        classes.imgRoundedCircle,
+        classes.imgFluid
     )
 
     const [modal, setModal] = useState(false)
-    const [course, setCourse] = useState([])
+    const [courses, setCourses] = useState([])
+    const [data, setData] = useState(null)
 
     const [session, loading] = useSession()
 
@@ -38,14 +39,17 @@ export default function CoursesPage(props) {
         handleCourses()
     }, [])
 
-    async function handleCourses() {
-        const response = await axios
-            .get('/api/courses')
-            .then((response) => response)
-
-        if (response) {
-            setCourse(response.data.courses)
+    useEffect(() => {
+        if (data != null) {
+            setModal(true)
         }
+    }, [data])
+
+    async function handleCourses() {
+        await axios
+            .get('/api/courses')
+            .then((response) => setCourses(response.data.courses))
+
     }
 
   return (
@@ -62,17 +66,17 @@ export default function CoursesPage(props) {
               {...rest}
           />
           <Parallax small filter responsive image="/img/landing-bg.jpg" />
-          <div className={classNames(courses.main, courses.mainRaised)}>
+          <div className={classNames(classes.main, classes.mainRaised)}>
                   <div>
-                      <div className={courses.container}>
+                      <div className={classes.container}>
                           <GridContainer justify="center">
                               <GridItem xs={12} sm={12} md={6}>
-                                  <div className={courses.profile}>
+                                  <div className={classes.profile}>
                                       <div>
                                           <img src={profile} alt="..." className={imageCourses} />
                                       </div>
-                                      <div className={courses.name}>
-                                          <h3 className={courses.title}>Cadastro do Curso</h3>
+                                      <div className={classes.name}>
+                                          <h3 className={classes.title}>Cadastro do Curso</h3>
                                       </div>
 
                                       <div>
@@ -80,13 +84,13 @@ export default function CoursesPage(props) {
                                               Novo Curso
                                           </Button>
 
-                                          <Modal modal={modal} setModal={setModal} listCourses={handleCourses} courses={courses} />
+                                          <ModalCourse modal={modal} setModal={setModal} handleCourses={handleCourses} classes={classes} dataToChange={data} />
                                       </div>
                                   </div>
                               </GridItem>
                           </GridContainer>
 
-                          <ListCourses courses={course} />
+                          <ListCourses setModal={setModal} handleCourses={handleCourses} courses={courses} setData={setData} />
                       </div>
                   </div>
               </div>

@@ -19,7 +19,6 @@ export default function ListClass({ grade }) {
     const handleUpdate = async (data) => {
         console.log('handleUpdate')
         props.setData(data)
-        props.setModal(true)
     }
 
     const handleRemove = async (id) => {
