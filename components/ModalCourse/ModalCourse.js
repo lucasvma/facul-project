@@ -37,7 +37,7 @@ export default function ModalCourse(props) {
         }
     }, [props.dataToChange])
 
-    const modalName = !isUpdate ? 'Cadastre um novo course' : 'Atualize o curso'
+    const modalName = !isUpdate ? 'Cadastre um novo courso' : 'Atualize o curso'
 
     async function handleCreate() {
         await axios.post('/api/courses',
@@ -67,7 +67,7 @@ export default function ModalCourse(props) {
             Object.assign(props.dataToChange, {})
         }
 
-        props.setModal(false)
+        props.setModalEdit(false)
 
         props.handleCourses()
     }
@@ -78,11 +78,11 @@ export default function ModalCourse(props) {
                 root: props.classes.center,
                 paper: props.classes.modal
             }}
-            open={props.modal}
+            open={props.modalEdit}
             TransitionComponent={Transition}
             keepMounted
             fullWidth={true}
-            onClose={() => props.setModal(false)}
+            onClose={() => props.setModalEdit(false)}
             aria-labelledby="modal-slide-title"
             aria-describedby="modal-slide-description"
         >

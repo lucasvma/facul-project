@@ -29,7 +29,8 @@ export default function CoursesPage(props) {
         classes.imgFluid
     )
 
-    const [modal, setModal] = useState(false)
+    const [modalEdit, setModalEdit] = useState(false)
+    const [modalAssociation, setModalAssociation] = useState(false)
     const [courses, setCourses] = useState([])
     const [data, setData] = useState(null)
 
@@ -41,7 +42,7 @@ export default function CoursesPage(props) {
 
     useEffect(() => {
         if (data != null) {
-            setModal(true)
+            setModalEdit(true)
         }
     }, [data])
 
@@ -80,17 +81,17 @@ export default function CoursesPage(props) {
                                       </div>
 
                                       <div>
-                                          <Button color="primary" round onClick={() => setModal(true)}>
+                                          <Button color="primary" round onClick={() => setModalEdit(true)}>
                                               Novo Curso
                                           </Button>
 
-                                          <ModalCourse modal={modal} setModal={setModal} handleCourses={handleCourses} classes={classes} dataToChange={data} />
+                                          <ModalCourse modalEdit={modalEdit} setModalEdit={setModalEdit} handleCourses={handleCourses} classes={classes} dataToChange={data} />
                                       </div>
                                   </div>
                               </GridItem>
                           </GridContainer>
 
-                          <ListCourses setModal={setModal} handleCourses={handleCourses} courses={courses} setData={setData} />
+                          <ListCourses setModalEdit={setModalEdit} handleCourses={handleCourses} courses={courses} setData={setData} />
                       </div>
                   </div>
               </div>

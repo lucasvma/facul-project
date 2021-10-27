@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/navbarsStyle";
 import {List, Link, ListItem, ListItemAvatar, Avatar, ListItemText} from "@material-ui/core";
@@ -12,7 +12,6 @@ export default function ListCourses(props) {
     const classes = useStyles();
 
     const handleUpdate = async (data) => {
-        console.log('handleUpdate')
         props.setData(data)
     }
 
@@ -52,7 +51,7 @@ export default function ListCourses(props) {
                             className={classes.listItem}
                         />
 
-                        <CommonActionsCourse course={course} handleUpdate={handleUpdate} handleRemove={handleRemove} handleVisible={handleVisible} />
+                        <CommonActionsCourse course={course} handleUpdate={handleUpdate} handleRemove={handleRemove} handleVisible={handleVisible} handleCourses={props.handleCourses} />
                     </ListItem>
                 ))}
             </List>
