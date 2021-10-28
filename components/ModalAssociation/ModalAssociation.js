@@ -30,7 +30,8 @@ function intersection(a, b) {
 export default function ModalAssociation(props) {
     const [checked, setChecked] = useState([]);
     const [left, setLeft] = useState([]);
-    const [right, setRight] = useState(props.course?.classes || []);
+    const [right, setRight] = useState([]);
+    const [classes, setClasses] = useState([]);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -77,20 +78,26 @@ export default function ModalAssociation(props) {
     }
 
     const associateClasses = async () => {
+        const classIds = classes.map((grade) => right.includes(grade.title) && grade._id).filter((classId) => classId)
         await axios
-            .patch(`/api/course/associate/${props.course._id}`, {classes: right})
+            .patch(`/api/course/associate/${props.course._id}`, {classes: classIds})
             .then((response) => closeModal())
     }
 
     useEffect(async () => {
         await axios
             .get('/api/classes')
-            .then((response) => {
-                setLeft(response ? response.data.classes
-                    .filter((element) => !right.includes(element.title))
-                    .map((grade) => grade.title) : [])
-            })
+            .then((response) => setClasses(response.data.classes))
     }, [])
+
+    useEffect(async () => {
+        await setRight(classes.map((grade) => props.course?.classes
+            .includes(grade._id) && grade.title)
+            .filter((classTitle) => classTitle))
+        setLeft(classes
+            .filter((element) => !right.includes(element.title))
+            .map((grade) => grade.title) || [])
+    }, [classes])
 
     const customList = (items) => (
         <Paper sx={{ width: 200, height: 230, overflow: 'auto' }}>
