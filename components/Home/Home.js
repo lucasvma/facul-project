@@ -92,7 +92,7 @@ export default function Home(props) {
                                     <p className={classes.textCenter}>
                                         <Link
                                             href={`/class/[slug]`}
-                                            as={`/class/${grade._id !== undefined ? grade._id : ''}`}
+                                            as={`/class/${grade._id}`}
                                         >
                                             {grade.description.substr(1, 50)}
                                         </Link>

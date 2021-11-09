@@ -16,16 +16,12 @@ import {connectToDatabase} from "../api/db/mongodb";
 import {TextareaAutosize} from "@material-ui/core";
 import Button from "../../components/CustomButtons/Button";
 import axios from "axios";
+import ListCourse from "../../components/ListCourse/ListCourse";
 
 const useStyles = makeStyles(styles);
 
-export default function ClassPage({ course }) {
+export default function CoursePage({ courseClasses }) {
     const classes = useStyles()
-    const [comment, setComment] = useState(false)
-
-    function handleComment() {
-
-    }
 
     return (
         <div>
@@ -39,70 +35,64 @@ export default function ClassPage({ course }) {
                     color: "white"
                 }}
             />
-            <Parallax small filter responsive image="/img/landing-bg.jpg">
-                <div className={classNames(classes.main, classes.mainRaised)}>
-                <div>
-                    <div className={classes.container}>
-                        <GridContainer justify="center">
-                            <GridItem xs={12} sm={12} md={6}>
-                                <div className={classes.profile}>
-                                    <div className={classes.name}>
-                                        <h3 className={classes.title} />
-                                    </div>
+            <Parallax small filter responsive image="/img/landing-bg.jpg" />
+            <div className={classNames(classes.main, classes.mainRaised)}>
+                <div className={classes.container}>
+                    <GridContainer justify="center">
+                        <GridItem xs={12} sm={12} md={6}>
+                            <div className={classes.profile}>
+                                <div className={classes.name}>
+                                    <h3 className={classes.title} />
                                 </div>
-                            </GridItem>
-                        </GridContainer>
+                            </div>
+                        </GridItem>
+                    </GridContainer>
 
-                        <ListClass grade={course[0]} />
-
-                        {/*Commenting the commenting area*/}
-                        {/*<GridItem xs={12}>*/}
-                        {/*    <TextareaAutosize*/}
-                        {/*        aria-label="minimum height"*/}
-                        {/*        rowsMin={5}*/}
-                        {/*        placeholder="Adicione um comentário"*/}
-                        {/*        style={{*/}
-                        {/*            width: "80%",*/}
-                        {/*            padding: "10px"*/}
-                        {/*        }}*/}
-                        {/*        onChange={(e) => setComment(e.target.value)}*/}
-                        {/*    />*/}
-
-                        {/*    <Button*/}
-                        {/*        color="primary"*/}
-                        {/*        round*/}
-                        {/*        onClick={handleComment()}*/}
-                        {/*        style={{*/}
-                        {/*            justifyContent: "flex-end",*/}
-                        {/*            alignItems: "flex-end"*/}
-                        {/*        }}*/}
-                        {/*    >*/}
-                        {/*        Comentar*/}
-                        {/*    </Button>*/}
-                        {/*</GridItem>*/}
-                    </div>
+                    <ListCourse courseClasses={courseClasses} />
                 </div>
             </div>
-            </Parallax>
             <Footer />
         </div>
     )
 }
 
 export async function getStaticProps({ params }) {
-    const { db } = await connectToDatabase();
-
-    const collection = db.collection('courses')
-    const courseData = await collection.find(ObjectId(params.id)).toArray()
-
-    const courseProgress = await fetch('http://localhost:3000/api/courseProgress')
-
-    const course = {...courseData, ...courseProgress}
-
-    return {
-        props: {
-            course: JSON.parse(JSON.stringify(course))
+    let courseClasses = [
+        {
+            _id: '6168b615b207f270f9530b23',
+            title: 'imagem',
+            description: '![teste](https://miro.medium.com/max/640/0*i1v1In2Tn4Stnwnl.jpg)',
+            publicClass: null,
+            createdAt: '2021-10-14T22:58:29.703Z',
+            updateAt: '2021-10-20T02:25:19.847Z',
+            visibility: true
+        },
+        {
+            _id: '616e1bc2686d9c1d59c2e101',
+            title: 'um dois tres',
+            description: 'testando um dois',
+            publicClass: null,
+            createdAt: '2021-10-19T01:13:38.203Z',
+            updateAt: '2021-10-20T02:28:27.402Z',
+            visibility: true
         }
+    ]
+
+    try {
+        // axios.defaults.baseURL = 'http://localhost:3000'
+
+        // courseClasses = await axios
+        //     .get(`/api/course/classes/${params.id}`)
+
+        return {
+            props: {
+                // courseClasses: JSON.stringify(courseClasses.data.filteredClasses)
+                courseClasses
+            }
+        }
+    } catch (e) {
+        console.log('error', e)
+        return []
     }
 }
 

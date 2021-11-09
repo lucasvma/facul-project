@@ -40,15 +40,15 @@ export default function ListClasses(props) {
                         <ListItemText
                             primary={
                                 <Link
-                                    href={`/class/${grade._id !== undefined ? grade._id : ''}`}
+                                    href={`/class/${grade._id}`}
                                     className={classes.navLink}
                                     color="transparent"
                                 >
-                                    {grade.title !== undefined ? grade.title : ''}
+                                    {grade.title || ''}
                                 </Link>
                             }
                             secondary=""
-                            key={grade._id !== undefined ? grade._id : ''}
+                            key={grade._id}
                             className={classes.listItem}
                         />
 

@@ -17,7 +17,7 @@ import CardBody from "../components/Card/CardBody";
 import CardHeader from "../components/Card/CardHeader";
 import CardFooter from "../components/Card/CardFooter";
 import CustomInput from "../components/CustomInput/CustomInput";
-import { signIn, getProviders } from 'next-auth/client'
+import {signIn, getProviders, session} from 'next-auth/client'
 
 import styles from "styles/jss/nextjs-material-kit/pages/loginPage";
 
@@ -38,10 +38,10 @@ export default function SignIn(props) {
     const { providers, ...rest } = props;
     const router = useRouter();
 
-    console.log('providers', providers)
+    console.log('session', session())
 
     function handleLogin() {
-        router.push("/home");
+        signIn('credentials', { email, password })
     }
 
     return (

@@ -7,6 +7,7 @@ import Router from "next/router";
 import PageChange from "components/PageChange/PageChange.js";
 
 import "styles/scss/nextjs-material-kit.scss?v=1.2.0";
+import {Provider} from "next-auth/client";
 
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
@@ -51,7 +52,9 @@ export default class MyApp extends App {
           />
           <title>Share-Info</title>
         </Head>
-        <Component {...pageProps} />
+        {/*<Provider session={pageProps.session}>*/}
+          <Component {...pageProps} />
+        {/*</Provider>*/}
       </React.Fragment>
     );
   }

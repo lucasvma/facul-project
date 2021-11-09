@@ -39,7 +39,7 @@ export default function ListCourses(props) {
                         <ListItemText
                             primary={
                                 <Link
-                                    href={`/course/${course._id !== undefined ? course._id : ''}`}
+                                    href={`/course/${course._id}`}
                                     className={classes.navLink}
                                     color="transparent"
                                 >

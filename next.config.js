@@ -1,6 +1,5 @@
 const withPlugins = require("next-compose-plugins");
 const withImages = require("next-images");
-const webpack = require("webpack");
 const path = require("path");
 
 module.exports = withPlugins([[withImages]], {
@@ -21,4 +20,25 @@ module.exports = withPlugins([[withImages]], {
     }
     return config;
   },
+  async headers() {
+    return [
+      {
+        source: '/api/course/:id*',
+        headers: [
+          {
+            key: 'Cross-Origin-Embedder-Policy',
+            value: 'require-corp',
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+        ]
+      },
+    ]
+  }
 });

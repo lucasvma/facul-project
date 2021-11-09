@@ -13,18 +13,12 @@ import {ObjectId} from "mongodb";
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 import {makeStyles} from "@material-ui/core/styles";
 import {connectToDatabase} from "../api/db/mongodb";
-import {TextareaAutosize} from "@material-ui/core";
-import Button from "components/CustomButtons/Button";
 
 const useStyles = makeStyles(styles);
 
 export default function ClassPage({ grade }) {
     const classes = useStyles()
     const [comment, setComment] = useState(false)
-
-    function handleComment() {
-
-    }
 
     return (
         <div>
@@ -51,7 +45,7 @@ export default function ClassPage({ grade }) {
                         </GridItem>
                     </GridContainer>
 
-                    <ListClass grade={grade[0]} />
+                    <ListClass courseClasses={grade} />
 
                     {/*<GridItem*/}
                     {/*    style={{*/}
@@ -102,7 +96,7 @@ export const getStaticProps = async ({ params }) => {
 
     return {
         props: {
-            grade: JSON.parse(JSON.stringify(grade))
+            grades: JSON.parse(JSON.stringify(grade))
         },
     }
 }

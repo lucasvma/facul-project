@@ -91,12 +91,14 @@ export default function ModalAssociation(props) {
     }, [])
 
     useEffect(async () => {
-        await setRight(classes.map((grade) => props.course?.classes
-            .includes(grade._id) && grade.title)
-            .filter((classTitle) => classTitle))
-        setLeft(classes
-            .filter((element) => !right.includes(element.title))
-            .map((grade) => grade.title) || [])
+        if (classes.length) {
+            await setRight(classes.map((grade) => props.course?.classes
+                .includes(grade._id) && grade.title)
+                .filter((classTitle) => classTitle))
+            setLeft(classes
+                .filter((element) => !right.includes(element.title))
+                .map((grade) => grade.title) || [])
+        }
     }, [classes])
 
     const customList = (items) => (
