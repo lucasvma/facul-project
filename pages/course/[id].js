@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Header from "../../components/Header/Header";
 import HeaderLinks from "../../components/Header/HeaderLinks";
@@ -12,14 +12,12 @@ import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 import {makeStyles} from "@material-ui/core/styles";
 import {connectToDatabase} from "../api/db/mongodb";
 import ListCourse from "../../components/ListCourse/ListCourse";
-import {ObjectID} from "bson-ext";
 import {useRouter} from "next/router";
 import {ObjectId} from "mongodb";
-import axios from "axios";
 
 const useStyles = makeStyles(styles);
 
-export default function CoursePage() {
+export default function CoursePage({ courseClasses }) {
     const classes = useStyles()
 
     const router = useRouter();
@@ -57,7 +55,7 @@ export default function CoursePage() {
                         </GridItem>
                     </GridContainer>
 
-                    {/*<ListCourse courseClasses={courseClasses} />*/}
+                    <ListCourse courseClasses={courseClasses} />
                 </div>
             </div>
             <Footer />
@@ -65,8 +63,43 @@ export default function CoursePage() {
     )
 }
 
-export function getServerSideProps({ params }) {
-    console.log('params', params)
-    return { props: { course: '' } }
+export const getStaticProps = async ({ params }) => {
+    try {
+        const { db } = await connectToDatabase();
+
+        const courseCollection = await db.collection("courses");
+        const collectionClasses = await db.collection("classes");
+
+        const classesCourse = await courseCollection.findOne({
+            _id: ObjectId(params.id),
+        });
+        const classes = await collectionClasses.find().toArray();
+
+        const filteredClasses = await classes.filter((grade) =>
+            classesCourse.classes.includes(grade._id.toString())
+        )
+
+        return {
+           props: {
+               courseClasses: JSON.parse(JSON.stringify(filteredClasses))
+           }
+        }
+    } catch (e) {
+        console.log('error', e)
+    }
 }
 
+export async function getStaticPaths() {
+    const { db } = await connectToDatabase();
+    const collection = db.collection('courses')
+    const courses = await collection.find().toArray()
+
+    const paths = []
+
+    JSON.parse(JSON.stringify(courses)).forEach(course => paths.push({ params: { id: course._id }}))
+
+    return {
+        fallback: true,
+        paths
+    }
+}

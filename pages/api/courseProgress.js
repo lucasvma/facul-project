@@ -1,11 +1,12 @@
 import {connectToDatabase} from './db/mongodb'
 import { useSession } from 'next-auth/client'
+import {ObjectId} from "mongodb";
 
 export default async (request, response) => {
     const [ session ] = useSession()
     const {
         method,
-        body: { courseId, classId }
+        body: { courseId, clientId, currentStep }
     } = request
 
     const { db } = await connectToDatabase();
@@ -24,23 +25,16 @@ export default async (request, response) => {
                 courseId,
             }, { classes: 1 }).sort({ createAt:-1 }).limit(1).toArray()
 
-            const percentageProgress = (courseClasses.indexOf(classCourseProgress) * 100) / courseClasses.length
-
-            console.log('classCourseProgress', classCourseProgress)
-            console.log('courseClasses', courseClasses)
-            console.log('percentageProgress', percentageProgress)
-            console.log('indexOf', courseClasses.indexOf(classCourseProgress))
-            console.log('ArrayLen', courseClasses.length)
-
             return response
                 .status(200)
                 .json({ 'O progresso desse curso é a aula de X: ': classCourseProgress })
         case 'POST':
-            // verify step by button
-            await collection.insertOne({
+            // verify currentStep by button
+            await courseProgressCollection.insertOne({
                 courseId,
-                classId,
-                user: session.user.email,
+                clientId,
+                currentStep,
+                watchedClasses,
                 createdAt: new Date()
             })
 
@@ -48,15 +42,11 @@ export default async (request, response) => {
                 .status(201)
                 .json({ message: 'Progresso realizado com sucesso' })
         case 'PUT':
-            // await collection.findOneAndUpdate({
-            //     courseId,
-            //     user: session.user.email
-            // }, {
-            //     classId,
-            //     updateAt: session.user.email,
-            //     updateBy: new Date()
-            // })
-            //
+            await courseProgressCollection.updateOne(
+                { _id: ObjectId(id) },
+                { $set: { title, description, updateAt: new Date() }
+                })
+            console.log(`class was updated: ${id}`)
             return response
                 .status(200)
                 .json({ message: 'Progresso atualizado com sucesso' })

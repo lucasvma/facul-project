@@ -1,12 +1,12 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
-import axios from "axios";
 
 const { GITHUB_ID, GITHUB_SECRET, AUTH_SECRET, JWT_SECRET } = process.env
 
 export default NextAuth({
     providers: [
         Providers.Credentials({
+            name: 'Credentials',
             credentials: {
                 email: {
                     label: 'Email',
@@ -16,7 +16,7 @@ export default NextAuth({
                     label: 'Password',
                     type: 'password'
                 },
-                async authorize(credentials) {
+                async authorize(credentials, req) {
                     console.log('credentials', credentials)
                     if (credentials.username === 'test@test.com' && credentials.password === 'test') {
                         return {
@@ -35,6 +35,15 @@ export default NextAuth({
         }),
     ],
     callback: {
+        async signIn({ user, account, profile, email, credentials }) {
+            console.log('user', user)
+            console.log('account', account)
+            console.log('profile', profile)
+            console.log('email', email)
+            console.log('credentials', credentials)
+            return credentials.username === 'test@test.com' && credentials.password === 'test';
+
+        },
         jwt: ({ token, user }) => {
             if (user) {
                 token.id = user.id
@@ -56,10 +65,14 @@ export default NextAuth({
         updateAge: 24 * 60 * 60, // 24 hours
     },
     jwt: {
-        secret: JWT_SECRET
+        secret: JWT_SECRET,
+        signingKey: {"kty":"oct","kid":"--","alg":"HS256","k":"--"},
+        verificationOptions: {
+            algorithms: ["HS256"]
+        }
     },
     pages: {
-        signIn: '/signin',
+        signIn: '/auth/signin',
         signOut: '/auth/signout',
         error: '/auth/error',
     },

@@ -36,11 +36,10 @@ export default function SignIn(props) {
     }, 700);
     const classes = useStyles();
     const { providers, ...rest } = props;
-    const router = useRouter();
 
-    console.log('session', session())
-
-    function handleLogin() {
+    const handleLogin = () => {
+        console.log('email', email)
+        console.log('password', password)
         signIn('credentials', { email, password })
     }
 
@@ -102,16 +101,11 @@ export default function SignIn(props) {
                                         </div>
                                     </CardHeader>
                                     <p className={classes.divider}>Ou Insira os Dados</p>
-                                    <CardBody
-                                        as="form"
-                                        method="post"
-                                        action="/api/auth/callback/credentials"
-                                    >
+                                    <CardBody>
                                         <CustomInput
                                             labelText="E-mail"
                                             name="email"
                                             value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
                                             formControlProps={{
                                                 fullWidth: true
                                             }}
@@ -121,14 +115,14 @@ export default function SignIn(props) {
                                                     <InputAdornment position="end">
                                                         <Email className={classes.inputIconsColor} />
                                                     </InputAdornment>
-                                                )
+                                                ),
+                                                onChange: (e) => setEmail(e.target.value)
                                             }}
                                         />
                                         <CustomInput
                                             labelText="Senha"
                                             name="password"
                                             value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
                                             formControlProps={{
                                                 fullWidth: true
                                             }}
@@ -141,19 +135,21 @@ export default function SignIn(props) {
                                                         </Icon>
                                                     </InputAdornment>
                                                 ),
-                                                autoComplete: "off"
+                                                autoComplete: "off",
+                                                onChange: (e) =>  setPassword(e.target.value)
                                             }}
                                         />
                                     </CardBody>
-                                    <CardFooter
-                                        className={classes.cardFooter}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handleLogin()
-                                        }}
-                                    >
+                                    <CardFooter className={classes.cardFooter}>
                                         <small>Não é cadastrado? <Link href="/signup">Clique aqui</Link></small>
-                                        <Button simple color="primary" size="lg" >
+                                        <Button
+                                            simple
+                                            color="primary" size="lg"
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                handleLogin()
+                                            }}
+                                        >
                                             Entrar
                                         </Button>
                                     </CardFooter>
