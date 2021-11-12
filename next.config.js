@@ -23,7 +23,7 @@ module.exports = withPlugins([[withImages]], {
   async headers() {
     return [
       {
-        source: '/api/course/:id*',
+        source: '/course/:id',
         headers: [
           {
             key: 'Cross-Origin-Embedder-Policy',
@@ -32,10 +32,6 @@ module.exports = withPlugins([[withImages]], {
           {
             key: 'Cross-Origin-Opener-Policy',
             value: 'same-origin',
-          },
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: '*',
           },
         ]
       },

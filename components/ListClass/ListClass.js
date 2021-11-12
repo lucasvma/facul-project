@@ -41,7 +41,7 @@ export default function ListClass({ courseClasses }) {
     const handleRemove = async (id) => {
         await axios
             .delete(`/api/class/${id}`)
-            .then(() => router.push("/login"))
+            .then(() => router.push("/home"))
     }
 
     const handleVisible = async (id, visibility) => {
@@ -102,18 +102,6 @@ export default function ListClass({ courseClasses }) {
                                         tabsGrid: { xs: 12, sm: 4, md: 4 },
                                         contentGrid: { xs: 12, sm: 8, md: 8 },
                                     }}
-                                    // tabs={grades.map((grade) => ([{
-                                    //             tabButton: grade.title,
-                                    //             tabContent: (
-                                    //                 <span>
-                                    //                 <h2>{grade.title}</h2>
-                                    //                 <br />
-                                    //                 <p>{grade.description}</p>
-                                    //             </span>
-                                    //             ),
-                                    //         },
-                                    //     ]))
-                                    // }
                                     tabs={[
                                     {
                                         tabButton: "Dashboard",

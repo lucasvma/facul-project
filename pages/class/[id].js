@@ -46,42 +46,6 @@ export default function ClassPage({ grade }) {
                     </GridContainer>
 
                     <ListClass courseClasses={grade} />
-
-                    {/*<GridItem*/}
-                    {/*    style={{*/}
-                    {/*        marginLeft: 350*/}
-                    {/*    }}*/}
-                    {/*    xs={6}*/}
-                    {/*>*/}
-                    {/*    <TextareaAutosize*/}
-                    {/*        aria-label="minimum height"*/}
-                    {/*        rowsMin={5}*/}
-                    {/*        placeholder="Adicione um comentário"*/}
-                    {/*        style={{*/}
-                    {/*            width: "80%",*/}
-                    {/*            padding: "10px",*/}
-                    {/*        }}*/}
-                    {/*        onChange={(e) => setComment(e.target.value)}*/}
-                    {/*    />*/}
-                    {/*</GridItem>*/}
-                    {/*<GridItem*/}
-                    {/*    xs={12}*/}
-                    {/*      style={{*/}
-                    {/*          justifyContent: "center",*/}
-                    {/*          alignItems: "flex-center",*/}
-                    {/*          textAlign: "center",*/}
-                    {/*          marginLeft: 150*/}
-                    {/*      }}*/}
-                    {/*>*/}
-                    {/*    <Button*/}
-                    {/*        color="primary"*/}
-                    {/*        round*/}
-                    {/*        onClick={handleComment()}*/}
-
-                    {/*    >*/}
-                    {/*        Comentar*/}
-                    {/*    </Button>*/}
-                    {/*</GridItem>*/}
                 </div>
             </div>
             <Footer />
@@ -92,7 +56,7 @@ export default function ClassPage({ grade }) {
 export const getStaticProps = async ({ params }) => {
     const { db } = await connectToDatabase();
     const collection = db.collection('classes')
-    const grade = await collection.find(ObjectId(params.id)).toArray()
+    const grade = await collection.find({_id: ObjectId(params.id)}).toArray()
 
     return {
         props: {

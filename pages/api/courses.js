@@ -28,7 +28,7 @@ export default async (request, response) => {
                 .status(201)
                 .json({ message: 'O Curso foi cadastrado com sucesso' })
         default:
-            response.setHeader('Allow', ['GET', 'POS'])
+            response.setHeader('Allow', ['GET', 'POST'])
             response.status(405).end(`Method ${method} Not Allowed`)
     }
 

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import EditIcon from '@material-ui/icons/Edit';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import Button from "../CustomButtons/Button";
@@ -18,13 +18,38 @@ import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSection
 
 const useStyles = makeStyles(styles);
 
-export default function ListCourse({ courseClasses }) {
+export default function ListCourse({ courseId }) {
     const classes = useStyles();
     const router = useRouter()
+    const [grades, setGrades] = useState([])
 
-    // courseClasses = JSON.parse(courseClasses)
-    const teste = courseClasses
-    console.log('typeof', typeof teste)
+    useEffect(async () => {
+        // await axios
+        //     .get(`/api/course/classes/${courseId}`)
+        //     .then((courseClasses) => setGrades(courseClasses))
+        // console.log('grades', grades)
+        setGrades([
+            {
+                _id: '6168b615b207f270f9530b23',
+                title: 'imagem',
+                description: '![teste](https://miro.medium.com/max/640/0*i1v1In2Tn4Stnwnl.jpg)',
+                publicClass: null,
+                createdAt: '2021-10-14T22:58:29.703Z',
+                updateAt: '2021-10-20T02:25:19.847Z',
+                visibility: true
+            },
+            {
+                _id: '616e1bc2686d9c1d59c2e101',
+                title: 'um dois tres',
+                description: 'testando um dois',
+                publicClass: null,
+                createdAt: '2021-10-19T01:13:38.203Z',
+                updateAt: '2021-10-20T02:28:27.402Z',
+                visibility: true
+            }
+        ])
+        console.log('grades', grades)
+    }, [])
 
     const handleUpdate = async (data) => {
         console.log('handleUpdate')
@@ -34,7 +59,7 @@ export default function ListCourse({ courseClasses }) {
     const handleRemove = async (id) => {
         await axios
             .delete(`/api/class/${id}`)
-            .then(() => router.push("/login"))
+            .then(() => router.push("/home"))
     }
 
     const handleVisible = async (id, visibility) => {
@@ -89,25 +114,27 @@ export default function ListCourse({ courseClasses }) {
                             />
 
                             <GridItem xs={12} sm={12} md={12} lg={6}>
-                                <NavPills
-                                    color="primary"
-                                    horizontal={{
-                                        tabsGrid: { xs: 12, sm: 4, md: 4 },
-                                        contentGrid: { xs: 12, sm: 8, md: 8 },
-                                    }}
-                                    tabs={teste.map((grade) => ({
-                                                tabButton: grade.title,
-                                                tabContent: (
-                                                    <span>
-                                                    <h2>{grade.title}</h2>
-                                                    <br />
-                                                    <p>{grade.description}</p>
-                                                    </span>
-                                                )
-                                            }
-                                        ))
-                                    }
-                                />
+                                {grades.length === 0 && <h2>'Não há aulas disponíveis nesse curso'</h2>}
+                                {grades.length > 0 &&
+                                    <NavPills
+                                        color="primary"
+                                        horizontal={{
+                                            tabsGrid: { xs: 12, sm: 4, md: 4 },
+                                            contentGrid: { xs: 12, sm: 8, md: 8 },
+                                        }}
+                                        tabs={grades.map((grade) => ({
+                                                    tabButton: grade.title,
+                                                    tabContent: (
+                                                        <span>
+                                                        <h2>{grade.title}</h2>
+                                                        <br />
+                                                        <p>{grade.description}</p>
+                                                        </span>
+                                                    )
+                                                }
+                                            ))
+                                        }
+                                    />}
                             </GridItem>
                         </GridContainer>
                 </div>

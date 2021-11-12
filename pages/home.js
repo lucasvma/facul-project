@@ -10,7 +10,8 @@ import HeaderLinks from "../components/Header/HeaderLinks";
 import Parallax from "../components/Parallax/Parallax";
 import Footer from "../components/Footer/Footer";
 import Home from "../components/Home/Home";
-import { useSession } from 'next-auth/client'
+import {signIn, useSession} from 'next-auth/client'
+import Router, {useRouter} from "next/router";
 
 const useStyles = makeStyles(styles);
 
@@ -23,6 +24,7 @@ export default function Components(props) {
         classes.imgFluid
     )
 
+    const router = useRouter();
     const [modal, setModal] = useState(false)
     const [grade, setGrades] = useState([])
 
@@ -44,7 +46,7 @@ export default function Components(props) {
     }
 
     return (
-        <div>
+        <>
             <Header
                 color="transparent"
                 brand="Share Info"
@@ -58,14 +60,22 @@ export default function Components(props) {
             />
             <Parallax small filter responsive image="/img/landing-bg.jpg" />
             <div className={classNames(classes.main, classes.mainRaised)}>
-                <div>
-                    <div className={classes.container}>
-                        <Home classes={grade} />
-                    </div>
-                </div>
+                {/*{!session && (*/}
+                {/*    <>*/}
+                {/*        /!*{router.push("/signin")}*!/*/}
+                {/*        <h2>Not Signed In</h2>*/}
+                {/*    </>*/}
+                {/*)}*/}
+                {/*{session && (*/}
+                    <>
+                        <div className={classes.container}>
+                            <Home classes={grade} />
+                        </div>
+                    </>
+                {/*)}*/}
             </div>
             <Footer />
-        </div>
+        </>
     );
 }
 

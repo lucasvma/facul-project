@@ -8,7 +8,17 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 
 // @material-ui/icons
-import { Apps, CloudDownload, Class, ExitToApp, PeopleAlt, PictureAsPdf, PlaylistPlay, Settings } from "@material-ui/icons";
+import {
+    Apps,
+    CloudDownload,
+    Class,
+    ExitToApp,
+    PeopleAlt,
+    PictureAsPdf,
+    PlaylistPlay,
+    Settings,
+    BorderColor
+} from "@material-ui/icons";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 // core components
@@ -38,6 +48,11 @@ export default function HeaderLinks(props) {
     const handleClickProfile = (e) => {
         e.preventDefault()
         router.push('/profile')
+    }
+
+    const handleClickAuthors = (e) => {
+        e.preventDefault()
+        router.push('/author')
     }
 
     return (
@@ -90,6 +105,16 @@ export default function HeaderLinks(props) {
                                 className={classes.navLink}
                             >
                                 <PlaylistPlay className={classes.icons} /> Cursos
+                            </Button>
+                        </ListItem>,
+                        <ListItem className={classes.listItem}>
+                            <Button
+                                onClick={handleClickAuthors}
+                                color="transparent"
+                                target="_blank"
+                                className={classes.navLink}
+                            >
+                                <BorderColor className={classes.icons} /> Autores
                             </Button>
                         </ListItem>,
                         <ListItem className={classes.listItem}>

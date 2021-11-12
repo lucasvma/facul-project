@@ -2,7 +2,7 @@ import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 import axios from "axios";
 
-const { GITHUB_ID, GITHUB_SECRET } = process.env
+const { GITHUB_ID, GITHUB_SECRET, AUTH_SECRET, JWT_SECRET } = process.env
 
 export default NextAuth({
     providers: [
@@ -18,9 +18,14 @@ export default NextAuth({
                 },
                 async authorize(credentials) {
                     console.log('credentials', credentials)
-                    const url = 'https://61885fd8057b9b00177f9c52.mockapi.io/api/v1/login'
-                    const response = await axios.post(url, credentials)
-                    return response.data || null
+                    if (credentials.username === 'test@test.com' && credentials.password === 'test') {
+                        return {
+                            id: 2,
+                            name: 'Lucas',
+                            email: credentials.username
+                        }
+                    }
+                    return null
                 }
             }
         }),
@@ -29,35 +34,33 @@ export default NextAuth({
             clientSecret: GITHUB_SECRET
         }),
     ],
-    // session: {
-    //     jwt: true,
-    //     maxAge: 30 * 24 * 60 * 60, // 30 days
-    //     updateAge: 24 * 60 * 60, // 24 hours
-    // },
-    // jwt: {
-    //     secret: process.env.JWT_SECRET
-    // },
+    callback: {
+        jwt: ({ token, user }) => {
+            if (user) {
+                token.id = user.id
+            }
+            return token
+        },
+        session: ({ session, token }) => {
+            if (token) {
+                session.id = token.id
+            }
+            return session
+        }
+    },
+    debug: process.env.NODE_ENV === 'development',
+    secret: AUTH_SECRET,
+    session: {
+        jwt: true,
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+        updateAge: 24 * 60 * 60, // 24 hours
+    },
+    jwt: {
+        secret: JWT_SECRET
+    },
     pages: {
-        signIn: '/auth/signin',
+        signIn: '/signin',
         signOut: '/auth/signout',
         error: '/auth/error',
-        // verifyRequest: '/auth/verify-request',
-        // newUser: null
     },
-    // A db is optional, but required to persist accounts in a db
-    // db: process.env.MONGODB_URI,
-    callbacks: {
-        // async signIn({ user, account, profile, email, credentials }) {
-        //     return true
-        // },
-        // async redirect({ url, baseUrl }) {
-        //     return baseUrl
-        // },
-        // async session({ session, token, user }) {
-        //     return session
-        // },
-        // async jwt({ token, user, account, profile, isNewUser }) {
-        //     return token
-        // }
-    }
 })

@@ -38,7 +38,7 @@ export default async (request, response) => {
                 .status(200)
                 .json({ message: 'A aula foi comentada com sucesso' })
         default:
-            response.setHeader('Allow', ['GET', 'POS', 'PUT'])
+            response.setHeader('Allow', ['GET', 'PUT'])
             response.status(405).end(`Method ${method} Not Allowed`)
     }
 }

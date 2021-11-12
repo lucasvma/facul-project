@@ -22,7 +22,7 @@ export default async (request, response) => {
                 .status(204)
                 .json({ message: 'A associação foi realizada com sucesso' })
         default:
-            response.setHeader('Allow', ['GET'])
+            response.setHeader('Allow', ['PATCH'])
             response.status(405).end(`Method ${method} Not Allowed`)
     }
 }

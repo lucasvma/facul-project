@@ -5,148 +5,174 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
-import People from "@material-ui/icons/People";
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
-import Footer from "components/Footer/Footer.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardFooter from "components/Card/CardFooter.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
+import Header from "../components/Header/Header";
+import HeaderLinks from "../components/Header/HeaderLinks";
+import Footer from "../components/Footer/Footer";
+import GridContainer from "../components/Grid/GridContainer";
+import GridItem from "../components/Grid/GridItem";
+import Button from "../components/CustomButtons/Button";
+import Card from "../components/Card/Card";
+import CardBody from "../components/Card/CardBody";
+import CardHeader from "../components/Card/CardHeader";
+import CardFooter from "../components/Card/CardFooter";
+import CustomInput from "../components/CustomInput/CustomInput";
+import {signIn, getProviders, session, useSession, csrfToken} from 'next-auth/client'
 
-import styles from "styles/jss/nextjs-material-kit/pages/loginPage.js";
+import styles from "styles/jss/nextjs-material-kit/pages/loginPage";
+
+import image from "public/img/bg7.jpg";
+import { useRouter } from "next/router";
+import {Input, Link} from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-  setTimeout(function () {
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  setTimeout(function() {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
-  const { ...rest } = props;
+  const { providers, ...rest } = props;
+  const router = useRouter();
+
+  const [session, loading] = useSession()
+  console.log('session', session)
+
+  function handleLogin() {
+    signIn('credentials', { email, password })
+  }
+
   return (
-    <div>
-      <Header
-        absolute
-        color="transparent"
-        brand="NextJS Material Kit"
-        rightLinks={<HeaderLinks />}
-        {...rest}
-      />
-      <div
-        className={classes.pageHeader}
-        style={{
-          backgroundImage: "url('/img/bg7.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "top center",
-        }}
-      >
-        <div className={classes.container}>
-          <GridContainer justify="center">
-            <GridItem xs={12} sm={6} md={4}>
-              <Card className={classes[cardAnimaton]}>
-                <form className={classes.form}>
-                  <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Login</h4>
-                    <div className={classes.socialLine}>
-                      <Button
-                        justIcon
-                        href="#pablo"
-                        target="_blank"
-                        color="transparent"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <i className={"fab fa-twitter"} />
+      <div>
+        <Header
+            absolute
+            color="transparent"
+            brand="Share Info"
+            rightLinks={<HeaderLinks />}
+            {...rest}
+        />
+        <div
+            className={classes.pageHeader}
+            style={{
+              backgroundImage: "url(" + image + ")",
+              backgroundSize: "cover",
+              backgroundPosition: "top center"
+            }}
+        >
+          <div className={classes.container}>
+            <GridContainer justify="center">
+              <GridItem xs={12} sm={6} md={4}>
+                <Card className={classes[cardAnimaton]}>
+                  <form className={classes.form}>
+                    <CardHeader color="primary" className={classes.cardHeader}>
+                      <h4>Faça seu Login na Plataforma</h4>
+                      <div className={classes.socialLine}>
+                        <Button
+                            justIcon
+                            href="#pablo"
+                            target="_blank"
+                            color="transparent"
+                            onClick={e => e.preventDefault()}
+                        >
+                          <i className={"fab fa-twitter"} />
+                        </Button>
+                        <Button
+                            justIcon
+                            href="#pablo"
+                            target="_blank"
+                            color="transparent"
+                            onClick={e => e.preventDefault()}
+                        >
+                          <i className={"fab fa-facebook"} />
+                        </Button>
+                        <Button
+                            justIcon
+                            href=""
+                            target="_blank"
+                            color="transparent"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              signIn('github')
+                            }}
+                        >
+                          <i className={"fab fa-github"} />
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <p className={classes.divider}>Ou Insira os Dados</p>
+                    <CardBody
+                        as="form"
+                        method="post"
+                        action="/api/auth/signin/credentials"
+                    >
+                        <Input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+                      <CustomInput
+                          labelText="E-mail"
+                          name="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          inputProps={{
+                            type: "email",
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                  <Email className={classes.inputIconsColor} />
+                                </InputAdornment>
+                            )
+                          }}
+                      />
+                      <CustomInput
+                          labelText="Senha"
+                          name="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          inputProps={{
+                            type: "password",
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                  <Icon className={classes.inputIconsColor}>
+                                    lock_outline
+                                  </Icon>
+                                </InputAdornment>
+                            ),
+                            autoComplete: "off"
+                          }}
+                      />
+                    </CardBody>
+                    <CardFooter
+                        className={classes.cardFooter}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          handleLogin()
+                        }}
+                    >
+                      <small>Não é cadastrado? <Link href="/signup">Clique aqui</Link></small>
+                      <Button simple color="primary" size="lg" >
+                        Entrar
                       </Button>
-                      <Button
-                        justIcon
-                        href="#pablo"
-                        target="_blank"
-                        color="transparent"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <i className={"fab fa-facebook"} />
-                      </Button>
-                      <Button
-                        justIcon
-                        href="#pablo"
-                        target="_blank"
-                        color="transparent"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <i className={"fab fa-google-plus-g"} />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <p className={classes.divider}>Or Be Classical</p>
-                  <CardBody>
-                    <CustomInput
-                      labelText="First Name..."
-                      id="first"
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                      inputProps={{
-                        type: "text",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <People className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <CustomInput
-                      labelText="Email..."
-                      id="email"
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                      inputProps={{
-                        type: "email",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Email className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <CustomInput
-                      labelText="Password"
-                      id="pass"
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                      inputProps={{
-                        type: "password",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Icon className={classes.inputIconsColor}>
-                              lock_outline
-                            </Icon>
-                          </InputAdornment>
-                        ),
-                        autoComplete: "off",
-                      }}
-                    />
-                  </CardBody>
-                  <CardFooter className={classes.cardFooter}>
-                    <Button simple color="primary" size="lg">
-                      Get started
-                    </Button>
-                  </CardFooter>
-                </form>
-              </Card>
-            </GridItem>
-          </GridContainer>
+                    </CardFooter>
+                  </form>
+                </Card>
+              </GridItem>
+            </GridContainer>
+          </div>
+          <Footer whiteFont />
         </div>
-        <Footer whiteFont />
       </div>
-    </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const providers = await getProviders()
+  return {
+    props: { providers }
+  }
 }

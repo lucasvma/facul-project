@@ -36,7 +36,7 @@ export default async (request, response) => {
                 .status(200)
                 .json({ message: 'O Curso foi removido com sucesso' })
         default:
-            response.setHeader('Allow', ['GET', 'POS', 'PUT'])
+            response.setHeader('Allow', ['GET', 'PUT', 'DELETE'])
             response.status(405).end(`Method ${method} Not Allowed`)
     }
 }

@@ -57,11 +57,11 @@ export default async (request, response) => {
             //     updateBy: new Date()
             // })
             //
-            // return response
-            //     .status(200)
-            //     .json({ message: 'Progresso atualizado com sucesso' })
+            return response
+                .status(200)
+                .json({ message: 'Progresso atualizado com sucesso' })
         default:
-            response.setHeader('Allow', ['GET', 'POST'])
+            response.setHeader('Allow', ['GET', 'POST', 'PUT'])
             response.status(405).end(`Method ${method} Not Allowed`)
     }
 }
