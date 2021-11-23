@@ -10,8 +10,9 @@ import HeaderLinks from "../components/Header/HeaderLinks";
 import Parallax from "../components/Parallax/Parallax";
 import Footer from "../components/Footer/Footer";
 import Home from "../components/Home/Home";
-import {signIn, useSession} from 'next-auth/client'
+import { useSession } from 'next-auth/client'
 import Router, {useRouter} from "next/router";
+import {CircularProgress} from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
@@ -24,12 +25,18 @@ export default function Components(props) {
         classes.imgFluid
     )
 
-    const router = useRouter();
     const [modal, setModal] = useState(false)
     const [grade, setGrades] = useState([])
 
-    const [session, loading] = useSession()
-    console.log('session', session)
+    const [session] = useSession()
+
+    console.log('session loggedIn', session)
+
+    useEffect(() => {
+        if (!session) return Router.push('/login')
+    }, [])
+
+    if (!session) return null
 
     useEffect(() => {
         handleClasses()
@@ -60,26 +67,32 @@ export default function Components(props) {
             />
             <Parallax small filter responsive image="/img/landing-bg.jpg" />
             <div className={classNames(classes.main, classes.mainRaised)}>
-                {/*{!session && (*/}
-                {/*    <>*/}
-                {/*        /!*{router.push("/signin")}*!/*/}
-                {/*        <h2>Not Signed In</h2>*/}
-                {/*    </>*/}
-                {/*)}*/}
-                {/*{session && (*/}
+                {!session && (
+                    <>
+                        {/*{router.push("/signin")}*/}
+                        <h2>Not Signed In</h2>
+                    </>
+                )}
+                {session && (
                     <>
                         <div className={classes.container}>
                             <Home classes={grade} />
                         </div>
                     </>
-                {/*)}*/}
+                )}
             </div>
             <Footer />
         </>
     );
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps = async (context) => {
+    // if (!session) {
+    //     context.res.writeHead(302, { Location: '/login' })
+    //     context.res.end()
+    //     return {}
+    // }
+
     const uri = process.env.MONGODB_URI
     const client = await MongoClient.connect(uri, {
         useNewUrlParser: true,

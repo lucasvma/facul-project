@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 
-const { GITHUB_ID, GITHUB_SECRET, AUTH_SECRET, JWT_SECRET } = process.env
+const { GITHUB_ID, GITHUB_SECRET, AUTH_SECRET, JWT_SECRET, GOOGLE_ID, GOOGLE_SECRET, MONGODB_URI } = process.env
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 
 export default NextAuth({
     providers: [
@@ -16,64 +17,49 @@ export default NextAuth({
                     label: 'Password',
                     type: 'password'
                 },
-                async authorize(credentials, req) {
-                    console.log('credentials', credentials)
-                    if (credentials.username === 'test@test.com' && credentials.password === 'test') {
-                        return {
-                            id: 2,
-                            name: 'Lucas',
-                            email: credentials.username
-                        }
+            },
+            async authorize(credentials, req) {
+                console.log('credentials', credentials)
+                if (credentials.username === 'test@test.com' && credentials.password === 'test') {
+                    return {
+                        id: 2,
+                        name: 'Lucas',
+                        email: credentials.username
                     }
-                    return null
                 }
+                return null
             }
         }),
         Providers.GitHub({
             clientId: GITHUB_ID,
             clientSecret: GITHUB_SECRET
         }),
+        Providers.Google({
+            clientId: GOOGLE_ID,
+            clientSecret: GOOGLE_SECRET,
+        }),
     ],
     callback: {
-        async signIn({ user, account, profile, email, credentials }) {
-            console.log('user', user)
-            console.log('account', account)
-            console.log('profile', profile)
-            console.log('email', email)
-            console.log('credentials', credentials)
-            return credentials.username === 'test@test.com' && credentials.password === 'test';
-
-        },
-        jwt: ({ token, user }) => {
-            if (user) {
-                token.id = user.id
-            }
+        jwt: async ({ token, user }) => {
+            console.log('jwt callback')
+            user && (token.user = user)
             return token
         },
-        session: ({ session, token }) => {
-            if (token) {
-                session.id = token.id
-            }
+        session: async ({ session, token }) => {
+            console.log('session callback')
+            session.accessToken = token.accessToken
             return session
         }
     },
-    debug: process.env.NODE_ENV === 'development',
     secret: AUTH_SECRET,
     session: {
         jwt: true,
-        maxAge: 30 * 24 * 60 * 60, // 30 days
-        updateAge: 24 * 60 * 60, // 24 hours
-    },
-    jwt: {
-        secret: JWT_SECRET,
-        signingKey: {"kty":"oct","kid":"--","alg":"HS256","k":"--"},
-        verificationOptions: {
-            algorithms: ["HS256"]
-        }
+        secret: JWT_SECRET
     },
     pages: {
-        signIn: '/auth/signin',
-        signOut: '/auth/signout',
-        error: '/auth/error',
+        signIn: '/login',
     },
+    theme: 'dark',
+    debug: true,
+    database: MONGODB_URI,
 })

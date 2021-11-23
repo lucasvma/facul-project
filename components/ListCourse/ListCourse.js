@@ -136,7 +136,7 @@ export default function ListCourse({courseClasses}) {
                                                     </>
                                                     <>
                                                         <ReactMarkdown
-                                                            children="![dsates](https://images-na.ssl-images-amazon.com/images/I/814D8NdbX+L.png)"
+                                                            children={grade.description}
                                                             escapeHtml={false}
                                                             renderers={renderers}
                                                         />
