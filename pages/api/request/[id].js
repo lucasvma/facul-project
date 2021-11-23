@@ -5,7 +5,10 @@ export default async (request, response) => {
     const {
         method,
         query: { id },
+        body: { status }
     } = request
+
+    const clientId = 1
 
     const { db } = await connectToDatabase();
 
@@ -13,11 +16,11 @@ export default async (request, response) => {
 
     switch (method) {
         case 'GET':
-            const grade = await collection.find({ _id: id }).toArray()
+            const requests = await collection.find({ clientId }).toArray()
 
             return response
                 .status(200)
-                .json({ grade })
+                .json({ requests })
         case 'POST':
             await collection.insertOne({
                 clientId,
@@ -30,6 +33,7 @@ export default async (request, response) => {
                 .status(201)
                 .json({ message: 'A requisição foi efetuada com sucesso' })
         case 'PUT':
+            console.log('requisição sendo atuailizada')
             await collection.updateOne(
                 { _id: ObjectId(id) },
                 { $set: {
@@ -41,12 +45,6 @@ export default async (request, response) => {
             return response
                 .status(204)
                 .json({ message: 'A requisição foi aprovada/reprovada' })
-        case 'DELETE':
-            await collection.deleteOne({ _id: ObjectId(id) })
-
-            return response
-                .status(200)
-                .json({ message: 'A requisição foi cancelada com sucesso' })
         default:
             response.setHeader('Allow', ['GET','POST','PUT','DELETE'])
             response.status(405).end(`Method ${method} Not Allowed`)

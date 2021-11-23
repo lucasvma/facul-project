@@ -73,7 +73,7 @@ facul-project
 │   │   │   └── mongodb.js
 │   │   ├── classes.js
 │   │   ├── comments.js
-│   │   ├── courseProgress.js
+│   │   ├── [id].js
 │   │   └── courses.js
 │   ├── class
 │   │   ├── [id].js

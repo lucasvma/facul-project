@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -27,20 +27,19 @@ import {Link} from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
-export default function SignIn(props) {
-    const [cardAnimaton, setCardAnimation] = useState("cardHidden");
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+export default function Signup(props) {
+    const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+    const [email, setEmail] = React.useState('')
+    const [password, setPassword] = React.useState('')
     setTimeout(function() {
         setCardAnimation("");
     }, 700);
     const classes = useStyles();
     const { providers, ...rest } = props;
-    const router = useRouter();
 
-    console.log('session', session())
-
-    function handleLogin() {
+    const handleLogin = () => {
+        console.log('email', email)
+        console.log('password', password)
         signIn('credentials', { email, password })
     }
 
@@ -67,7 +66,7 @@ export default function SignIn(props) {
                             <Card className={classes[cardAnimaton]}>
                                 <form className={classes.form}>
                                     <CardHeader color="primary" className={classes.cardHeader}>
-                                        <h4>Faça seu Login na Plataforma</h4>
+                                        <h4>Cadastre-se na Plataforma</h4>
                                         <div className={classes.socialLine}>
                                             <Button
                                                 justIcon
@@ -102,16 +101,11 @@ export default function SignIn(props) {
                                         </div>
                                     </CardHeader>
                                     <p className={classes.divider}>Ou Insira os Dados</p>
-                                    <CardBody
-                                        as="form"
-                                        method="post"
-                                        action="/api/auth/callback/credentials"
-                                    >
+                                    <CardBody>
                                         <CustomInput
                                             labelText="E-mail"
                                             name="email"
                                             value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
                                             formControlProps={{
                                                 fullWidth: true
                                             }}
@@ -121,14 +115,14 @@ export default function SignIn(props) {
                                                     <InputAdornment position="end">
                                                         <Email className={classes.inputIconsColor} />
                                                     </InputAdornment>
-                                                )
+                                                ),
+                                                onChange: (e) => setEmail(e.target.value)
                                             }}
                                         />
                                         <CustomInput
                                             labelText="Senha"
                                             name="password"
                                             value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
                                             formControlProps={{
                                                 fullWidth: true
                                             }}
@@ -141,19 +135,21 @@ export default function SignIn(props) {
                                                         </Icon>
                                                     </InputAdornment>
                                                 ),
-                                                autoComplete: "off"
+                                                autoComplete: "off",
+                                                onChange: (e) =>  setPassword(e.target.value)
                                             }}
                                         />
                                     </CardBody>
-                                    <CardFooter
-                                        className={classes.cardFooter}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handleLogin()
-                                        }}
-                                    >
-                                        <small>Não é cadastrado? <Link href="/signup">Clique aqui</Link></small>
-                                        <Button simple color="primary" size="lg" >
+                                    <CardFooter className={classes.cardFooter}>
+                                        <small>Já é cadastrado? <Link href="/login">Clique aqui</Link></small>
+                                        <Button
+                                            simple
+                                            color="primary" size="lg"
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                handleLogin()
+                                            }}
+                                        >
                                             Entrar
                                         </Button>
                                     </CardFooter>

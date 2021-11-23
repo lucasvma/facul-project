@@ -1,54 +1,38 @@
-import React, {useEffect, useState} from "react";
-import {List, ListItem} from "@material-ui/core";
+import React from "react";
 
-import axios from "axios";
-import {useRouter} from "next/router";
 import GridContainer from "../Grid/GridContainer";
 import {makeStyles} from "@material-ui/core/styles";
-import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/pillsStyle";
+import styles from "styles/jss/nextjs-material-kit/pages/componentsSections/navbarsStyle";
+
+import Badge from "../Badge/Badge";
+import GridItem from "../Grid/GridItem";
 
 const useStyles = makeStyles(styles);
 
-export default function RequestAuthor({ clientId }) {
+export default function RequestAuthor({ requests }) {
     const classes = useStyles();
-    const router = useRouter()
-
-    console.log('clientId', clientId)
-
-    useEffect(async () => {
-        const classes = await axios
-            .get(`/api/course/classes/615f9421b4d4246fd9cc5aec`)
-    }, [])
-
-    const handleUpdate = async (data) => {
-        console.log('handleUpdate')
-    }
-
-    const handleRemove = async (id) => {
-        await axios
-            .delete(`/api/class/${id}`)
-            .then(() => router.push("/home"))
-    }
-
-    const handleVisible = async (id, visibility) => {
-        await axios
-            .patch(`/api/class/visibility/${id}`, { visibility })
-            .then(() => props.handleClasses())
-    }
 
     return (
-        <div className={classes.section}>
-            <div className={classes.container}>
-                <div id="navigation-pills">
-                    <GridContainer justify="center">
-                        <List className={classes.list}>
-                            <ListItem className={classes.listItem}>
-                                <b>Status:</b> Em Análise
-                            </ListItem>
-                        </List>
-                    </GridContainer>
-                </div>
-            </div>
-        </div>
+        <>
+            <GridContainer  justify="center">
+                <GridItem xs={12} sm={12} md={6} justify="center" >
+                    <div className={classes.title}>
+                        <h6>Status:</h6>
+                    </div>
+
+                    <div className={classes.title}>
+                        {requests.find((request) => request.status === 0) &&
+                            <Badge color="warning">Em Análise</Badge>
+                        }
+                        {requests.find((request) => request.status === 1) &&
+                            <Badge color="success">Sucesso</Badge>
+                        }
+                        {requests.find((request) => request.status === 2) &&
+                            <Badge color="danger">Recusada</Badge>
+                        }
+                    </div>
+                </GridItem>
+            </GridContainer>
+        </>
     )
 }

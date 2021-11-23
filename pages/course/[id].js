@@ -14,6 +14,8 @@ import {connectToDatabase} from "../api/db/mongodb";
 import ListCourse from "../../components/ListCourse/ListCourse";
 import {useRouter} from "next/router";
 import {ObjectId} from "mongodb";
+import {session} from "next-auth/client";
+import axios from "axios";
 
 const useStyles = makeStyles(styles);
 
@@ -65,19 +67,36 @@ export default function CoursePage({ courseClasses }) {
 
 export const getStaticProps = async ({ params }) => {
     try {
+        const courseId = params.id
         const { db } = await connectToDatabase();
 
-        const courseCollection = await db.collection("courses");
-        const collectionClasses = await db.collection("classes");
+        const courseCollection = await db.collection("courses")
+        const collectionClasses = await db.collection("classes")
+        const courseProgressCollection = db.collection('courseProgress')
 
         const classesCourse = await courseCollection.findOne({
-            _id: ObjectId(params.id),
+            _id: ObjectId(courseId),
         });
         const classes = await collectionClasses.find().toArray();
 
         const filteredClasses = await classes.filter((grade) =>
             classesCourse.classes.includes(grade._id.toString())
         )
+
+        const classCourseProgress = await courseProgressCollection.find({
+            courseId,
+            clientId: 1
+        }, { currentProgress: 1, _id: 0 }).limit(1).toArray()
+
+        if (!classCourseProgress.length) {
+            await courseProgressCollection.insertOne({
+                courseId,
+                clientId: 1,
+                currentProgress: 0,
+                watchedClasses: [],
+                createdAt: new Date()
+            })
+        }
 
         return {
            props: {

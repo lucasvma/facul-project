@@ -14,6 +14,8 @@ import profile from "public/img/apple-icon.jpg";
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
 import RequestAuthor from "../../components/RequestAuthor/RequestAuthor";
+import axios from "axios";
+import Requests from "../../components/Requests/Requests";
 
 const useStyles = makeStyles(styles);
 
@@ -25,12 +27,17 @@ export default function ClassesPage(props) {
     classes.imgRoundedCircle,
     classes.imgFluid
   )
+  const [requests, setRequests] = useState([])
 
   const requestToBeAnAuthor = async () => {
-    console.log('salvar a request no banco')
-    console.log('hide botão de requisição')
-    console.log('Inserir request abaixo com status de em Análise')
+    await axios.post('/api/request')
+        .then((response) => console.log('Requisição feita com sucesso'))
   }
+
+  useEffect(async () => {
+    await axios.get('/api/requests')
+        .then((response) => setRequests(response.data.requests))
+  }, [])
 
   return (
     <>
@@ -65,15 +72,21 @@ export default function ClassesPage(props) {
                       Um autor pode criar e publicar novos conteúdos para o público.
                     </p>
 
-                    <Button color="primary" round onClick={() => requestToBeAnAuthor()}>
-                        Requisitar
-                    </Button>
+                    {!requests.length &&
+                      <Button
+                          color="primary"
+                          round
+                          onClick={() => requestToBeAnAuthor()}
+                      >
+                          Requisitar
+                      </Button>
+                    }
                   </>
                 </div>
               </GridItem>
             </GridContainer>
 
-            <RequestAuthor clientId="1" />
+            <Requests requests={requests} />
           </div>
         </>
       </div>

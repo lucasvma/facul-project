@@ -1,40 +1,36 @@
-import {connectToDatabase} from './db/mongodb'
-import { useSession } from 'next-auth/client'
+import {connectToDatabase} from '../../db/mongodb'
 import {ObjectId} from "mongodb";
 
 export default async (request, response) => {
-    const [ session ] = useSession()
     const {
         method,
-        body: { courseId, clientId, currentStep }
+        query: { id },
+        body: { currentProgress }
     } = request
+
+    const courseId = id
+    const clientId = 1
 
     const { db } = await connectToDatabase();
 
     const courseProgressCollection = db.collection('courseProgress')
-    const coursesCollection = db.collection('courses')
 
     switch (method) {
         case 'GET':
             const classCourseProgress = await courseProgressCollection.find({
                 courseId,
-                user: session.user.email
-            }, { classId: 1, _id: 0 }).sort({ createAt:-1 }).limit(1).toArray()
-
-            const courseClasses = await coursesCollection.find({
-                courseId,
-            }, { classes: 1 }).sort({ createAt:-1 }).limit(1).toArray()
+                clientId
+            }, { currentProgress: 1, _id: 0 }).limit(1).toArray()
 
             return response
                 .status(200)
-                .json({ 'O progresso desse curso é a aula de X: ': classCourseProgress })
+                .json({ classCourseProgress })
         case 'POST':
-            // verify currentStep by button
             await courseProgressCollection.insertOne({
                 courseId,
                 clientId,
-                currentStep,
-                watchedClasses,
+                currentProgress: 0,
+                watchedClasses: [],
                 createdAt: new Date()
             })
 
@@ -43,10 +39,9 @@ export default async (request, response) => {
                 .json({ message: 'Progresso realizado com sucesso' })
         case 'PUT':
             await courseProgressCollection.updateOne(
-                { _id: ObjectId(id) },
-                { $set: { title, description, updateAt: new Date() }
-                })
-            console.log(`class was updated: ${id}`)
+                { courseId: id },
+                { $set: { currentProgress, updateAt: new Date() }})
+            console.log(`progress was updated to: ${currentProgress}`)
             return response
                 .status(200)
                 .json({ message: 'Progresso atualizado com sucesso' })
