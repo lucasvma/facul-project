@@ -11,23 +11,15 @@ import Parallax from "../components/Parallax/Parallax";
 import Footer from "../components/Footer/Footer";
 import Home from "../components/Home/Home";
 import { useSession } from 'next-auth/client'
-import Router, {useRouter} from "next/router";
-import {CircularProgress} from "@material-ui/core";
+import Router from "next/router";
 
 const useStyles = makeStyles(styles);
 
 export default function Components(props) {
     const classes = useStyles();
     const { ...rest } = props;
-    const imageClasses = classNames(
-        classes.imgRaised,
-        classes.imgRoundedCircle,
-        classes.imgFluid
-    )
 
-    const [modal, setModal] = useState(false)
     const [grade, setGrades] = useState([])
-
     const [session] = useSession()
 
     console.log('session loggedIn', session)
@@ -67,32 +59,18 @@ export default function Components(props) {
             />
             <Parallax small filter responsive image="/img/landing-bg.jpg" />
             <div className={classNames(classes.main, classes.mainRaised)}>
-                {!session && (
-                    <>
-                        {/*{router.push("/signin")}*/}
-                        <h2>Not Signed In</h2>
-                    </>
-                )}
-                {session && (
-                    <>
-                        <div className={classes.container}>
-                            <Home classes={grade} />
-                        </div>
-                    </>
-                )}
+                <>
+                    <div className={classes.container}>
+                        <Home classes={grade} />
+                    </div>
+                </>
             </div>
             <Footer />
         </>
     );
 }
 
-export const getStaticProps = async (context) => {
-    // if (!session) {
-    //     context.res.writeHead(302, { Location: '/login' })
-    //     context.res.end()
-    //     return {}
-    // }
-
+export const getStaticProps = async () => {
     const uri = process.env.MONGODB_URI
     const client = await MongoClient.connect(uri, {
         useNewUrlParser: true,

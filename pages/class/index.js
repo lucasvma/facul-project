@@ -10,12 +10,11 @@ import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
 import axios from 'axios';
 
-import profile from "public/img/apple-icon.jpg";
-
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
 import ModalClass from "components/ModalClass/ModalClass";
 import ListClasses from "components/ListClasses/ListClasses";
+import {useSession} from "next-auth/client";
 
 const useStyles = makeStyles(styles);
 
@@ -30,6 +29,7 @@ export default function ClassesPage(props) {
 
   const [modal, setModal] = useState(false)
   const [grade, setGrade] = useState([])
+  const [session] = useSession()
 
   useEffect(() => {
     handleClasses()
@@ -61,9 +61,11 @@ export default function ClassesPage(props) {
             <GridContainer justify="center">
               <GridItem xs={12} sm={12} md={6}>
                 <div className={classes.profile}>
-                  <div>
-                    <img src={profile} alt="..." className={imageClasses} />
-                  </div>
+                  {session &&
+                    <>
+                      <img src={session.user.image} alt="..." className={imageClasses}/>
+                    </>
+                  }
                   <div className={classes.name}>
                     <h3 className={classes.title}>Cadastro de Aula</h3>
                   </div>

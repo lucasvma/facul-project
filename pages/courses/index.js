@@ -8,8 +8,6 @@ import GridItem from "components/Grid/GridItem.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
 
-import profile from "public/img/apple-icon.jpg";
-
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
 import Button from "../../components/CustomButtons/Button";
@@ -33,8 +31,7 @@ export default function CoursesPage(props) {
     const [modalAssociation, setModalAssociation] = useState(false)
     const [courses, setCourses] = useState([])
     const [data, setData] = useState(null)
-
-    const [session, loading] = useSession()
+    const [session] = useSession()
 
     useEffect(() => {
         handleCourses()
@@ -73,9 +70,11 @@ export default function CoursesPage(props) {
                           <GridContainer justify="center">
                               <GridItem xs={12} sm={12} md={6}>
                                   <div className={classes.profile}>
-                                      <div>
-                                          <img src={profile} alt="..." className={imageCourses} />
-                                      </div>
+                                      {session &&
+                                          <>
+                                              <img src={session.user.image} alt="..." className={imageCourses}/>
+                                          </>
+                                      }
                                       <div className={classes.name}>
                                           <h3 className={classes.title}>Cadastro do Curso</h3>
                                       </div>

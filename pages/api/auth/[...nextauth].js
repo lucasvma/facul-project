@@ -2,7 +2,6 @@ import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 
 const { GITHUB_ID, GITHUB_SECRET, AUTH_SECRET, JWT_SECRET, GOOGLE_ID, GOOGLE_SECRET, MONGODB_URI } = process.env
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 
 export default NextAuth({
     providers: [

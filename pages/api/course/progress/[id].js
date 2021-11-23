@@ -1,15 +1,14 @@
 import {connectToDatabase} from '../../db/mongodb'
-import {ObjectId} from "mongodb";
+import {useSession} from "next-auth/client";
 
 export default async (request, response) => {
     const {
         method,
-        query: { id },
         body: { currentProgress }
     } = request
-
-    const courseId = id
-    const clientId = 1
+    const [session] = useSession();
+    const email = session.user.email
+    const courseId = request.query.id
 
     const { db } = await connectToDatabase();
 
@@ -17,10 +16,10 @@ export default async (request, response) => {
 
     switch (method) {
         case 'GET':
-            const classCourseProgress = await courseProgressCollection.find({
+            const classCourseProgress = await courseProgressCollection.findOne({
                 courseId,
-                clientId
-            }, { currentProgress: 1, _id: 0 }).limit(1).toArray()
+                email
+            }, { currentProgress: 1, _id: 0 })
 
             return response
                 .status(200)
@@ -28,7 +27,7 @@ export default async (request, response) => {
         case 'POST':
             await courseProgressCollection.insertOne({
                 courseId,
-                clientId,
+                email,
                 currentProgress: 0,
                 watchedClasses: [],
                 createdAt: new Date()

@@ -5,10 +5,8 @@ export default async (request, response) => {
     const {
         method,
         query: { id },
-        body: { status }
+        body: { status, email }
     } = request
-
-    const clientId = 1
 
     const { db } = await connectToDatabase();
 
@@ -16,14 +14,14 @@ export default async (request, response) => {
 
     switch (method) {
         case 'GET':
-            const requests = await collection.find({ clientId }).toArray()
+            const requests = await collection.find({ email }).toArray()
 
             return response
                 .status(200)
                 .json({ requests })
         case 'POST':
             await collection.insertOne({
-                clientId,
+                email,
                 status: 0,
                 createdAt: new Date(),
                 updateAt: new Date()

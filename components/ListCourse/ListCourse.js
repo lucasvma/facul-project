@@ -31,7 +31,7 @@ export default function ListCourse({courseClasses}) {
         await axios.get(`/api/course/progress/${courseId}`)
             .then((response) => {
                 if (response.data.classCourseProgress !== undefined) {
-                    setActiveClass(response.data.classCourseProgress[0].currentProgress)
+                    setActiveClass(response.data.classCourseProgress.currentProgress)
                     setLoadingRequest(false)
                 }
             })

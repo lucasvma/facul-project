@@ -11,6 +11,7 @@ import {
 import {useEffect, useState} from "react";
 import {Check, Close, Remove} from "@material-ui/icons";
 import axios from "axios";
+import {useSession} from "next-auth/client";
 
 function createData(name, approve, disapprove) {
     return {
@@ -119,6 +120,7 @@ export default function Requests({ requests }) {
     const [orderBy, setOrderBy] = useState('calories');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [session] = useSession()
 
     requests.forEach(request => {
         const approve = request.status === 0 ? <Check className={request._id} onClick={() => handleApprove(request._id)} /> : <Remove />
@@ -133,12 +135,12 @@ export default function Requests({ requests }) {
     };
 
     const handleApprove = async (requestId) => {
-        await axios.put(`/api/request/${requestId}`, { status: 1 })
+        await axios.put(`/api/request/${requestId}`, { status: 1, email: session.user.email })
             .then((response) => console.log('Requisição aprovada com sucesso'))
     }
 
     const handleDisapprove = async (requestId) => {
-        await axios.put(`/api/request/${requestId}`, { status: 2 })
+        await axios.put(`/api/request/${requestId}`, { status: 2, email: session.user.email })
             .then((response) => console.log('Requisição reprovada com sucesso'))
     }
 
