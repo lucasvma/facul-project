@@ -14,7 +14,6 @@ import {connectToDatabase} from "../api/db/mongodb";
 import ListCourse from "../../components/ListCourse/ListCourse";
 import {useRouter} from "next/router";
 import {ObjectId} from "mongodb";
-import {useSession} from "next-auth/client";
 
 const useStyles = makeStyles(styles);
 
@@ -65,47 +64,44 @@ export default function CoursePage({courseClasses}) {
 }
 
 export const getStaticProps = async ({params}) => {
-    try {
-        const courseId = params.id
-        const {db} = await connectToDatabase()
-        const [session] = useSession()
-        const email = session?.user.email
+    const courseId = params.id
+    const {db} = await connectToDatabase()
+    // const [session] = useSession()
+    // const email = session?.user.email
+    const email = "venturaml21@gmail.com"
 
-        const courseCollection = await db.collection("courses")
-        const collectionClasses = await db.collection("classes")
-        const courseProgressCollection = db.collection('courseProgress')
+    const courseCollection = await db.collection("courses")
+    const collectionClasses = await db.collection("classes")
+    const courseProgressCollection = db.collection('courseProgress')
 
-        const classesCourse = await courseCollection.findOne({
-            _id: ObjectId(courseId),
-        });
-        const classes = await collectionClasses.find().toArray();
+    const classesCourse = await courseCollection.findOne({
+        _id: ObjectId(courseId),
+    });
+    const classes = await collectionClasses.find().toArray();
 
-        const filteredClasses = await classes.filter((grade) =>
-            classesCourse.classes.includes(grade._id.toString())
-        )
+    const filteredClasses = await classes.filter((grade) =>
+        classesCourse.classes.includes(grade._id.toString())
+    )
 
-        const classCourseProgress = await courseProgressCollection.findOne({
+    const classCourseProgress = await courseProgressCollection.findOne({
+        courseId,
+        email
+    }, {currentProgress: 1, _id: 0})
+
+    if (!classCourseProgress) {
+        await courseProgressCollection.insertOne({
             courseId,
-            email
-        }, {currentProgress: 1, _id: 0})
+            email,
+            currentProgress: 0,
+            watchedClasses: [],
+            createdAt: new Date()
+        })
+    }
 
-        if (!classCourseProgress) {
-            await courseProgressCollection.insertOne({
-                courseId,
-                email,
-                currentProgress: 0,
-                watchedClasses: [],
-                createdAt: new Date()
-            })
+    return {
+        props: {
+            courseClasses: JSON.parse(JSON.stringify(filteredClasses))
         }
-
-        return {
-            props: {
-                courseClasses: JSON.parse(JSON.stringify(filteredClasses))
-            }
-        }
-    } catch (e) {
-        console.log('error', e)
     }
 }
 

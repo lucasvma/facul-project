@@ -1,37 +1,21 @@
 import * as React from 'react';
-import {useEffect} from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 import {Avatar, CircularProgress, ListItem, ListItemAvatar, ListItemText, Switch,} from "@material-ui/core";
-import axios from "axios";
 import {useSession} from "next-auth/client";
 import List from "@material-ui/core/List";
+import {makeStyles} from "@material-ui/core/styles";
+import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/basicsStyle";
 
-function ListItemButton(props) {
-    return null;
-}
+const useStyles = makeStyles(styles);
 
-ListItemButton.propTypes = {children: PropTypes.node};
-export default function Users() {
+export default function Users({ users }) {
+    const classes = useStyles();
     const [session, loading] = useSession()
-    const [checked, setChecked] = React.useState([1]);
-    const [users, setUsers] = React.useState([]);
+    const [checked, setChecked] = useState(true);
 
-    useEffect(async () => {
-        await axios.get('/api/users')
-            .then((response) => setUsers(response.data.users))
-    }, [])
-
-    const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        setChecked(newChecked);
+    const handleToggle = (userId) => () => {
+        console.log('blockUser', userId)
+        setChecked(!checked);
     };
 
     if (loading) {
@@ -40,30 +24,34 @@ export default function Users() {
 
     return (
         <List dense sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
-            {[0, 1, 2, 3].map((value) => {
-                const labelId = `checkbox-list-secondary-label-${value}`;
+            {users.map((user) => {
+                let userId = user?._id
                 return (
-                    <ListItem
-                        key={value}
-                        secondaryAction={
+                    <>
+                        <ListItem
+                            key={userId}
+                            disablePadding
+                        >
+                            <ListItemAvatar>
+                                <Avatar src={user?.image} />
+                            </ListItemAvatar>
+                            <ListItemText id={userId} primary={user?.name} />
+                            Bloqueado
                             <Switch
-                                edge="end"
-                                onChange={handleToggle('bluetooth')}
-                                checked={checked.indexOf('bluetooth') !== -1}
-                                inputProps={{
-                                    'aria-labelledby': 'switch-list-label-bluetooth',
+                                onChange={handleToggle(userId)}
+                                checked={checked}
+                                inputProps='checked'
+                                classes={{
+                                    switchBase: classes.switchBase,
+                                    checked: classes.switchChecked,
+                                    thumb: classes.switchIcon,
+                                    track: classes.switchBar,
+                                    label: classes.label,
                                 }}
                             />
-                        }
-                        disablePadding
-                    >
-                        <ListItemButton>
-                            <ListItemAvatar>
-                                <Avatar src={`${session?.user?.image}`}/>
-                            </ListItemAvatar>
-                            <ListItemText id={labelId} primary={`Line item ${value + 1}`}/>
-                        </ListItemButton>
-                    </ListItem>
+                            Ativo
+                        </ListItem>
+                    </>
                 );
             })}
         </List>
