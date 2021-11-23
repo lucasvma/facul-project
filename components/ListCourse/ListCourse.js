@@ -115,8 +115,8 @@ export default function ListCourse({courseClasses}) {
                             </GridItem>
                         ) : (
                             <GridItem xs={12} sm={12} md={12} lg={6}>
-                                {courseClasses.length === 0 && <h2>'Não há aulas disponíveis nesse curso'</h2>}
-                                {courseClasses.length > 0 &&
+                                {courseClasses?.length === 0 && <h2>'Não há aulas disponíveis nesse curso'</h2>}
+                                {courseClasses?.length > 0 &&
                                 <NavPills
                                     color="primary"
                                     horizontal={{

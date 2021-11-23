@@ -12,23 +12,12 @@ import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 import {makeStyles} from "@material-ui/core/styles";
 import {connectToDatabase} from "../api/db/mongodb";
 import ListCourse from "../../components/ListCourse/ListCourse";
-import {useRouter} from "next/router";
 import {ObjectId} from "mongodb";
 
 const useStyles = makeStyles(styles);
 
 export default function CoursePage({courseClasses}) {
     const classes = useStyles()
-
-    const router = useRouter();
-
-    if (router.isFallback) {
-        return (
-            <>
-                <h2>Loading</h2>
-            </>
-        )
-    }
 
     return (
         <>
@@ -66,7 +55,6 @@ export default function CoursePage({courseClasses}) {
 export const getStaticProps = async ({params}) => {
     const courseId = params.id
     const {db} = await connectToDatabase()
-    // const [session] = useSession()
     // const email = session?.user.email
     const email = "venturaml21@gmail.com"
 
