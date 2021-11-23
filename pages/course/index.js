@@ -63,7 +63,7 @@ export default function CoursesPage(props) {
                                 <div className={classes.profile}>
                                     {session &&
                                     <>
-                                        <img src={session.user.image} alt="..." className={imageClasses}/>
+                                        <img src={session?.user?.image} alt="..." className={imageClasses}/>
                                     </>
                                     }
                                     <div className={classes.name}>

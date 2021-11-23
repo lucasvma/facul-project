@@ -1,14 +1,19 @@
 import * as React from 'react';
+import {useState} from 'react';
 import PropTypes from 'prop-types';
 import {
     Box,
-    Paper, Table, TableBody,
-    TableCell, TableContainer,
-    TableHead, TablePagination,
+    CircularProgress,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
     TableRow,
     TableSortLabel,
 } from "@material-ui/core";
-import {useEffect, useState} from "react";
 import {Check, Close, Remove} from "@material-ui/icons";
 import axios from "axios";
 import {useSession} from "next-auth/client";
@@ -73,7 +78,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-    const { order, orderBy, rowCount, onRequestSort } =
+    const {order, orderBy, rowCount, onRequestSort} =
         props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
@@ -115,16 +120,22 @@ EnhancedTableHead.propTypes = {
     rowCount: PropTypes.number.isRequired,
 };
 
-export default function Requests({ requests }) {
+export default function Requests({requests}) {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('calories');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [session] = useSession()
+    const [session, loading] = useSession()
+
+    if (loading) {
+        return <CircularProgress/>
+    }
 
     requests.forEach(request => {
-        const approve = request.status === 0 ? <Check className={request._id} onClick={() => handleApprove(request._id)} /> : <Remove />
-        const disapprove = request.status === 0 ? <Close className={request._id} onClick={() => handleDisapprove(request._id)} /> : <Remove />
+        const approve = request.status === 0 ?
+            <Check className={request._id} onClick={() => handleApprove(request._id)}/> : <Remove/>
+        const disapprove = request.status === 0 ?
+            <Close className={request._id} onClick={() => handleDisapprove(request._id)}/> : <Remove/>
         rows.push(createData(request._id, approve, disapprove))
     })
 
@@ -135,12 +146,12 @@ export default function Requests({ requests }) {
     };
 
     const handleApprove = async (requestId) => {
-        await axios.put(`/api/request/${requestId}`, { status: 1, email: session.user.email })
+        await axios.put(`/api/request/${requestId}`, {status: 1, email: session.user.email})
             .then((response) => console.log('Requisição aprovada com sucesso'))
     }
 
     const handleDisapprove = async (requestId) => {
-        await axios.put(`/api/request/${requestId}`, { status: 2, email: session.user.email })
+        await axios.put(`/api/request/${requestId}`, {status: 2, email: session.user.email})
             .then((response) => console.log('Requisição reprovada com sucesso'))
     }
 
@@ -150,12 +161,26 @@ export default function Requests({ requests }) {
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+    if (!loading && !rows.length) {
+        return (
+            <Box sx={{width: '100%'}}>
+                <Paper sx={{width: '100%', mb: 2}}>
+                    <>
+                        <h3>
+                            <small>Não possui requisições</small>
+                        </h3>
+                    </>
+                </Paper>
+            </Box>
+        )
+    }
+
     return (
-        <Box sx={{ width: '100%' }}>
-            <Paper sx={{ width: '100%', mb: 2 }}>
+        <Box sx={{width: '100%'}}>
+            <Paper sx={{width: '100%', mb: 2}}>
                 <TableContainer>
                     <Table
-                        sx={{ minWidth: 750 }}
+                        sx={{minWidth: 750}}
                         aria-labelledby="tableTitle"
                         size={'medium'}
                     >
@@ -196,7 +221,7 @@ export default function Requests({ requests }) {
                                         height: (53) * emptyRows,
                                     }}
                                 >
-                                    <TableCell colSpan={6} />
+                                    <TableCell colSpan={6}/>
                                 </TableRow>
                             )}
                         </TableBody>

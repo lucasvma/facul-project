@@ -1,6 +1,6 @@
 # Share info
 
->Share Info system, a forum in which people can teach a specific content to another through textual
+> Share Info system, a forum in which people can teach a specific content to another through textual
 > classes. Through a paradigm shift caused by COVID-19 in the context of learning, the need to
 > develop a  virtual and remote learning system, in order to promote information sharing of the
 > most varied people, like students, teachers, scientists, researchers, among others. Information
@@ -10,6 +10,7 @@
 ### Tools and Technologies
 
 Following the requirements, we will work with the following tools and technologies:
+
 - Npm 7.4.3
 - NodeJS 15.7.0
 - MongoDB
@@ -18,7 +19,9 @@ Following the requirements, we will work with the following tools and technologi
 - Material-ui/core 4.11.4
 
 ### Installation
+
 To install and run the project you want to execute the following commands:
+
 ```bash
 #Clone the project
 $ git clone https://github.com/lucasvma/facul-project
@@ -32,6 +35,7 @@ $ npm run dev
 ```
 
 ## File Structure
+
 Within the download you'll find the following directories and files:
 
 ```
@@ -160,7 +164,6 @@ facul-project
         ├── TeamSection.js
         └── WorkSection.js
 ```
-
 
 ## Browser Support
 

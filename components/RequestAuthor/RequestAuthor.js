@@ -9,26 +9,26 @@ import GridItem from "../Grid/GridItem";
 
 const useStyles = makeStyles(styles);
 
-export default function RequestAuthor({ requests }) {
+export default function RequestAuthor({requests}) {
     const classes = useStyles();
 
     return (
         <>
-            <GridContainer  justify="center">
-                <GridItem xs={12} sm={12} md={6} justify="center" >
+            <GridContainer justify="center">
+                <GridItem xs={12} sm={12} md={6} justify="center">
                     <div className={classes.title}>
                         <h6>Status:</h6>
                     </div>
 
                     <div className={classes.title}>
                         {requests.find((request) => request.status === 0) &&
-                            <Badge color="warning">Em Análise</Badge>
+                        <Badge color="warning">Em Análise</Badge>
                         }
                         {requests.find((request) => request.status === 1) &&
-                            <Badge color="success">Sucesso</Badge>
+                        <Badge color="success">Sucesso</Badge>
                         }
                         {requests.find((request) => request.status === 2) &&
-                            <Badge color="danger">Recusada</Badge>
+                        <Badge color="danger">Recusada</Badge>
                         }
                     </div>
                 </GridItem>

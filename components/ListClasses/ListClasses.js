@@ -1,7 +1,7 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/navbarsStyle";
-import {List, Link, ListItem, ListItemAvatar, Avatar, ListItemText} from "@material-ui/core";
+import {Avatar, Link, List, ListItem, ListItemAvatar, ListItemText} from "@material-ui/core";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import CommonActionsClass from "../CommonActionsClass/CommonActionsClass";
@@ -24,7 +24,7 @@ export default function ListClasses(props) {
 
     const handleVisible = async (id, visibility) => {
         await axios
-            .patch(`/api/class/visibility/${id}`, { visibility })
+            .patch(`/api/class/visibility/${id}`, {visibility})
             .then(() => props.handleClasses())
     }
 
@@ -34,7 +34,7 @@ export default function ListClasses(props) {
                 {props.classes.map((grade) => (
                     <ListItem>
                         <ListItemAvatar>
-                            <Avatar alt="Class Image" src="public/img/faces/kendall.jpg" />
+                            <Avatar alt="Class Image" src="public/img/faces/kendall.jpg"/>
                         </ListItemAvatar>
 
                         <ListItemText
@@ -52,7 +52,8 @@ export default function ListClasses(props) {
                             className={classes.listItem}
                         />
 
-                        <CommonActionsClass grade={grade} handleUpdate={handleUpdate} handleRemove={handleRemove} handleVisible={handleVisible} />
+                        <CommonActionsClass grade={grade} handleUpdate={handleUpdate} handleRemove={handleRemove}
+                                            handleVisible={handleVisible}/>
                     </ListItem>
                 ))}
             </List>

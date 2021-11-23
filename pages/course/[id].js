@@ -14,12 +14,11 @@ import {connectToDatabase} from "../api/db/mongodb";
 import ListCourse from "../../components/ListCourse/ListCourse";
 import {useRouter} from "next/router";
 import {ObjectId} from "mongodb";
-import {session} from "next-auth/client";
-import axios from "axios";
+import {useSession} from "next-auth/client";
 
 const useStyles = makeStyles(styles);
 
-export default function CoursePage({ courseClasses }) {
+export default function CoursePage({courseClasses}) {
     const classes = useStyles()
 
     const router = useRouter();
@@ -37,38 +36,40 @@ export default function CoursePage({ courseClasses }) {
             <Header
                 color="transparent"
                 brand="Share Info"
-                rightLinks={<HeaderLinks />}
+                rightLinks={<HeaderLinks/>}
                 fixed
                 changeColorOnScroll={{
                     height: 200,
                     color: "white"
                 }}
             />
-            <Parallax small filter responsive image="/img/landing-bg.jpg" />
+            <Parallax small filter responsive image="/img/landing-bg.jpg"/>
             <div className={classNames(classes.main, classes.mainRaised)}>
                 <div className={classes.container}>
                     <GridContainer justify="center">
                         <GridItem xs={12} sm={12} md={6}>
                             <div className={classes.profile}>
                                 <div className={classes.name}>
-                                    <h3 className={classes.title} />
+                                    <h3 className={classes.title}/>
                                 </div>
                             </div>
                         </GridItem>
                     </GridContainer>
 
-                    <ListCourse courseClasses={courseClasses} />
+                    <ListCourse courseClasses={courseClasses}/>
                 </div>
             </div>
-            <Footer />
+            <Footer/>
         </>
     )
 }
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps = async ({params}) => {
     try {
         const courseId = params.id
-        const { db } = await connectToDatabase();
+        const {db} = await connectToDatabase()
+        const [session] = useSession()
+        const email = session?.user.email
 
         const courseCollection = await db.collection("courses")
         const collectionClasses = await db.collection("classes")
@@ -83,15 +84,15 @@ export const getStaticProps = async ({ params }) => {
             classesCourse.classes.includes(grade._id.toString())
         )
 
-        const classCourseProgress = await courseProgressCollection.find({
+        const classCourseProgress = await courseProgressCollection.findOne({
             courseId,
-            clientId: 1
-        }, { currentProgress: 1, _id: 0 }).limit(1).toArray()
+            email
+        }, {currentProgress: 1, _id: 0})
 
-        if (!classCourseProgress.length) {
+        if (!classCourseProgress) {
             await courseProgressCollection.insertOne({
                 courseId,
-                clientId: 1,
+                email,
                 currentProgress: 0,
                 watchedClasses: [],
                 createdAt: new Date()
@@ -99,9 +100,9 @@ export const getStaticProps = async ({ params }) => {
         }
 
         return {
-           props: {
-               courseClasses: JSON.parse(JSON.stringify(filteredClasses))
-           }
+            props: {
+                courseClasses: JSON.parse(JSON.stringify(filteredClasses))
+            }
         }
     } catch (e) {
         console.log('error', e)
@@ -109,13 +110,13 @@ export const getStaticProps = async ({ params }) => {
 }
 
 export async function getStaticPaths() {
-    const { db } = await connectToDatabase();
+    const {db} = await connectToDatabase();
     const collection = db.collection('courses')
     const courses = await collection.find().toArray()
 
     const paths = []
 
-    JSON.parse(JSON.stringify(courses)).forEach(course => paths.push({ params: { id: course._id }}))
+    JSON.parse(JSON.stringify(courses)).forEach(course => paths.push({params: {id: course._id}}))
 
     return {
         fallback: true,

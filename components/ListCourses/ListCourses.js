@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/navbarsStyle";
-import {List, Link, ListItem, ListItemAvatar, Avatar, ListItemText} from "@material-ui/core";
+import {Avatar, Link, List, ListItem, ListItemAvatar, ListItemText} from "@material-ui/core";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import CommonActionsCourse from "../CommonActionsCourse/CommonActionsCourse";
@@ -23,7 +23,7 @@ export default function ListCourses(props) {
 
     const handleVisible = async (id, visibility) => {
         await axios
-            .patch(`/api/course/visibility/${id}`, { visibility })
+            .patch(`/api/course/visibility/${id}`, {visibility})
             .then(() => props.handleCourses())
     }
 
@@ -33,7 +33,7 @@ export default function ListCourses(props) {
                 {props.courses.map((course) => (
                     <ListItem>
                         <ListItemAvatar>
-                            <Avatar alt="Course Image" src="public/img/faces/kendall.jpg" />
+                            <Avatar alt="Course Image" src="public/img/faces/kendall.jpg"/>
                         </ListItemAvatar>
 
                         <ListItemText
@@ -51,7 +51,8 @@ export default function ListCourses(props) {
                             className={classes.listItem}
                         />
 
-                        <CommonActionsCourse course={course} handleUpdate={handleUpdate} handleRemove={handleRemove} handleVisible={handleVisible} handleCourses={props.handleCourses} />
+                        <CommonActionsCourse course={course} handleUpdate={handleUpdate} handleRemove={handleRemove}
+                                             handleVisible={handleVisible} handleCourses={props.handleCourses}/>
                     </ListItem>
                 ))}
             </List>

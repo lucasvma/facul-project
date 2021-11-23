@@ -4,7 +4,7 @@ import classNames from "classnames";
 // react components for routing our app without refresh
 import Link from "next/link";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 // @material-ui/icons
 // core components
 import Header from "components/Header/Header.js";
@@ -34,60 +34,60 @@ import styles from "styles/jss/nextjs-material-kit/pages/components.js";
 const useStyles = makeStyles(styles);
 
 export default function Components(props) {
-  const classes = useStyles();
-  const { ...rest } = props;
-  return (
-    <div>
-      <Header
-        brand="NextJS Material Kit"
-        rightLinks={<HeaderLinks />}
-        fixed
-        color="transparent"
-        changeColorOnScroll={{
-          height: 400,
-          color: "white",
-        }}
-        {...rest}
-      />
-      <Parallax image="/img/nextjs_header.jpg">
-        <div className={classes.container}>
-          <GridContainer>
-            <GridItem>
-              <div className={classes.brand}>
-                <h1 className={classes.title}>NextJS Material Kit.</h1>
-                <h3 className={classes.subtitle}>
-                  A Badass Material Kit based on Material-UI and NextJS.
-                </h3>
-              </div>
-            </GridItem>
-          </GridContainer>
-        </div>
-      </Parallax>
+    const classes = useStyles();
+    const {...rest} = props;
+    return (
+        <div>
+            <Header
+                brand="NextJS Material Kit"
+                rightLinks={<HeaderLinks/>}
+                fixed
+                color="transparent"
+                changeColorOnScroll={{
+                    height: 400,
+                    color: "white",
+                }}
+                {...rest}
+            />
+            <Parallax image="/img/nextjs_header.jpg">
+                <div className={classes.container}>
+                    <GridContainer>
+                        <GridItem>
+                            <div className={classes.brand}>
+                                <h1 className={classes.title}>NextJS Material Kit.</h1>
+                                <h3 className={classes.subtitle}>
+                                    A Badass Material Kit based on Material-UI and NextJS.
+                                </h3>
+                            </div>
+                        </GridItem>
+                    </GridContainer>
+                </div>
+            </Parallax>
 
-      <div className={classNames(classes.main, classes.mainRaised)}>
-        <SectionBasics />
-        <SectionNavbars />
-        <SectionTabs />
-        <SectionPills />
-        <SectionNotifications />
-        <SectionTypography />
-        <SectionJavascript />
-        <SectionCarousel />
-        <SectionCompletedExamples />
-        <SectionLogin />
-        <GridItem md={12} className={classes.textCenter}>
-          <Link href="/login">
-            <a className={classes.link}>
-              <Button color="primary" size="lg" simple>
-                View Login Page
-              </Button>
-            </a>
-          </Link>
-        </GridItem>
-        <SectionExamples />
-        <SectionDownload />
-      </div>
-      <Footer />
-    </div>
-  );
+            <div className={classNames(classes.main, classes.mainRaised)}>
+                <SectionBasics/>
+                <SectionNavbars/>
+                <SectionTabs/>
+                <SectionPills/>
+                <SectionNotifications/>
+                <SectionTypography/>
+                <SectionJavascript/>
+                <SectionCarousel/>
+                <SectionCompletedExamples/>
+                <SectionLogin/>
+                <GridItem md={12} className={classes.textCenter}>
+                    <Link href="/login">
+                        <a className={classes.link}>
+                            <Button color="primary" size="lg" simple>
+                                View Login Page
+                            </Button>
+                        </a>
+                    </Link>
+                </GridItem>
+                <SectionExamples/>
+                <SectionDownload/>
+            </div>
+            <Footer/>
+        </div>
+    );
 }

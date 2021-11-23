@@ -20,7 +20,7 @@ const useStyles = makeStyles(styles);
 
 export default function CoursesPage(props) {
     const classes = useStyles();
-    const { ...rest } = props;
+    const {...rest} = props;
     const imageCourses = classNames(
         classes.imgRaised,
         classes.imgRoundedCircle,
@@ -50,55 +50,58 @@ export default function CoursesPage(props) {
 
     }
 
-  return (
-      <div>
-          <Header
-              color="transparent"
-              brand="Share Info"
-              rightLinks={<HeaderLinks />}
-              fixed
-              changeColorOnScroll={{
-                  height: 200,
-                  color: "white"
-              }}
-              {...rest}
-          />
-          <Parallax small filter responsive image="/img/landing-bg.jpg" />
-          <div className={classNames(classes.main, classes.mainRaised)}>
-                  <div>
-                      <div className={classes.container}>
-                          <GridContainer justify="center">
-                              <GridItem xs={12} sm={12} md={6}>
-                                  <div className={classes.profile}>
-                                      {session &&
-                                          <>
-                                              <img src={session.user.image} alt="..." className={imageCourses}/>
-                                          </>
-                                      }
-                                      <div className={classes.name}>
-                                          <h3 className={classes.title}>Cadastro do Curso</h3>
-                                      </div>
+    return (
+        <div>
+            <Header
+                color="transparent"
+                brand="Share Info"
+                rightLinks={<HeaderLinks/>}
+                fixed
+                changeColorOnScroll={{
+                    height: 200,
+                    color: "white"
+                }}
+                {...rest}
+            />
+            <Parallax small filter responsive image="/img/landing-bg.jpg"/>
+            <div className={classNames(classes.main, classes.mainRaised)}>
+                <div>
+                    <div className={classes.container}>
+                        <GridContainer justify="center">
+                            <GridItem xs={12} sm={12} md={6}>
+                                <div className={classes.profile}>
+                                    {session &&
+                                    <>
+                                        <img src={session?.user?.image} alt="..." className={imageCourses}/>
+                                    </>
+                                    }
+                                    <div className={classes.name}>
+                                        <h3 className={classes.title}>Cadastro do Curso</h3>
+                                    </div>
 
-                                      <div>
-                                          <Button color="primary" round onClick={() => setModalEdit(true)}>
-                                              Novo Curso
-                                          </Button>
+                                    <div>
+                                        <Button color="primary" round onClick={() => setModalEdit(true)}>
+                                            Novo Curso
+                                        </Button>
 
-                                          <ModalCourse modalEdit={modalEdit} setModalEdit={setModalEdit} handleCourses={handleCourses} classes={classes} dataToChange={data} />
-                                      </div>
-                                  </div>
-                              </GridItem>
-                          </GridContainer>
+                                        <ModalCourse modalEdit={modalEdit} setModalEdit={setModalEdit}
+                                                     handleCourses={handleCourses} classes={classes}
+                                                     dataToChange={data}/>
+                                    </div>
+                                </div>
+                            </GridItem>
+                        </GridContainer>
 
-                          <ListCourses setModalEdit={setModalEdit} handleCourses={handleCourses} courses={courses} setData={setData} />
-                      </div>
-                  </div>
-              </div>
-          <Footer />
-      </div>
-  );
+                        <ListCourses setModalEdit={setModalEdit} handleCourses={handleCourses} courses={courses}
+                                     setData={setData}/>
+                    </div>
+                </div>
+            </div>
+            <Footer/>
+        </div>
+    );
 }
 
 export function getStaticProps() {
-  return { props: { courses: '' } }
+    return {props: {courses: ''}}
 }

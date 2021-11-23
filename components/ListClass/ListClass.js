@@ -20,7 +20,7 @@ import Dashboard from "@material-ui/icons/Dashboard";
 
 const useStyles = makeStyles(styles);
 
-export default function ListClass({ courseClasses }) {
+export default function ListClass({courseClasses}) {
     const classes = useStyles();
     const router = useRouter()
 
@@ -46,7 +46,7 @@ export default function ListClass({ courseClasses }) {
 
     const handleVisible = async (id, visibility) => {
         await axios
-            .patch(`/api/class/visibility/${id}`, { visibility })
+            .patch(`/api/class/visibility/${id}`, {visibility})
             .then(() => props.handleClasses())
     }
 
@@ -55,54 +55,54 @@ export default function ListClass({ courseClasses }) {
             <div className={classes.container}>
                 <div id="navigation-pills">
                     <GridContainer justify="center">
-                            <Header
-                                color="transparent"
-                                leftLinks={
-                                    <ListItem>
-                                        <Button
-                                            justIcon
-                                            href="/classes"
-                                            color="primary"
-                                        >
-                                            <KeyboardBackspaceIcon />
-                                        </Button>
-                                    </ListItem>
-                                }
-                                rightLinks={
-                                    <ListItem>
-                                        <Button
-                                            justIcon
-                                            color="primary"
-                                            // onClick={() => handleVisible(grade.id, grade.visibility)}
-                                        >
-                                            {'grade.visibility' ? <VisibilityIcon /> : <VisibilityOff />}
-                                        </Button>
-                                        <Button
-                                            justIcon
-                                            color="primary"
-                                            // onClick={() => handleUpdate(grade)}
-                                        >
-                                            <EditIcon />
-                                        </Button>
-                                        <Button
-                                            justIcon
-                                            color="primary"
-                                            // onClick={() => handleRemove(grade.id)}
-                                        >
-                                            <DeleteIcon />
-                                        </Button>
-                                    </ListItem>
-                                }
-                            />
+                        <Header
+                            color="transparent"
+                            leftLinks={
+                                <ListItem>
+                                    <Button
+                                        justIcon
+                                        href="/classes"
+                                        color="primary"
+                                    >
+                                        <KeyboardBackspaceIcon/>
+                                    </Button>
+                                </ListItem>
+                            }
+                            rightLinks={
+                                <ListItem>
+                                    <Button
+                                        justIcon
+                                        color="primary"
+                                        // onClick={() => handleVisible(grade.id, grade.visibility)}
+                                    >
+                                        {'grade.visibility' ? <VisibilityIcon/> : <VisibilityOff/>}
+                                    </Button>
+                                    <Button
+                                        justIcon
+                                        color="primary"
+                                        // onClick={() => handleUpdate(grade)}
+                                    >
+                                        <EditIcon/>
+                                    </Button>
+                                    <Button
+                                        justIcon
+                                        color="primary"
+                                        // onClick={() => handleRemove(grade.id)}
+                                    >
+                                        <DeleteIcon/>
+                                    </Button>
+                                </ListItem>
+                            }
+                        />
 
-                            <GridItem xs={12} sm={12} md={12} lg={6}>
-                                <NavPills
-                                    color="rose"
-                                    horizontal={{
-                                        tabsGrid: { xs: 12, sm: 4, md: 4 },
-                                        contentGrid: { xs: 12, sm: 8, md: 8 },
-                                    }}
-                                    tabs={[
+                        <GridItem xs={12} sm={12} md={12} lg={6}>
+                            <NavPills
+                                color="rose"
+                                horizontal={{
+                                    tabsGrid: {xs: 12, sm: 4, md: 4},
+                                    contentGrid: {xs: 12, sm: 8, md: 8},
+                                }}
+                                tabs={[
                                     {
                                         tabButton: "Dashboard",
                                         tabIcon: Dashboard,
@@ -113,7 +113,7 @@ export default function ListClass({ courseClasses }) {
                                                   plug-and-play networks. Dynamically procrastinate B2C
                                                   users after installed base benefits.
                                                 </p>
-                                               <br />
+                                               <br/>
                                                <p>
                                                  Dramatically visualize customer directed convergence
                                                  without revolutionary ROI. Collaboratively
@@ -121,7 +121,7 @@ export default function ListClass({ courseClasses }) {
                                                  networks. Dynamically procrastinate B2C users after
                                                  installed base benefits.
                                                </p>
-                                               <br />
+                                               <br/>
                                                <p>
                                                  Dramatically visualize customer directed convergence
                                                  without revolutionary ROI. Collaboratively
@@ -130,19 +130,19 @@ export default function ListClass({ courseClasses }) {
                                                  installed base benefits.
                                                </p>
                                              </span>
-                                           ),
-                                       },
-                                       {
-                                           tabButton: "Schedule",
-                                           tabIcon: Schedule,
-                                           tabContent: (
-                                               <span>
+                                        ),
+                                    },
+                                    {
+                                        tabButton: "Schedule",
+                                        tabIcon: Schedule,
+                                        tabContent: (
+                                            <span>
                                                <p>
                                                  Efficiently unleash cross-media information without
                                                  cross-media value. Quickly maximize timely
                                                  deliverables for real-time schemas.
                                                </p>
-                                                <br />
+                                                <br/>
                                                 <p>
                                                   Dramatically maintain clicks-and-mortar solutions
                                                   without functional solutions. Dramatically visualize
@@ -155,9 +155,9 @@ export default function ListClass({ courseClasses }) {
                                         ),
                                     },
                                 ]}
-                                />
-                            </GridItem>
-                        </GridContainer>
+                            />
+                        </GridItem>
+                    </GridContainer>
                 </div>
             </div>
         </div>

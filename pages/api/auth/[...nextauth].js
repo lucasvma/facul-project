@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 
-const { GITHUB_ID, GITHUB_SECRET, AUTH_SECRET, JWT_SECRET, GOOGLE_ID, GOOGLE_SECRET, MONGODB_URI } = process.env
+const {GITHUB_ID, GITHUB_SECRET, AUTH_SECRET, JWT_SECRET, GOOGLE_ID, GOOGLE_SECRET, MONGODB_URI} = process.env
 
 export default NextAuth({
     providers: [
@@ -39,12 +39,12 @@ export default NextAuth({
         }),
     ],
     callback: {
-        jwt: async ({ token, user }) => {
+        jwt: async ({token, user}) => {
             console.log('jwt callback')
             user && (token.user = user)
             return token
         },
-        session: async ({ session, token }) => {
+        session: async ({session, token}) => {
             console.log('session callback')
             session.accessToken = token.accessToken
             return session

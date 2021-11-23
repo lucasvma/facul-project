@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 
 // mterial-ui components
 import Button from "../CustomButtons/Button";
@@ -12,20 +12,20 @@ import styles from "../../styles/jss/nextjs-material-kit/pages/profilePage";
 
 const useStyles = makeStyles(styles);
 
-export default function CommonActionsCourse({ course, handleUpdate, handleRemove, handleVisible, handleCourses }) {
+export default function CommonActionsCourse({course, handleUpdate, handleRemove, handleVisible, handleCourses}) {
     const [modal, setModal] = useState(false)
     const classes = useStyles();
     const id = course._id
 
     return (
-        <div id={id} >
+        <div id={id}>
             <Button
                 justIcon
                 color="transparent"
                 aria-label="associar aulas"
                 onClick={() => setModal(true)}
             >
-                {<ListAlt />}
+                {<ListAlt/>}
             </Button>
 
             <Button
@@ -34,7 +34,7 @@ export default function CommonActionsCourse({ course, handleUpdate, handleRemove
                 aria-label="ocultar"
                 onClick={() => handleVisible(id, course.visibility)}
             >
-                {course.visibility ? <VisibilityIcon /> : <VisibilityOff />}
+                {course.visibility ? <VisibilityIcon/> : <VisibilityOff/>}
             </Button>
 
             <Button
@@ -42,7 +42,7 @@ export default function CommonActionsCourse({ course, handleUpdate, handleRemove
                 color="transparent"
                 onClick={() => handleUpdate(course)}
             >
-                <EditIcon />
+                <EditIcon/>
             </Button>
 
             <Button
@@ -50,11 +50,12 @@ export default function CommonActionsCourse({ course, handleUpdate, handleRemove
                 color="transparent"
                 onClick={() => handleRemove(id)}
             >
-                <DeleteIcon />
+                <DeleteIcon/>
             </Button>
 
-            {modal && <ModalAssociation modal={modal} setModal={setModal} handleCourses={handleCourses} classes={classes}
-                                        course={course} />}
+            {modal &&
+            <ModalAssociation modal={modal} setModal={setModal} handleCourses={handleCourses} classes={classes}
+                              course={course}/>}
         </div>
     );
 }

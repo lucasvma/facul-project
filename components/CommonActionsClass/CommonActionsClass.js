@@ -7,17 +7,17 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {VisibilityOff} from "@material-ui/icons";
 
-export default function CommonActionsClass({ grade, handleUpdate, handleRemove, handleVisible }) {
+export default function CommonActionsClass({grade, handleUpdate, handleRemove, handleVisible}) {
     const id = grade._id
     return (
-        <div id={id} >
+        <div id={id}>
             <Button
                 justIcon
                 color="transparent"
                 aria-label="ocultar"
                 onClick={() => handleVisible(id, grade.visibility)}
             >
-                {grade.visibility ? <VisibilityIcon /> : <VisibilityOff />}
+                {grade.visibility ? <VisibilityIcon/> : <VisibilityOff/>}
             </Button>
 
             <Button
@@ -25,7 +25,7 @@ export default function CommonActionsClass({ grade, handleUpdate, handleRemove, 
                 color="transparent"
                 onClick={() => handleUpdate(grade)}
             >
-                <EditIcon />
+                <EditIcon/>
             </Button>
 
             <Button
@@ -33,7 +33,7 @@ export default function CommonActionsClass({ grade, handleUpdate, handleRemove, 
                 color="transparent"
                 onClick={() => handleRemove(id)}
             >
-                <DeleteIcon />
+                <DeleteIcon/>
             </Button>
         </div>
     );

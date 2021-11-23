@@ -14,6 +14,7 @@ import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 import axios from "axios";
 import Requests from "../../components/Requests/Requests";
 import {useSession} from "next-auth/client";
+import RequestAuthor from "../../components/RequestAuthor/RequestAuthor";
 
 const useStyles = makeStyles(styles);
 
@@ -27,6 +28,7 @@ export default function ClassesPage(props) {
     )
     const [requests, setRequests] = useState([])
     const [session] = useSession()
+    const isAdmin = session?.user.email === 'venturaml21@gmail.com'
 
     const requestToBeAnAuthor = async () => {
         await axios.post('/api/request')
@@ -60,34 +62,50 @@ export default function ClassesPage(props) {
                                 <div className={classes.profile}>
                                     {session &&
                                     <>
-                                        <img src={session.user.image} alt="..." className={imageClasses}/>
+                                        <img src={session?.user?.image} alt="..." className={imageClasses}/>
                                     </>
                                     }
 
-                                    <div className={classes.name}>
-                                        <h3 className={classes.title}>Seja um autor</h3>
-                                    </div>
+                                    {isAdmin && (
+                                        <>
+                                            <div className={classes.name}>
+                                                <h3 className={classes.title}>Análise de solicitações realizadas</h3>
+                                            </div>
+                                        </>
+                                    )}
 
-                                    <>
-                                        <p>
-                                            Um autor pode criar e publicar novos conteúdos para o público.
-                                        </p>
+                                    {!isAdmin && (
+                                        <>
+                                            <div className={classes.name}>
+                                                <h3 className={classes.title}>Seja um autor</h3>
+                                            </div>
 
-                                        {!requests.length &&
-                                        <Button
-                                            color="primary"
-                                            round
-                                            onClick={() => requestToBeAnAuthor()}
-                                        >
-                                            Requisitar
-                                        </Button>
-                                        }
-                                    </>
+                                            <>
+                                                <p>
+                                                    Um autor pode criar e publicar novos conteúdos para o público.
+                                                </p>
+                                                {!requests.length && (
+                                                    <Button
+                                                        color="primary"
+                                                        round
+                                                        onClick={() => requestToBeAnAuthor()}
+                                                    >
+                                                        Requisitar
+                                                    </Button>
+                                                )}
+                                            </>
+                                        </>
+                                    )}
                                 </div>
                             </GridItem>
                         </GridContainer>
 
+                        {isAdmin &&
                         <Requests requests={requests}/>
+                        }
+                        {!isAdmin &&
+                        <RequestAuthor requests={requests}/>
+                        }
                     </div>
                 </>
             </div>

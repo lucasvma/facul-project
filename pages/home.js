@@ -3,21 +3,21 @@ import classNames from "classnames";
 import {makeStyles} from "@material-ui/core/styles";
 
 import styles from "styles/jss/nextjs-material-kit/pages/components.js";
-import { MongoClient } from "mongodb";
+import {MongoClient} from "mongodb";
 import axios from "axios";
 import Header from "../components/Header/Header";
 import HeaderLinks from "../components/Header/HeaderLinks";
 import Parallax from "../components/Parallax/Parallax";
 import Footer from "../components/Footer/Footer";
 import Home from "../components/Home/Home";
-import { useSession } from 'next-auth/client'
+import {useSession} from 'next-auth/client'
 import Router from "next/router";
 
 const useStyles = makeStyles(styles);
 
 export default function Components(props) {
     const classes = useStyles();
-    const { ...rest } = props;
+    const {...rest} = props;
 
     const [grade, setGrades] = useState([])
     const [session] = useSession()
@@ -49,7 +49,7 @@ export default function Components(props) {
             <Header
                 color="transparent"
                 brand="Share Info"
-                rightLinks={<HeaderLinks />}
+                rightLinks={<HeaderLinks/>}
                 fixed
                 changeColorOnScroll={{
                     height: 200,
@@ -57,15 +57,15 @@ export default function Components(props) {
                 }}
                 {...rest}
             />
-            <Parallax small filter responsive image="/img/landing-bg.jpg" />
+            <Parallax small filter responsive image="/img/landing-bg.jpg"/>
             <div className={classNames(classes.main, classes.mainRaised)}>
                 <>
                     <div className={classes.container}>
-                        <Home classes={grade} />
+                        <Home classes={grade}/>
                     </div>
                 </>
             </div>
-            <Footer />
+            <Footer/>
         </>
     );
 }

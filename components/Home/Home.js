@@ -2,7 +2,7 @@ import Link from "next/link";
 import React, {useState} from "react";
 import CustomTabs from "../CustomTabs/CustomTabs";
 import GridItem from "../Grid/GridItem";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import Button from "../CustomButtons/Button";
 import CustomInput from "../CustomInput/CustomInput";
 import Search from "@material-ui/icons/Search";
@@ -20,8 +20,8 @@ export default function Home(props) {
     if (classList.length === 0 && props.classes.length === 0) {
         return (
             <div>
-                 <h2>Nenhum atividade encontrada</h2>
-             </div>
+                <h2>Nenhum atividade encontrada</h2>
+            </div>
         )
     }
 
@@ -75,14 +75,14 @@ export default function Home(props) {
                         />
                         <Button justIcon round color="white"
                                 onClick={() => findClass()}>
-                            <Search className={classes.searchIcon}   />
+                            <Search className={classes.searchIcon}/>
                         </Button>
                     </div>
                 }
             />
 
             {classList.map((grade) => (
-                <GridItem xs={12} sm={12} md={6} style={{ paddingTop: '30px', margin: '0 auto' }}>
+                <GridItem xs={12} sm={12} md={6} style={{paddingTop: '30px', margin: '0 auto'}}>
                     <CustomTabs
                         headerColor="primary"
                         tabs={[
@@ -96,7 +96,7 @@ export default function Home(props) {
                                         >
                                             {grade.description.substr(1, 50)}
                                         </Link>
-                                        <br />
+                                        <br/>
                                         <small>{grade.createdAt}</small>
                                     </p>
                                 )

@@ -1,6 +1,6 @@
-import { MongoClient } from "mongodb";
+import {MongoClient} from "mongodb";
 
-const { MONGODB_URI, MONGODB_DB } = process.env
+const {MONGODB_URI, MONGODB_DB} = process.env
 
 if (!MONGODB_URI) {
     throw new Error(
@@ -17,7 +17,7 @@ if (!MONGODB_DB) {
 let cachedDb = global.mongo
 
 if (!cachedDb) {
-    cachedDb = global.mongo = { conn: null, promise: null }
+    cachedDb = global.mongo = {conn: null, promise: null}
 }
 
 export async function connectToDatabase() {
@@ -28,7 +28,7 @@ export async function connectToDatabase() {
     if (!cachedDb.promise) {
         const opts = {
             useNewUrlParser: true,
-            useUnifiedTopology : true
+            useUnifiedTopology: true
         }
 
         cachedDb.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {

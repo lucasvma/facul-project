@@ -11,7 +11,6 @@ import Close from "@material-ui/icons/Close";
 // core components
 import Button from "../../components/CustomButtons/Button.js";
 import axios from "axios";
-import CustomInput from "../CustomInput/CustomInput";
 import GridItem from "../Grid/GridItem";
 import {TextareaAutosize, TextField} from "@material-ui/core";
 
@@ -97,7 +96,7 @@ export default function ModalClass(props) {
                     color="inherit"
                     onClick={() => closeModal()}
                 >
-                    <Close className={props.classes.modalClose} />
+                    <Close className={props.classes.modalClose}/>
                 </IconButton>
                 <h4 className={props.classes.modalTitle}>
                     {modalName}
@@ -107,37 +106,37 @@ export default function ModalClass(props) {
                 id="modal-slide-description"
                 className={props.classes.modalBody}
             >
-            <GridItem xs={12}>
-                <TextField
-                    id="title"
-                    label="Insira o título da aula"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    formControlProps={{
-                        fullWidth: true
-                    }}
-                />
-            </GridItem>
+                <GridItem xs={12}>
+                    <TextField
+                        id="title"
+                        label="Insira o título da aula"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        formControlProps={{
+                            fullWidth: true
+                        }}
+                    />
+                </GridItem>
 
-            <GridItem xs={12} >
-                <TextareaAutosize
-                    required
-                    aria-label="minimum height"
-                    rowsMin={20}
-                    placeholder="Descrição da Aula .MD"
-                    className={props.classes.textarea}
-                    style={{
-                        width: "100%",
-                        padding: "10px",
-                        marginTop: 10
-                    }}
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
-            </GridItem>
+                <GridItem xs={12}>
+                    <TextareaAutosize
+                        required
+                        aria-label="minimum height"
+                        rowsMin={20}
+                        placeholder="Descrição da Aula .MD"
+                        className={props.classes.textarea}
+                        style={{
+                            width: "100%",
+                            padding: "10px",
+                            marginTop: 10
+                        }}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </GridItem>
 
             </DialogContent>
-            <DialogActions className={props.classes.modalFooter  + " " + props.classes.modalFooterCenter}>
+            <DialogActions className={props.classes.modalFooter + " " + props.classes.modalFooterCenter}>
                 <Button onClick={() => closeModal()} color="danger">Fechar</Button>
                 <Button onClick={() => !isUpdate ? handleCreate() : handleUpdate()} color="success">
                     {!isUpdate ? 'Cadastrar' : 'Atualizar'}

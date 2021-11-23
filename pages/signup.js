@@ -1,6 +1,6 @@
 import React from "react";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
@@ -17,12 +17,11 @@ import CardBody from "../components/Card/CardBody";
 import CardHeader from "../components/Card/CardHeader";
 import CardFooter from "../components/Card/CardFooter";
 import CustomInput from "../components/CustomInput/CustomInput";
-import {signIn, getProviders, session} from 'next-auth/client'
+import {getProviders, signIn} from 'next-auth/client'
 
 import styles from "styles/jss/nextjs-material-kit/pages/loginPage";
 
 import image from "public/img/bg7.jpg";
-import { useRouter } from "next/router";
 import {Link} from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
@@ -31,16 +30,16 @@ export default function Signup(props) {
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
-    setTimeout(function() {
+    setTimeout(function () {
         setCardAnimation("");
     }, 700);
     const classes = useStyles();
-    const { providers, ...rest } = props;
+    const {providers, ...rest} = props;
 
     const handleLogin = () => {
         console.log('email', email)
         console.log('password', password)
-        signIn('credentials', { email, password })
+        signIn('credentials', {email, password})
     }
 
     return (
@@ -49,7 +48,7 @@ export default function Signup(props) {
                 absolute
                 color="transparent"
                 brand="Share Info"
-                rightLinks={<HeaderLinks />}
+                rightLinks={<HeaderLinks/>}
                 {...rest}
             />
             <div
@@ -75,7 +74,7 @@ export default function Signup(props) {
                                                 color="transparent"
                                                 onClick={e => e.preventDefault()}
                                             >
-                                                <i className={"fab fa-twitter"} />
+                                                <i className={"fab fa-twitter"}/>
                                             </Button>
                                             <Button
                                                 justIcon
@@ -84,7 +83,7 @@ export default function Signup(props) {
                                                 color="transparent"
                                                 onClick={e => e.preventDefault()}
                                             >
-                                                <i className={"fab fa-facebook"} />
+                                                <i className={"fab fa-facebook"}/>
                                             </Button>
                                             <Button
                                                 justIcon
@@ -96,7 +95,7 @@ export default function Signup(props) {
                                                     signIn('github')
                                                 }}
                                             >
-                                                <i className={"fab fa-github"} />
+                                                <i className={"fab fa-github"}/>
                                             </Button>
                                         </div>
                                     </CardHeader>
@@ -113,7 +112,7 @@ export default function Signup(props) {
                                                 type: "email",
                                                 endAdornment: (
                                                     <InputAdornment position="end">
-                                                        <Email className={classes.inputIconsColor} />
+                                                        <Email className={classes.inputIconsColor}/>
                                                     </InputAdornment>
                                                 ),
                                                 onChange: (e) => setEmail(e.target.value)
@@ -136,7 +135,7 @@ export default function Signup(props) {
                                                     </InputAdornment>
                                                 ),
                                                 autoComplete: "off",
-                                                onChange: (e) =>  setPassword(e.target.value)
+                                                onChange: (e) => setPassword(e.target.value)
                                             }}
                                         />
                                     </CardBody>
@@ -158,7 +157,7 @@ export default function Signup(props) {
                         </GridItem>
                     </GridContainer>
                 </div>
-                <Footer whiteFont />
+                <Footer whiteFont/>
             </div>
         </div>
     );
@@ -167,6 +166,6 @@ export default function Signup(props) {
 export async function getServerSideProps(context) {
     const providers = await getProviders()
     return {
-        props: { providers }
+        props: {providers}
     }
 }

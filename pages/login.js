@@ -17,17 +17,17 @@ import CardBody from "../components/Card/CardBody";
 import CardHeader from "../components/Card/CardHeader";
 import CardFooter from "../components/Card/CardFooter";
 import CustomInput from "../components/CustomInput/CustomInput";
-import {signIn, getProviders, session, useSession, getCsrfToken, getSession, providers} from 'next-auth/client'
+import {getCsrfToken, signIn, useSession} from 'next-auth/client'
 
 import styles from "styles/jss/nextjs-material-kit/pages/loginPage";
 
 import image from "public/img/bg7.jpg";
-import {CircularProgress, Input, Link} from "@material-ui/core";
+import {Input, Link} from "@material-ui/core";
 import Router from "next/router";
 
 const useStyles = makeStyles(styles);
 
-export default function LoginPage({ providers, csrfToken }) {
+export default function LoginPage() {
     const [cardAnimaton, setCardAnimation] = useState("cardHidden");
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -100,7 +100,6 @@ export default function LoginPage({ providers, csrfToken }) {
                                         method="post"
                                         action="/api/auth/signin/credentials"
                                     >
-                                        <Input name="csrfToken" type="hidden" defaultValue={csrfToken}/>
                                         <CustomInput
                                             labelText="E-mail"
                                             name="email"
@@ -160,13 +159,4 @@ export default function LoginPage({ providers, csrfToken }) {
             </div>
         </div>
     );
-}
-
-export async function getStaticProps(context) {
-    return {
-        props: {
-            providers: await getProviders(),
-            csrfToken: await getCsrfToken(context),
-        }
-    }
 }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {forwardRef, useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -7,7 +8,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import {forwardRef, useEffect, useState} from "react";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
@@ -102,7 +102,7 @@ export default function ModalAssociation(props) {
     }, [classes])
 
     const customList = (items) => (
-        <Paper sx={{ width: 200, height: 230, overflow: 'auto' }}>
+        <Paper sx={{width: 200, height: 230, overflow: 'auto'}}>
             <List dense component="div" role="list">
                 {items.map((value) => {
                     const labelId = `transfer-list-item-${value}-label`;
@@ -124,11 +124,11 @@ export default function ModalAssociation(props) {
                                     }}
                                 />
                             </ListItemIcon>
-                            <ListItemText id={labelId} primary={value} />
+                            <ListItemText id={labelId} primary={value}/>
                         </ListItem>
                     );
                 })}
-                <ListItem />
+                <ListItem/>
             </List>
         </Paper>
     );
@@ -159,7 +159,7 @@ export default function ModalAssociation(props) {
                     color="inherit"
                     onClick={() => closeModal()}
                 >
-                    <Close className={props.classes.modalClose} />
+                    <Close className={props.classes.modalClose}/>
                 </IconButton>
                 <h4 className={props.classes.modalTitle}>
                     Associe aulas ao curso
@@ -174,7 +174,7 @@ export default function ModalAssociation(props) {
                     <Grid item>
                         <Grid container direction="column" alignItems="center">
                             <Button
-                                sx={{ my: 0.5 }}
+                                sx={{my: 0.5}}
                                 variant="outlined"
                                 size="small"
                                 onClick={handleAllRight}
@@ -184,7 +184,7 @@ export default function ModalAssociation(props) {
                                 ≫
                             </Button>
                             <Button
-                                sx={{ my: 0.5 }}
+                                sx={{my: 0.5}}
                                 variant="outlined"
                                 size="small"
                                 onClick={handleCheckedRight}
@@ -194,7 +194,7 @@ export default function ModalAssociation(props) {
                                 &gt;
                             </Button>
                             <Button
-                                sx={{ my: 0.5 }}
+                                sx={{my: 0.5}}
                                 variant="outlined"
                                 size="small"
                                 onClick={handleCheckedLeft}
@@ -204,7 +204,7 @@ export default function ModalAssociation(props) {
                                 &lt;
                             </Button>
                             <Button
-                                sx={{ my: 0.5 }}
+                                sx={{my: 0.5}}
                                 variant="outlined"
                                 size="small"
                                 onClick={handleAllLeft}
@@ -218,7 +218,7 @@ export default function ModalAssociation(props) {
                     <Grid item>{customList(right)}</Grid>
                 </Grid>
             </DialogContent>
-            <DialogActions className={props.classes.modalFooter  + " " + props.classes.modalFooterCenter}>
+            <DialogActions className={props.classes.modalFooter + " " + props.classes.modalFooterCenter}>
                 <Button onClick={() => closeModal()} color="danger">Fechar</Button>
                 <Button onClick={() => associateClasses()} color="success">
                     {'Salvar'}

@@ -60,7 +60,7 @@ export default function ListCourse({courseClasses}) {
                 alt={alt}
                 src={src}
                 title={title}
-                style={{ maxWidth: 475 }}  />
+                style={{maxWidth: 475}}/>
         ),
     };
 
