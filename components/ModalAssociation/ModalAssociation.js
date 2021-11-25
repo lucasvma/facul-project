@@ -73,7 +73,6 @@ export default function ModalAssociation(props) {
 
     const closeModal = () => {
         props.setModal(false)
-
         props.handleCourses()
     }
 
@@ -85,19 +84,25 @@ export default function ModalAssociation(props) {
     }
 
     useEffect(async () => {
-        await axios
-            .get('/api/classes')
-            .then((response) => setClasses(response.data.classes))
-    }, [])
+        if (props.modal) {
+            await axios
+                .get('/api/classes')
+                .then((response) => setClasses(response.data.classes))
+        }
+    }, [props.modal])
 
     useEffect(async () => {
         if (classes.length) {
-            await setRight(classes.map((grade) => props.course?.classes
-                .includes(grade._id) && grade.title)
-                .filter((classTitle) => classTitle))
-            setLeft(classes
+            if (props.course.classes && props.course.classes.length > 0) {
+                await setRight(classes.map((grade) => props.course.classes
+                    .includes(grade._id) && grade.title)
+                    .filter((classTitle) => classTitle))
+                console.log('setted right')
+            }
+            console.log('setting left')
+            await setLeft(classes
                 .filter((element) => !right.includes(element.title))
-                .map((grade) => grade.title) || [])
+                .map((grade) => grade.title))
         }
     }, [classes])
 

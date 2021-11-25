@@ -35,12 +35,11 @@ export default function LoginPage() {
         setCardAnimation("");
     }, 700);
     const classes = useStyles();
-
     const [session] = useSession()
 
     useEffect(() => {
         if (session) return Router.push('/home')
-    }, [session])
+    }, [])
 
     if (session) return null
 
