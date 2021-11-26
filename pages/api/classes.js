@@ -4,6 +4,7 @@ import {useRouter} from 'next/router'
 export default async (request, response) => {
     const {
         method,
+        query: {order},
         body: {title, description, visibility}
     } = request
 
@@ -13,7 +14,8 @@ export default async (request, response) => {
 
     switch (method) {
         case 'GET':
-            const classes = await collection.find().toArray()
+            const orderBy = order === 'desc' ? -1 : 1
+            const classes = await collection.find().sort({ createdAt: orderBy }).toArray()
 
             return response
                 .status(200)

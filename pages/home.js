@@ -28,20 +28,18 @@ export default function Components(props) {
         if (!session) return Router.push('/login')
     }, [])
 
-    if (!session) return null
-
     useEffect(() => {
         handleClasses()
     }, [])
 
     async function handleClasses() {
-        const response = await axios
-            .get('/api/classes')
-            .then((response) => response)
-
-        if (response) {
-            setGrades(response.data.classes)
-        }
+        await axios
+            .get('/api/classes/', {
+                params: {
+                    order: 'desc'
+                }
+            })
+            .then((response) => setGrades(response.data.classes))
     }
 
     return (

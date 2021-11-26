@@ -1,14 +1,16 @@
 import {connectToDatabase} from '../../db/mongodb'
+import {getSession} from "next-auth/client";
 
 export default async (request, response) => {
     const {
         method,
-        body: {currentProgress}
+        body: { currentProgress }
     } = request
-    const email = "venturaml21@gmail.com"
     const courseId = request.query.id
+    const session = await getSession({ req: request })
+    const email = session?.user?.email
 
-    const {db} = await connectToDatabase();
+    const { db } = await connectToDatabase();
 
     const courseProgressCollection = db.collection('courseProgress')
 
@@ -36,7 +38,7 @@ export default async (request, response) => {
                 .json({message: 'Progresso realizado com sucesso'})
         case 'PUT':
             await courseProgressCollection.updateOne(
-                { courseId: id, email },
+                { courseId, email },
                 {$set: {currentProgress, updateAt: new Date()}})
             console.log(`progress was updated to: ${currentProgress}`)
             return response

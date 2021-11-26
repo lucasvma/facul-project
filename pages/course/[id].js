@@ -52,10 +52,11 @@ export default function CoursePage({courseClasses}) {
     )
 }
 
-export const getStaticProps = async ({params}) => {
+export const getStaticProps = async ({ params }) => {
     const courseId = params.id
     const {db} = await connectToDatabase()
     // const email = session?.user.email
+    // TODO fix hard coded email
     const email = "venturaml21@gmail.com"
 
     const courseCollection = await db.collection("courses")
@@ -68,7 +69,7 @@ export const getStaticProps = async ({params}) => {
     const classes = await collectionClasses.find().toArray();
 
     const filteredClasses = await classes.filter((grade) =>
-        classesCourse.classes.includes(grade._id.toString())
+        classesCourse?.classes ? classesCourse.classes.includes(grade._id.toString()) : []
     )
 
     const classCourseProgress = await courseProgressCollection.findOne({

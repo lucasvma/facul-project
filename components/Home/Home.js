@@ -34,9 +34,6 @@ export default function Home(props) {
         if (search) {
             let exp = new RegExp(search.trim(), 'i')
             setClassList(classList.filter(classToSearch => exp.test(classToSearch.title) || exp.test(classToSearch.description)))
-            // TODO filter the componentes
-            console.log('do the filter on the component')
-            console.log(classList)
         }
     }
 

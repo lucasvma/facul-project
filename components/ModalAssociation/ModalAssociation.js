@@ -91,17 +91,15 @@ export default function ModalAssociation(props) {
         }
     }, [props.modal])
 
-    useEffect(async () => {
+    useEffect(() => {
         if (classes.length) {
             if (props.course.classes && props.course.classes.length > 0) {
-                await setRight(classes.map((grade) => props.course.classes
-                    .includes(grade._id) && grade.title)
+                setRight(classes
+                    .map((grade) => props.course.classes.includes(grade._id) && grade.title)
                     .filter((classTitle) => classTitle))
-                console.log('setted right')
             }
-            console.log('setting left')
-            await setLeft(classes
-                .filter((element) => !right.includes(element.title))
+            setLeft(classes
+                .filter((element) => !props.course.classes.includes(element._id))
                 .map((grade) => grade.title))
         }
     }, [classes])

@@ -19,9 +19,10 @@ import ReactMarkdown from 'react-markdown'
 
 const useStyles = makeStyles(styles);
 
-export default function ListCourse({courseClasses}) {
+export default function ListCourse({ courseClasses }) {
     const classes = useStyles();
     const router = useRouter()
+    // TODO FIX - 0 useState modifying the database but it can't
     const [activeClass, setActiveClass] = useState(0);
     const courseId = router.query.id
     const [loadingRequest, setLoadingRequest] = useState(false)
@@ -117,35 +118,35 @@ export default function ListCourse({courseClasses}) {
                             <GridItem xs={12} sm={12} md={12} lg={6}>
                                 {courseClasses?.length === 0 && <h2>'Não há aulas disponíveis nesse curso'</h2>}
                                 {courseClasses?.length > 0 &&
-                                <NavPills
-                                    color="primary"
-                                    horizontal={{
-                                        tabsGrid: {xs: 12, sm: 4, md: 4},
-                                        contentGrid: {xs: 12, sm: 8, md: 8},
-                                    }}
-                                    id={activeClass}
-                                    active={activeClass}
-                                    setActiveClass={setActiveClass}
-                                    courseId={courseId}
-                                    tabs={courseClasses.map((grade) => ({
-                                            tabButton: grade.title,
-                                            tabContent: (
-                                                <>
+                                    <NavPills
+                                        color="primary"
+                                        horizontal={{
+                                            tabsGrid: {xs: 12, sm: 4, md: 4},
+                                            contentGrid: {xs: 12, sm: 8, md: 8},
+                                        }}
+                                        id={activeClass}
+                                        active={activeClass}
+                                        setActiveClass={setActiveClass}
+                                        courseId={courseId}
+                                        tabs={courseClasses.map((grade) => ({
+                                                tabButton: grade.title,
+                                                tabContent: (
                                                     <>
-                                                        <h2>{grade.title}</h2>
+                                                        <>
+                                                            <h2>{grade.title}</h2>
+                                                        </>
+                                                        <>
+                                                            <ReactMarkdown
+                                                                children={grade.description}
+                                                                escapeHtml={false}
+                                                                renderers={renderers}
+                                                            />
+                                                        </>
                                                     </>
-                                                    <>
-                                                        <ReactMarkdown
-                                                            children={grade.description}
-                                                            escapeHtml={false}
-                                                            renderers={renderers}
-                                                        />
-                                                    </>
-                                                </>
-                                            )
-                                        }
-                                    ))}
-                                />
+                                                )
+                                            }
+                                        ))}
+                                    />
                                 }
                             </GridItem>
                         )

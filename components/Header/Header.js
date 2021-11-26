@@ -41,17 +41,17 @@ export default function Header(props) {
         if (windowsScrollTop > changeColorOnScroll.height) {
             document.body
                 .getElementsByTagName("header")[0]
-                .classList.remove(classes[color]);
+                ?.classList.remove(classes[color]);
             document.body
                 .getElementsByTagName("header")[0]
-                .classList.add(classes[changeColorOnScroll.color]);
+                ?.classList.add(classes[changeColorOnScroll.color]);
         } else {
             document.body
                 .getElementsByTagName("header")[0]
-                .classList.add(classes[color]);
+                ?.classList.add(classes[color]);
             document.body
                 .getElementsByTagName("header")[0]
-                .classList.remove(classes[changeColorOnScroll.color]);
+                ?.classList.remove(classes[changeColorOnScroll.color]);
         }
     };
     const {color, rightLinks, leftLinks, brand, fixed, absolute} = props;
