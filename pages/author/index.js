@@ -27,18 +27,36 @@ export default function ClassesPage(props) {
         classes.imgFluid
     )
     const [requests, setRequests] = useState([])
-    const [session] = useSession()
-    const isAdmin = session?.user.email === 'venturaml21@gmail.com'
+    const [requestButton, setRequestButton] = useState(false)
+    const [session, loading] = useSession()
+    const email = session?.user.email
+    const isAdmin = session?.isAdmin
 
     const requestToBeAnAuthor = async () => {
-        await axios.post('/api/request')
+        await axios.post('/api/request', { email, status: 0 })
             .then((response) => console.log('Requisição feita com sucesso'))
     }
 
     useEffect(async () => {
-        await axios.get('/api/requests')
-            .then((response) => setRequests(response.data.requests))
-    }, [])
+        if (loading) {
+            return null
+        }
+        if (isAdmin) {
+            await axios.get('/api/requests')
+                .then((response) => setRequests(response.data.requests))
+        } else {
+            await axios.get('/api/request')
+                .then((response) => setRequests(response.data.request))
+        }
+    }, [loading])
+
+    useEffect(async () => {
+        if (!requests) {
+            setRequestButton(true)
+        } else {
+            setRequestButton(false)
+        }
+    }, [requests])
 
     return (
         <>
@@ -61,9 +79,9 @@ export default function ClassesPage(props) {
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className={classes.profile}>
                                     {session &&
-                                    <>
-                                        <img src={session?.user?.image} alt="..." className={imageClasses}/>
-                                    </>
+                                        <>
+                                            <img src={session?.user?.image} alt="..." className={imageClasses}/>
+                                        </>
                                     }
 
                                     {isAdmin && (
@@ -84,7 +102,7 @@ export default function ClassesPage(props) {
                                                 <p>
                                                     Um autor pode criar e publicar novos conteúdos para o público.
                                                 </p>
-                                                {!requests.length && (
+                                                {requestButton && (
                                                     <Button
                                                         color="primary"
                                                         round
@@ -100,12 +118,11 @@ export default function ClassesPage(props) {
                             </GridItem>
                         </GridContainer>
 
-                        {isAdmin &&
-                        <Requests requests={requests}/>
-                        }
-                        {!isAdmin &&
-                        <RequestAuthor requests={requests}/>
-                        }
+                        {requests && (
+                            (isAdmin && <Requests requests={requests} />)
+                            ||
+                            (!isAdmin && <RequestAuthor request={requests} />)
+                        )}
                     </div>
                 </>
             </div>

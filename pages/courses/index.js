@@ -32,9 +32,11 @@ export default function CoursesPage(props) {
     const [courses, setCourses] = useState([])
     const [data, setData] = useState(null)
     const [session] = useSession()
+    const [isAuthor, setIsAuthor] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
-        handleCourses()
+        handleCourses() && handleIsAuthor()
     }, [])
 
     useEffect(() => {
@@ -43,15 +45,27 @@ export default function CoursesPage(props) {
         }
     }, [data])
 
+    useEffect(async () => {
+        setIsAdmin(session?.isAdmin)
+        if (isAdmin) {
+            handleCourses() && handleIsAuthor()
+        }
+    }, [session])
+
     async function handleCourses() {
         await axios
             .get('/api/courses')
             .then((response) => setCourses(response.data.courses))
+    }
 
+    async function handleIsAuthor() {
+        !isAdmin && await axios
+                        .get('/api/request')
+                        .then((response) => setIsAuthor(response?.data?.request?.status === 1))
     }
 
     return (
-        <div>
+        <>
             <Header
                 color="transparent"
                 brand="Share Info"
@@ -71,34 +85,35 @@ export default function CoursesPage(props) {
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className={classes.profile}>
                                     {session &&
-                                    <>
-                                        <img src={session?.user?.image} alt="..." className={imageCourses}/>
-                                    </>
+                                        <>
+                                            <img src={session?.user?.image} alt="..." className={imageCourses}/>
+                                        </>
                                     }
                                     <div className={classes.name}>
                                         <h3 className={classes.title}>Cadastro do Curso</h3>
                                     </div>
 
-                                    <div>
-                                        <Button color="primary" round onClick={() => setModalEdit(true)}>
-                                            Novo Curso
-                                        </Button>
-
-                                        <ModalCourse modalEdit={modalEdit} setModalEdit={setModalEdit}
-                                                     handleCourses={handleCourses} classes={classes}
-                                                     dataToChange={data}/>
-                                    </div>
+                                    <>
+                                        {(isAdmin || isAuthor) &&
+                                            <Button color="primary" round onClick={() => setModalEdit(true)}>
+                                                Novo Curso
+                                            </Button>
+                                        &&
+                                            <ModalCourse modalEdit={modalEdit} setModalEdit={setModalEdit}
+                                                handleCourses={handleCourses} classes={classes} dataToChange={data} />
+                                        }
+                                    </>
                                 </div>
                             </GridItem>
                         </GridContainer>
 
                         <ListCourses setModalEdit={setModalEdit} handleCourses={handleCourses} courses={courses}
-                                     setData={setData}/>
+                                     setData={setData} />
                     </div>
                 </div>
             </div>
             <Footer/>
-        </div>
+        </>
     );
 }
 

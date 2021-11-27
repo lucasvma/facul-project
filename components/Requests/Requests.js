@@ -18,9 +18,9 @@ import {Check, Close, Remove} from "@material-ui/icons";
 import axios from "axios";
 import {useSession} from "next-auth/client";
 
-function createData(name, approve, disapprove) {
+function createData(email, approve, disapprove) {
     return {
-        name,
+        email,
         approve,
         disapprove,
     };
@@ -58,10 +58,10 @@ function stableSort(array, comparator) {
 
 const headCells = [
     {
-        id: 'name',
+        id: 'email',
         numeric: false,
         disablePadding: true,
-        label: 'Id',
+        label: 'E-mail',
     },
     {
         id: 'approve',
@@ -133,17 +133,17 @@ export default function Requests({requests}) {
 
     requests.forEach(request => {
         const approve = request.status === 0 ?
-            <Check className={request._id} onClick={() => handleApprove(request._id)}/> : <Remove/>
+            <Check className={request._id} onClick={() => handleApprove(request._id)} /> : <Remove />
         const disapprove = request.status === 0 ?
             <Close className={request._id} onClick={() => handleDisapprove(request._id)}/> : <Remove/>
-        rows.push(createData(request._id, approve, disapprove))
+        !rows.find((row) => row.email === request.email) && rows.push(createData(request.email, approve, disapprove))
     })
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
-    };
+    }
 
     const handleApprove = async (requestId) => {
         await axios.put(`/api/request/${requestId}`, {status: 1, email: session.user.email})
@@ -153,6 +153,11 @@ export default function Requests({requests}) {
     const handleDisapprove = async (requestId) => {
         await axios.put(`/api/request/${requestId}`, {status: 2, email: session.user.email})
             .then((response) => console.log('Requisição reprovada com sucesso'))
+    }
+
+    const handleRevoke = async (requestId) => {
+        await axios.put(`/api/request/${requestId}`, {status: 0, email: session.user.email})
+            .then((response) => console.log('Requisição revogada com sucesso'))
     }
 
     const handleChangePage = (event, newPage) => {
@@ -200,7 +205,7 @@ export default function Requests({requests}) {
                                         <TableRow
                                             hover
                                             tabIndex={-1}
-                                            key={row.name}
+                                            key={row.email}
                                         >
                                             <TableCell
                                                 component="th"
@@ -208,7 +213,7 @@ export default function Requests({requests}) {
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.name}
+                                                {row.email}
                                             </TableCell>
                                             <TableCell align="right">{row.approve}</TableCell>
                                             <TableCell align="right">{row.disapprove}</TableCell>

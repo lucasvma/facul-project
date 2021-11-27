@@ -1,5 +1,6 @@
 import {connectToDatabase} from "./db/mongodb";
 import {useRouter} from 'next/router'
+import {getSession} from "next-auth/client";
 
 export default async (request, response) => {
     const {
@@ -7,6 +8,8 @@ export default async (request, response) => {
         query: {order},
         body: {title, description, visibility}
     } = request
+    const session = await getSession({ req: request })
+    const email = session?.user?.email
 
     const {db} = await connectToDatabase();
 
@@ -25,26 +28,14 @@ export default async (request, response) => {
                 title,
                 description,
                 visibility: true,
+                createBy: email,
                 createdAt: new Date()
             })
 
             return response
                 .status(201)
                 .json({message: 'A Aula foi cadastrada com sucesso'})
-        case 'PUT':
-            const router = useRouter()
 
-            await collection.updateOne(
-                {_id: router.query.id},
-                {
-                    $set: {title, description, visibility, updateAt: new Date()}
-                })
-
-            console.log('A Aula foi atualizada com sucesso')
-
-            return response
-                .status(200)
-                .json({message: 'A Aula foi atualizada com sucesso'})
         default:
             response.setHeader('Allow', ['GET', 'POST', 'PUT'])
             response.status(405).end(`Method ${method} Not Allowed`)

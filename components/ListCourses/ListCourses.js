@@ -52,7 +52,7 @@ export default function ListCourses(props) {
                         />
 
                         <CommonActionsCourse course={course} handleUpdate={handleUpdate} handleRemove={handleRemove}
-                                             handleVisible={handleVisible} handleCourses={props.handleCourses}/>
+                            handleVisible={handleVisible} handleCourses={props.handleCourses} />
                     </ListItem>
                 ))}
             </List>

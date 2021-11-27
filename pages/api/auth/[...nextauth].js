@@ -38,17 +38,11 @@ export default NextAuth({
             clientSecret: GOOGLE_SECRET,
         }),
     ],
-    callback: {
-        jwt: async ({token, user}) => {
-            console.log('jwt callback')
-            user && (token.user = user)
-            return token
-        },
-        session: async ({session, token}) => {
-            console.log('session callback')
-            session.accessToken = token.accessToken
+    callbacks: {
+        async session(session, user) {
+            session.isAdmin = user.email === 'venturaml21@gmail.com'
             return session
-        }
+        },
     },
     secret: AUTH_SECRET,
     session: {

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import classNames from "classnames";
 import {makeStyles} from "@material-ui/core/styles";
 
@@ -19,8 +19,8 @@ export default function Components(props) {
     const {...rest} = props;
 
     const [session] = useSession()
-    const [users, setUsers] = React.useState([]);
-    const isAdmin = session?.user.email === 'venturaml21@gmail.com'
+    const isAdmin = session?.isAdmin
+    const [users, setUsers] = useState([]);
 
     // if (!isAdmin) return Router.push('/home')
 

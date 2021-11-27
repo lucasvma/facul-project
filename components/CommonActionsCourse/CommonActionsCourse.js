@@ -9,6 +9,7 @@ import {ListAlt, VisibilityOff} from "@material-ui/icons";
 import ModalAssociation from "../ModalAssociation/ModalAssociation";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/profilePage";
+import {useSession} from "next-auth/client";
 
 const useStyles = makeStyles(styles);
 
@@ -16,8 +17,11 @@ export default function CommonActionsCourse({course, handleUpdate, handleRemove,
     const [modal, setModal] = useState(false)
     const classes = useStyles();
     const id = course._id
+    const [session] = useSession()
+    const isAdmin = session?.isAdmin
+    const isOwner = session?.user?.email === course?.createBy
 
-    return (
+    return (isAdmin || isOwner) && (
         <div id={id}>
             <Button
                 justIcon

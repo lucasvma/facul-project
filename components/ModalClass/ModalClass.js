@@ -61,7 +61,7 @@ export default function ModalClass(props) {
     }
 
     function closeModal() {
-        if (props.dataToChange.length > 0) {
+        if (props.dataToChange?.length > 0) {
             Object.assign(props.dataToChange, {})
         }
 

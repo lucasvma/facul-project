@@ -1,10 +1,13 @@
 import {connectToDatabase} from "./db/mongodb";
+import {getSession} from "next-auth/client";
 
 export default async (request, response) => {
     const {
         method,
         body: {title, description, classes}
     } = request
+    const session = await getSession({ req: request })
+    const email = session?.user?.email
 
     const {db} = await connectToDatabase();
 
@@ -21,6 +24,7 @@ export default async (request, response) => {
                 description,
                 visibility: 1,
                 classes,
+                createBy: email,
                 createdAt: new Date()
             })
 

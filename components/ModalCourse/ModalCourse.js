@@ -61,8 +61,7 @@ export default function ModalCourse(props) {
     }
 
     function closeModal() {
-        // TODO - Fix this props.dataToChange no find the object
-        if (props.dataToChange.length > 0) {
+        if (props.dataToChange?.length > 0) {
             Object.assign(props.dataToChange, {})
         }
 

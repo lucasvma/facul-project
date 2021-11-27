@@ -20,13 +20,11 @@ export default async (request, response) => {
                 .status(200)
                 .json({course})
         case 'PUT':
-            console.log('updating', id)
             await collection.updateOne(
                 {_id: ObjectId(id)},
                 {
                     $set: {title, description, updateAt: new Date()}
                 })
-            console.log(`course was updated: ${id}`)
             return response
                 .status(204)
                 .json({message: 'A Aula foi cadastrada com sucesso'})

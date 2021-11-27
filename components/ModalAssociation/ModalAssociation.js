@@ -99,7 +99,7 @@ export default function ModalAssociation(props) {
                     .filter((classTitle) => classTitle))
             }
             setLeft(classes
-                .filter((element) => !props.course.classes.includes(element._id))
+                .filter((element) => !props.course?.classes?.includes(element._id))
                 .map((grade) => grade.title))
         }
     }, [classes])

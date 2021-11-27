@@ -41,7 +41,7 @@ export default function LoginPage() {
         if (session) return Router.push('/home')
     }, [])
 
-    if (session) return null
+    // if (session) return null
 
     function handleLogin() {
         signIn('credentials', {email, password})
@@ -49,12 +49,6 @@ export default function LoginPage() {
 
     return (
         <div>
-            <Header
-                absolute
-                color="transparent"
-                brand="Share Info"
-                rightLinks={<HeaderLinks/>}
-            />
             <div
                 className={classes.pageHeader}
                 style={{

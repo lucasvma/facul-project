@@ -9,8 +9,25 @@ import GridItem from "../Grid/GridItem";
 
 const useStyles = makeStyles(styles);
 
-export default function RequestAuthor({requests}) {
+const requestStatus = {
+    0: {
+        color: 'warning',
+        name: 'Em Análise'
+    },
+    1: {
+        color: 'success',
+        name: 'Sucesso'
+    },
+    2: {
+        color: 'danger',
+        name: 'Recusada'
+    }
+}
+
+export default function RequestAuthor({ request }) {
     const classes = useStyles();
+
+    if (request?.length === 0) return null
 
     return (
         <>
@@ -21,15 +38,7 @@ export default function RequestAuthor({requests}) {
                     </div>
 
                     <div className={classes.title}>
-                        {requests.find((request) => request.status === 0) &&
-                        <Badge color="warning">Em Análise</Badge>
-                        }
-                        {requests.find((request) => request.status === 1) &&
-                        <Badge color="success">Sucesso</Badge>
-                        }
-                        {requests.find((request) => request.status === 2) &&
-                        <Badge color="danger">Recusada</Badge>
-                        }
+                        <Badge color={requestStatus[request.status].color}>{requestStatus[request.status].name}</Badge>
                     </div>
                 </GridItem>
             </GridContainer>

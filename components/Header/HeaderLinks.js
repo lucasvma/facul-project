@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React, {useEffect} from "react";
 import {useRouter} from 'next/router'
 
 // @material-ui/core components
@@ -18,6 +18,7 @@ import Button from "components/CustomButtons/Button.js";
 import styles from "styles/jss/nextjs-material-kit/components/headerLinksStyle.js";
 
 import {signOut, useSession} from 'next-auth/client'
+import axios from "axios";
 
 const useStyles = makeStyles(styles);
 
@@ -25,12 +26,20 @@ export default function HeaderLinks(props) {
     const classes = useStyles();
     const router = useRouter()
     const [session] = useSession()
-    const isAdmin = session?.user.email === 'venturaml21@gmail.com'
+    const isAdmin = session?.isAdmin
+    let isAuthor = false
 
     const handleClick = (e, path) => {
         e.preventDefault()
         router.push(path)
     }
+
+    useEffect(async () => {
+        if (!isAdmin) {
+            await axios.get('/api/request')
+                .then((response) => isAuthor = response.data.status === 1)
+        }
+    }, [])
 
     return (
         <List className={classes.list}>
@@ -65,6 +74,7 @@ export default function HeaderLinks(props) {
                                     <PeopleAlt className={classes.icons}/> Usuários
                                 </Button>
                             </ListItem>),
+                        (isAdmin || isAuthor) && (
                         <ListItem className={classes.listItem}>
                             <Button
                                 onClick={(e) => handleClick(e, '/classes')}
@@ -74,7 +84,7 @@ export default function HeaderLinks(props) {
                             >
                                 <Class className={classes.icons}/> Aulas
                             </Button>
-                        </ListItem>,
+                        </ListItem>),
                         <ListItem className={classes.listItem}>
                             <Button
                                 onClick={(e) => handleClick(e, '/courses')}
