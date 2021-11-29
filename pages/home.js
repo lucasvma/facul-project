@@ -58,7 +58,12 @@ export default function Components(props) {
             <Parallax small filter responsive image="/img/landing-bg.jpg"/>
             <div className={classNames(classes.main, classes.mainRaised)}>
                 <>
-                    <div className={classes.container}>
+                    <div
+                        className={classes.container}
+                        style={{
+                            padding: '40px 0'
+                        }}
+                    >
                         <Home classes={grade}/>
                     </div>
                 </>

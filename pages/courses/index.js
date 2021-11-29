@@ -33,7 +33,7 @@ export default function CoursesPage(props) {
     const [data, setData] = useState(null)
     const [session] = useSession()
     const [isAuthor, setIsAuthor] = useState(false)
-    const [isAdmin, setIsAdmin] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(session?.isAdmin)
 
     useEffect(() => {
         handleCourses() && handleIsAuthor()

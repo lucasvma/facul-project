@@ -4,7 +4,7 @@ import {getSession} from "next-auth/client";
 export default async (request, response) => {
     const {
         method,
-        body: { currentProgress }
+        body: { currentProgress, isComplete }
     } = request
     const courseId = request.query.id
     const session = await getSession({ req: request })
@@ -39,7 +39,7 @@ export default async (request, response) => {
         case 'PUT':
             await courseProgressCollection.updateOne(
                 { courseId, email },
-                {$set: {currentProgress, updateAt: new Date()}})
+                {$set: {currentProgress, isComplete, updateAt: new Date()}})
             console.log(`progress was updated to: ${currentProgress}`)
             return response
                 .status(200)

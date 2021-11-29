@@ -239,6 +239,7 @@ export default function Requests({requests}) {
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}
+                    labelRowsPerPage="Linhas por página"
                 />
             </Paper>
         </Box>

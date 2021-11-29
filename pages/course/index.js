@@ -59,12 +59,12 @@ export default function CoursesPage(props) {
                 <div>
                     <div className={classes.container}>
                         <GridContainer justify="center">
-                            <GridItem xs={12} sm={12} md={6}>
+                            <GridItem xs={12} sm={12} md={6} style={{ paddingBottom: "40px" }}>
                                 <div className={classes.profile}>
                                     {session &&
-                                    <>
-                                        <img src={session?.user?.image} alt="..." className={imageClasses}/>
-                                    </>
+                                        <>
+                                            <img src={session?.user?.image} alt="..." className={imageClasses}/>
+                                        </>
                                     }
                                     <div className={classes.name}>
                                         <h3 className={classes.title}>Cadastro do Curso</h3>

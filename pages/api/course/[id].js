@@ -14,7 +14,7 @@ export default async (request, response) => {
 
     switch (method) {
         case 'GET':
-            const course = await collection.find({_id: id}).toArray()
+            const course = await collection.findOne({_id: id})
 
             return response
                 .status(200)

@@ -28,3 +28,17 @@
 @import "plugins/plugin-nouislider";
 @import "plugins/plugin-react-datetime";
 @import "plugins/plugin-react-slick";
+
+.makeStyles-container-1 {
+  padding-bottom: 40px;
+}
+
+th.MuiTableCell-root.MuiTableCell-head.MuiTableCell-alignLeft.MuiTableCell-paddingNone, th#enhanced-table-0 {
+  padding-left: 10px!important;
+}
+
+.MuiTableCell-alignRight {
+  text-align: right;
+  flex-direction: row-reverse;
+}
+

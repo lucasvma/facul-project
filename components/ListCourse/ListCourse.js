@@ -9,7 +9,7 @@ import Header from "../Header/Header";
 
 import axios from "axios";
 import {useRouter} from "next/router";
-import {VisibilityOff} from "@material-ui/icons";
+import {Check, VisibilityOff} from "@material-ui/icons";
 import GridContainer from "../Grid/GridContainer";
 import NavPills from "../NavPills/NavPills";
 import GridItem from "../Grid/GridItem";
@@ -26,17 +26,34 @@ export default function ListCourse({ courseClasses }) {
     const [activeClass, setActiveClass] = useState(0);
     const courseId = router.query.id
     const [loadingRequest, setLoadingRequest] = useState(false)
+    const [isLastClass, setIsLastClass] = useState(false)
 
     useEffect(async () => {
         setLoadingRequest(true)
         await axios.get(`/api/course/progress/${courseId}`)
-            .then((response) => {
-                if (response.data.classCourseProgress !== undefined) {
+            .then(async (response) => {
+                if (response.data?.classCourseProgress?.currentProgress) {
                     setActiveClass(response.data.classCourseProgress.currentProgress)
-                    setLoadingRequest(false)
+                    setIsLastClass(checkIfIsLastClass())
+                } else {
+                    await newProgress()
                 }
+                setLoadingRequest(false)
             })
     }, [])
+
+    useEffect(async () => {
+        setIsLastClass(checkIfIsLastClass())
+    }, [activeClass])
+
+    async function newProgress() {
+        await axios.post(`/api/course/progress/${courseId}`)
+            .then(() => console.log('Novo progresso iniciado'))
+    }
+
+    function checkIfIsLastClass() {
+        return activeClass + 1 === courseClasses.length
+    }
 
     const handleUpdate = async (data) => {
         console.log('handleUpdate')
@@ -53,6 +70,12 @@ export default function ListCourse({ courseClasses }) {
         await axios
             .patch(`/api/class/visibility/${id}`, {visibility})
             .then(() => props.handleClasses())
+    }
+
+    const completeCourse = async () => {
+        await axios
+            .put(`/api/course/progress/${courseId}`, { currentProgress: activeClass, isComplete: 1 })
+            .then(() => console.log('Novo progresso iniciado'))
     }
 
     const renderers = {
@@ -149,9 +172,24 @@ export default function ListCourse({ courseClasses }) {
                                     />
                                 }
                             </GridItem>
-                        )
-                        }
+                        )}
                     </GridContainer>
+
+                    {!loadingRequest && isLastClass &&
+                        (<div
+                            style={{
+                                textAlign: "right"
+                            }}
+                        >
+                            <Button
+                                color="primary"
+                                round
+                                onClick={() => completeCourse()}
+                            >
+                                Finalizar <Check />
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

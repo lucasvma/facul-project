@@ -32,12 +32,10 @@ export default function RequestAuthor({ request }) {
     return (
         <>
             <GridContainer justify="center">
-                <GridItem xs={12} sm={12} md={6} justify="center">
-                    <div className={classes.title}>
-                        <h6>Status:</h6>
-                    </div>
+                <GridItem xs={12} sm={12} md={6} justify="center" >
+                    <div className={classes.title} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <h6 style={{ marginRight: "10px" }}>Status:</h6>
 
-                    <div className={classes.title}>
                         <Badge color={requestStatus[request.status].color}>{requestStatus[request.status].name}</Badge>
                     </div>
                 </GridItem>

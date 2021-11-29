@@ -13,6 +13,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import {connectToDatabase} from "../api/db/mongodb";
 import ListCourse from "../../components/ListCourse/ListCourse";
 import {ObjectId} from "mongodb";
+import axios from "axios";
+import {getSession} from "next-auth/client";
 
 const useStyles = makeStyles(styles);
 
@@ -52,9 +54,11 @@ export default function CoursePage({courseClasses}) {
     )
 }
 
-export const getStaticProps = async ({ params }) => {
-    const courseId = params.id
-    const {db} = await connectToDatabase()
+export const getStaticProps = async (context) => {
+    const courseId = context.params.id
+    const { db } = await connectToDatabase()
+    const session = await getSession(context)
+    console.log('sessGetStaticProps', session)
     // const email = session?.user.email
     // TODO fix hard coded email
     const email = "venturaml21@gmail.com"

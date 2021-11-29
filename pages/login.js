@@ -148,7 +148,6 @@ export default function LoginPage() {
                         </GridItem>
                     </GridContainer>
                 </div>
-                <Footer whiteFont/>
             </div>
         </div>
     );

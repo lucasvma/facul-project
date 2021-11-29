@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useRouter} from 'next/router'
 
 // @material-ui/core components
@@ -27,7 +27,7 @@ export default function HeaderLinks(props) {
     const router = useRouter()
     const [session] = useSession()
     const isAdmin = session?.isAdmin
-    let isAuthor = false
+    const [isAuthor, setIsAuthor] = useState(false)
 
     const handleClick = (e, path) => {
         e.preventDefault()
@@ -37,7 +37,7 @@ export default function HeaderLinks(props) {
     useEffect(async () => {
         if (!isAdmin) {
             await axios.get('/api/request')
-                .then((response) => isAuthor = response.data.status === 1)
+                .then((response) => setIsAuthor(response.data?.request?.status === 1))
         }
     }, [])
 

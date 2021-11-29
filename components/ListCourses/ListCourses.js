@@ -1,10 +1,13 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/navbarsStyle";
-import {Avatar, Link, List, ListItem, ListItemAvatar, ListItemText} from "@material-ui/core";
+import { Link, List, ListItem, ListItemText } from "@material-ui/core";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import CommonActionsCourse from "../CommonActionsCourse/CommonActionsCourse";
+import {Chart, ArcElement} from 'chart.js'
+import ProgressChart from "../ProgressChart/ProgressChart";
+Chart.register(ArcElement);
 
 const useStyles = makeStyles(styles);
 
@@ -32,9 +35,7 @@ export default function ListCourses(props) {
             <List className={classes.list}>
                 {props.courses.map((course) => (
                     <ListItem>
-                        <ListItemAvatar>
-                            <Avatar alt="Course Image" src="public/img/faces/kendall.jpg"/>
-                        </ListItemAvatar>
+                        <ProgressChart courseId={course._id} classesCourseLength={course?.classes.length} />
 
                         <ListItemText
                             primary={
