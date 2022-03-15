@@ -33,9 +33,9 @@ export default function ListCourses(props) {
     return (
         <Grid item xs={12} md={12}>
             <List className={classes.list}>
-                {props.courses.map((course) => (
+                {props?.courses && props.courses.map((course) => (
                     <ListItem>
-                        <ProgressChart courseId={course._id} classesCourseLength={course?.classes.length} />
+                        <ProgressChart courseId={course._id} classesCourseLength={course?.classes?.length} />
 
                         <ListItemText
                             primary={

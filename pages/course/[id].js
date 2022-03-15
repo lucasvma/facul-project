@@ -79,7 +79,7 @@ export const getStaticProps = async (context) => {
     const classCourseProgress = await courseProgressCollection.findOne({
         courseId,
         email
-    }, {currentProgress: 1, _id: 0})
+    }, { currentProgress: 1, _id: 0 })
 
     if (!classCourseProgress) {
         await courseProgressCollection.insertOne({

@@ -3,22 +3,19 @@ import classNames from "classnames";
 import {makeStyles} from "@material-ui/core/styles";
 import Header from "components/Header/Header.js";
 import Footer from "components/Footer/Footer.js";
-import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
-import axios from 'axios';
 
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
-import ModalCourse from "../../components/ModalCourse/ModalCourse";
-import ListCourses from "../../components/ListCourses/ListCourses";
+import axios from "axios";
 import {useSession} from "next-auth/client";
 
 const useStyles = makeStyles(styles);
 
-export default function CoursePage(props) {
+export default function ClassesPage(props) {
     const classes = useStyles();
     const {...rest} = props;
     const imageClasses = classNames(
@@ -26,23 +23,25 @@ export default function CoursePage(props) {
         classes.imgRoundedCircle,
         classes.imgFluid
     )
+    const [courseProgress, setCourseProgress] = useState([])
+    const [session, loading] = useSession()
+    const email = session?.user.email
 
-    const [modal, setModal] = useState(false)
-    const [course, setCourse] = useState([])
-    const [session] = useSession()
+    useEffect(async () => {
+        if (loading) {
+            return null
+        }
+        console.log('getting by reportsIndex')
+        await axios.get('/api/course/progress')
+            .then((response) => setCourseProgress(response.data?.courseProgress))
+    }, [loading])
 
     useEffect(() => {
-        handleCourses()
-    }, [])
-
-    async function handleCourses() {
-        await axios
-            .get('/api/courses')
-            .then((response) => setCourse(response.data.courses))
-    }
+        console.log('courseProgress', courseProgress)
+    }, [courseProgress])
 
     return (
-        <div>
+        <>
             <Header
                 color="transparent"
                 brand="Share Info"
@@ -56,41 +55,35 @@ export default function CoursePage(props) {
             />
             <Parallax small filter responsive image="/img/landing-bg.jpg"/>
             <div className={classNames(classes.main, classes.mainRaised)}>
-                <div>
+                <>
                     <div className={classes.container}>
                         <GridContainer justify="center">
-                            <GridItem xs={12} sm={12} md={6} style={{ paddingBottom: "40px" }}>
+                            <GridItem xs={12} sm={12} md={6}>
                                 <div className={classes.profile}>
                                     {session &&
                                         <>
                                             <img src={session?.user?.image} alt="..." className={imageClasses}/>
                                         </>
                                     }
-                                    <div className={classes.name}>
-                                        <h3 className={classes.title}>Cadastro do Curso</h3>
-                                    </div>
 
-                                    <div>
-                                        <Button color="primary" round onClick={() => setModal(true)}>
-                                            Novo Curso
-                                        </Button>
+                                    <>
+                                        <div className={classes.name}>
+                                            <h3 className={classes.title}>Relatório de progresso</h3>
+                                        </div>
 
-                                        <ModalCourse modal={modal} setModal={setModal} listClasses={handleCourses}
-                                                     classes={classes}/>
-                                    </div>
+                                        <>
+                                            <p>
+                                                Um autor pode criar e publicar novos conteúdos para o público.
+                                            </p>
+                                        </>
+                                    </>
                                 </div>
                             </GridItem>
                         </GridContainer>
-
-                        <ListCourses courses={course}/>
                     </div>
-                </div>
+                </>
             </div>
             <Footer/>
-        </div>
+        </>
     );
-}
-
-export function getStaticProps() {
-    return {props: {courses: ''}}
 }

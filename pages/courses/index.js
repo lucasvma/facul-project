@@ -94,14 +94,13 @@ export default function CoursesPage(props) {
                                     </div>
 
                                     <>
-                                        {(isAdmin || isAuthor) &&
-                                            <Button color="primary" round onClick={() => setModalEdit(true)}>
+                                        <Button color="primary" round onClick={() => setModalEdit(true)}>
                                                 Novo Curso
                                             </Button>
-                                        &&
+
                                             <ModalCourse modalEdit={modalEdit} setModalEdit={setModalEdit}
                                                 handleCourses={handleCourses} classes={classes} dataToChange={data} />
-                                        }
+
                                     </>
                                 </div>
                             </GridItem>

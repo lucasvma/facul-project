@@ -19,12 +19,23 @@ export default async (request, response) => {
             const classCourseProgress = await courseProgressCollection.findOne({
                 courseId,
                 email
-            }, {currentProgress: 1, _id: 0})
+            }, { currentProgress: 1, _id: 0 })
 
             return response
                 .status(200)
-                .json({classCourseProgress})
+                .json({ classCourseProgress })
         case 'POST':
+            const courseProgress = await courseProgressCollection.findOne({
+                courseId,
+                email
+            }, { currentProgress: 1, _id: 0 })
+
+            if (courseProgress?.courseProgress !== null) {
+                return response
+                    .status(200)
+                    .json({message: 'Progresso já existe'})
+            }
+
             await courseProgressCollection.insertOne({
                 courseId,
                 email,
@@ -39,7 +50,7 @@ export default async (request, response) => {
         case 'PUT':
             await courseProgressCollection.updateOne(
                 { courseId, email },
-                {$set: {currentProgress, isComplete, updateAt: new Date()}})
+                { $set: { currentProgress, isComplete, updateAt: new Date() } })
             console.log(`progress was updated to: ${currentProgress}`)
             return response
                 .status(200)

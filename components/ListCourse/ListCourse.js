@@ -20,62 +20,62 @@ import ReactMarkdown from 'react-markdown'
 const useStyles = makeStyles(styles);
 
 export default function ListCourse({ courseClasses }) {
-    const classes = useStyles();
+    const classes = useStyles()
     const router = useRouter()
-    // TODO FIX - 0 useState modifying the database but it can't
-    const [activeClass, setActiveClass] = useState(0);
+    // TODO FIX - 0 useState when starting modifying the database but it can't
+    const [activeClass, setActiveClass] = useState(undefined)
     const courseId = router.query.id
     const [loadingRequest, setLoadingRequest] = useState(false)
     const [isLastClass, setIsLastClass] = useState(false)
+    const [endCourse, setEndCourse] = useState(false)
 
     useEffect(async () => {
         setLoadingRequest(true)
         await axios.get(`/api/course/progress/${courseId}`)
             .then(async (response) => {
-                if (response.data?.classCourseProgress?.currentProgress) {
-                    setActiveClass(response.data.classCourseProgress.currentProgress)
-                    setIsLastClass(checkIfIsLastClass())
-                } else {
-                    await newProgress()
+                const courseProgress = response.data?.classCourseProgress
+                if (courseProgress?.currentProgress === null) {
+                    await axios.post(`/api/course/progress/${courseId}`)
+                        .then((response) => console.log('Novo progresso iniciado', response))
+                        .catch((error) => console.log('error', error))
+                } else if (courseProgress?.currentProgress !== undefined) {
+                    setActiveClass(courseProgress.currentProgress)
+                } else if (activeClass === undefined) {
+                    setActiveClass(0)
                 }
                 setLoadingRequest(false)
             })
     }, [])
 
     useEffect(async () => {
-        setIsLastClass(checkIfIsLastClass())
+        setIsLastClass(activeClass + 1 === courseClasses.length)
     }, [activeClass])
 
-    async function newProgress() {
-        await axios.post(`/api/course/progress/${courseId}`)
-            .then(() => console.log('Novo progresso iniciado'))
-    }
+    useEffect(async () => {
+        endCourse && await axios
+                        .put(`/api/course/progress/${courseId}`, { currentProgress: activeClass, isComplete: 1 })
+                        .then(() =>  router.push('/courses'))
+    }, [endCourse])
 
-    function checkIfIsLastClass() {
-        return activeClass + 1 === courseClasses.length
+    const handleEndCourse = () => {
+        setEndCourse(true)
     }
 
     const handleUpdate = async (data) => {
         console.log('handleUpdate')
-        props.setData(data)
+        // props.setData(data)
     }
 
     const handleRemove = async (id) => {
-        await axios
-            .delete(`/api/class/${id}`)
-            .then(() => router.push("/home"))
+        // await axios
+        //     .delete(`/api/class/${id}`)
+        //     .then(() => router.push("/home"))
     }
 
     const handleVisible = async (id, visibility) => {
-        await axios
-            .patch(`/api/class/visibility/${id}`, {visibility})
-            .then(() => props.handleClasses())
-    }
-
-    const completeCourse = async () => {
-        await axios
-            .put(`/api/course/progress/${courseId}`, { currentProgress: activeClass, isComplete: 1 })
-            .then(() => console.log('Novo progresso iniciado'))
+        // await axios
+        //     .patch(`/api/class/visibility/${id}`, {visibility})
+        //     .then(() => props.handleClasses())
     }
 
     const renderers = {
@@ -99,7 +99,7 @@ export default function ListCourse({ courseClasses }) {
                                 <ListItem>
                                     <Button
                                         justIcon
-                                        href="/classes"
+                                        href="/courses"
                                         color="primary"
                                     >
                                         <KeyboardBackspaceIcon/>
@@ -184,7 +184,7 @@ export default function ListCourse({ courseClasses }) {
                             <Button
                                 color="primary"
                                 round
-                                onClick={() => completeCourse()}
+                                onClick={() => handleEndCourse()}
                             >
                                 Finalizar <Check />
                             </Button>

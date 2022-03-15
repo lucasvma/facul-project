@@ -105,10 +105,10 @@ export default function HeaderLinks(props) {
                                 <BorderColor className={classes.icons}/> Autores
                             </Button>
                         </ListItem>,
-                        isAdmin &&
+                        (isAdmin || isAuthor) &&
                         (<ListItem className={classes.listItem}>
                             <Button
-                                href="#"
+                                onClick={(e) => handleClick(e, '/reports')}
                                 color="transparent"
                                 target="_blank"
                                 className={classes.navLink}

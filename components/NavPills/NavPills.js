@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // nodejs library to set properties for components
@@ -19,14 +19,15 @@ import axios from "axios";
 const useStyles = makeStyles(styles);
 
 export default function NavPills(props) {
-    const [active, setActive] = React.useState(props.active);
+    const [active, setActive] = useState(props.active);
     const handleChange = (event, active) => {
         setActive(active);
     };
     useEffect(async () => {
-        handleChange(null, active)
-        await axios.put(`/api/course/progress/${props.courseId}`, { currentProgress: active })
-            .then(() => props.setActiveClass(active))
+        if (active !== undefined && props.active !== active) {
+            await axios.put(`/api/course/progress/${props.courseId}`, { currentProgress: active })
+                .then(() => props.setActiveClass(active))
+        }
     }, [active])
     const classes = useStyles();
     const {tabs, color, horizontal, alignCenter} = props;
@@ -47,7 +48,7 @@ export default function NavPills(props) {
             centered={alignCenter}
         >
             {tabs.map((prop, key) => {
-                var icon = {};
+                let icon = {};
                 if (prop.tabIcon !== undefined) {
                     icon["icon"] = <prop.tabIcon className={classes.tabIcon}/>;
                 }
