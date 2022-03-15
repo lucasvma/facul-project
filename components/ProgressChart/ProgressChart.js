@@ -22,24 +22,21 @@ const defaultData = {
 }
 
 export default function ProgressChart({ courseId, classesCourseLength }) {
-    const [classCourseProgress, setClassCourseProgress] = useState(null)
+    const [classCourseProgress, setClassCourseProgress] = useState(undefined)
     const [chartData, setChartData] = useState(defaultData)
 
     useEffect(async () => {
         await axios.get(`/api/course/progress/${courseId}`)
             .then(async (response) => {
-                if (response.data?.classCourseProgress) {
+                const courseProgress = response.data?.classCourseProgress
+
+                if (courseProgress !== undefined) {
                     setClassCourseProgress(response.data.classCourseProgress)
-                    await calculateProgressChart()
                 }
             })
     }, [])
 
     useEffect(async () => {
-        await calculateProgressChart()
-    }, [classCourseProgress])
-
-    const calculateProgressChart = async () => {
         let changedChartData = defaultData
 
         if (classCourseProgress?.isComplete === 1) {
@@ -56,7 +53,7 @@ export default function ProgressChart({ courseId, classesCourseLength }) {
         }
 
         setChartData(changedChartData)
-    }
+    }, [classCourseProgress])
 
     return (
         <div style={{ width: "30px" }}>
