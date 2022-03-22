@@ -6,15 +6,19 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {ListAlt, VisibilityOff} from "@material-ui/icons";
-import ModalAssociation from "../ModalAssociation/ModalAssociation";
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/profilePage";
 import {useSession} from "next-auth/client";
+import ModalClassAssociation from "../ModalClassAssociation/ModalClassAssociation";
+import ModalMultipleAssociation from "../ModalMultipleAssociation/ModalMultipleAssociation";
 
 const useStyles = makeStyles(styles);
 
 export default function CommonActionsCourse({course, handleUpdate, handleRemove, handleVisible, handleCourses}) {
-    const [modal, setModal] = useState(false)
+    const [modalClass, setModalClass] = useState(false)
+    const handleOpenModalClass = () => setModalClass(true);
+    const handleCloseModalClass = () => setModalClass(false);
     const classes = useStyles();
     const id = course._id
     const [session] = useSession()
@@ -23,13 +27,22 @@ export default function CommonActionsCourse({course, handleUpdate, handleRemove,
 
     return (isAdmin || isOwner) && (
         <div id={id}>
+            {/*<Button*/}
+            {/*    justIcon*/}
+            {/*    color="transparent"*/}
+            {/*    aria-label="associar aulas"*/}
+            {/*    onClick={() => handleOpenModalClass(true)}*/}
+            {/*>*/}
+            {/*    {<ListAlt/>}*/}
+            {/*</Button>*/}
+
             <Button
                 justIcon
                 color="transparent"
                 aria-label="associar aulas"
-                onClick={() => setModal(true)}
+                onClick={() => handleOpenModalClass()}
             >
-                {<ListAlt/>}
+                {<AddBoxIcon/>}
             </Button>
 
             <Button
@@ -57,9 +70,10 @@ export default function CommonActionsCourse({course, handleUpdate, handleRemove,
                 <DeleteIcon/>
             </Button>
 
-            {modal &&
-            <ModalAssociation modal={modal} setModal={setModal} handleCourses={handleCourses} classes={classes}
-                              course={course}/>}
+            {/*{ modalMultiple && <ModalMultipleAssociation modalMultiple={modalMultiple} setModalMultiple={setModalMultiple} handleCourses={handleCourses}*/}
+            {/*                                             classes={classes} course={course} /> }*/}
+            {modalClass && <ModalClassAssociation modalClass={modalClass} handleCloseModalClass={handleCloseModalClass}
+                                    handleCourses={handleCourses} classes={classes} course={course}/>}
         </div>
     );
 }

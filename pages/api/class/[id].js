@@ -14,11 +14,11 @@ export default async (request, response) => {
 
     switch (method) {
         case 'GET':
-            const grade = await collection.find({_id: id}).toArray()
+            const returnedClass = await collection.findOne({ _id: ObjectId(id) })
 
             return response
                 .status(200)
-                .json({grade})
+                .json({returnedClass})
         case 'PUT':
             await collection.updateOne(
                 {_id: ObjectId(id)},

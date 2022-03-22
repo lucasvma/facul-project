@@ -71,6 +71,7 @@ export default function CustomInput(props) {
                     disabled: classes.disabled,
                     underline: underlineClasses,
                 }}
+                onKeyPress={props.onKeyPress}
                 id={id}
                 {...inputProps}
             />

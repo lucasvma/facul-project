@@ -24,17 +24,19 @@ export default async (request, response) => {
                 .status(200)
                 .json({classes})
         case 'POST':
-            await collection.insertOne({
-                title,
-                description,
-                visibility: true,
-                createBy: email,
-                createdAt: new Date()
-            })
+            const insertedId = await collection
+                .insertOne({
+                    title,
+                    description,
+                    visibility: true,
+                    createBy: email,
+                    createdAt: new Date()
+                })
+                .then(result => result.insertedId)
 
             return response
                 .status(201)
-                .json({message: 'A Aula foi cadastrada com sucesso'})
+                .json({message: 'A Aula foi cadastrada com sucesso', insertedId})
 
         default:
             response.setHeader('Allow', ['GET', 'POST', 'PUT'])

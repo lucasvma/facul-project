@@ -27,7 +27,7 @@ function intersection(a, b) {
     return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function ModalAssociation(props) {
+export default function ModalMultipleAssociation(props) {
     const [checked, setChecked] = useState([]);
     const [left, setLeft] = useState([]);
     const [right, setRight] = useState([]);
@@ -72,7 +72,7 @@ export default function ModalAssociation(props) {
     };
 
     const closeModal = () => {
-        props.setModal(false)
+        props.setModalMultiple(false)
         props.handleCourses()
     }
 
@@ -84,12 +84,12 @@ export default function ModalAssociation(props) {
     }
 
     useEffect(async () => {
-        if (props.modal) {
+        if (props.modalMultiple) {
             await axios
                 .get('/api/classes')
                 .then((response) => setClasses(response.data.classes))
         }
-    }, [props.modal])
+    }, [props.modalMultiple])
 
     useEffect(() => {
         if (classes.length) {
@@ -142,11 +142,11 @@ export default function ModalAssociation(props) {
                 root: props.classes.center,
                 paper: props.classes.modal
             }}
-            open={props.modal}
+            open={props.modalMultiple}
             TransitionComponent={Transition}
             keepMounted
             fullWidth={true}
-            onClose={() => props.setModal(false)}
+            onClose={() => props.setModalMultiple(false)}
             aria-labelledby="modal-slide-title"
             aria-describedby="modal-slide-description"
         >
