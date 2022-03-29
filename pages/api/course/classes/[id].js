@@ -17,7 +17,7 @@ export default async (request, response) => {
             const classesCourse = await courseCollection.findOne({_id: ObjectId(id)})
             const classes = await collectionClasses.find().toArray()
 
-            const filteredClasses = await classes.filter((grade) => classesCourse.classes.includes(grade._id.toString()))
+            const filteredClasses = await classes.filter((grade) => classesCourse?.classes?.includes(grade._id.toString())) || null
 
             return response
                 .status(200)

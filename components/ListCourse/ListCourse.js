@@ -16,6 +16,7 @@ import GridItem from "../Grid/GridItem";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/pillsStyle";
 import ReactMarkdown from 'react-markdown'
+import Small from "../Typography/Small";
 
 const useStyles = makeStyles(styles);
 
@@ -23,11 +24,13 @@ export default function ListCourse({ courseClasses }) {
     const classes = useStyles()
     const router = useRouter()
     // TODO FIX - 0 useState when starting modifying the database but it can't
-    const [activeClass, setActiveClass] = useState(undefined)
+    const [activeClassIndex, setActiveClassIndex] = useState(undefined)
     const courseId = router.query.id
     const [loadingRequest, setLoadingRequest] = useState(false)
     const [isLastClass, setIsLastClass] = useState(false)
     const [endCourse, setEndCourse] = useState(false)
+    const [hasEndButton, setHasEndButton] = useState(false)
+    const [courseData, setCourseData] = useState(null)
 
     useEffect(async () => {
         setLoadingRequest(true)
@@ -39,21 +42,23 @@ export default function ListCourse({ courseClasses }) {
                         .then((response) => console.log('Novo progresso iniciado', response))
                         .catch((error) => console.log('error', error))
                 } else if (courseProgress?.currentProgress !== undefined) {
-                    setActiveClass(courseProgress.currentProgress)
-                } else if (activeClass === undefined) {
-                    setActiveClass(0)
+                    setActiveClassIndex(courseProgress.currentProgress)
+                } else if (activeClassIndex === undefined) {
+                    setActiveClassIndex(0)
                 }
                 setLoadingRequest(false)
             })
+        await axios.get(`/api/course/${courseId}`)
+            .then((response) => setCourseData(response.data.course))
     }, [])
 
     useEffect(async () => {
-        setIsLastClass(activeClass + 1 === courseClasses.length)
-    }, [activeClass])
+        setIsLastClass(activeClassIndex + 1 === courseClasses.length)
+    }, [activeClassIndex])
 
     useEffect(async () => {
         endCourse && await axios
-                        .put(`/api/course/progress/${courseId}`, { currentProgress: activeClass, isComplete: 1 })
+                        .put(`/api/course/progress/${courseId}`, { currentProgress: activeClassIndex, isComplete: 1 })
                         .then(() =>  router.push('/courses'))
     }, [endCourse])
 
@@ -104,6 +109,11 @@ export default function ListCourse({ courseClasses }) {
                                     >
                                         <KeyboardBackspaceIcon/>
                                     </Button>
+                                    <div style={{marginLeft: '40%'}}>
+                                        <h1>
+                                            <Small>{courseData?.title}</Small>
+                                        </h1>
+                                    </div>
                                 </ListItem>
                             }
                             rightLinks={
@@ -147,16 +157,19 @@ export default function ListCourse({ courseClasses }) {
                                             tabsGrid: {xs: 12, sm: 4, md: 4},
                                             contentGrid: {xs: 12, sm: 8, md: 8},
                                         }}
-                                        id={activeClass}
-                                        active={activeClass}
-                                        setActiveClass={setActiveClass}
+                                        id={activeClassIndex}
+                                        active={activeClassIndex}
+                                        setActiveClassIndex={setActiveClassIndex}
+                                        setHasEndButton={setHasEndButton}
                                         courseId={courseId}
                                         tabs={courseClasses.map((grade) => ({
                                                 tabButton: grade.title,
                                                 tabContent: (
                                                     <>
                                                         <>
-                                                            <h2>{grade.title}</h2>
+                                                            <h2>
+                                                                <Small>{grade.title}</Small>
+                                                            </h2>
                                                         </>
                                                         <>
                                                             <ReactMarkdown
@@ -175,7 +188,7 @@ export default function ListCourse({ courseClasses }) {
                         )}
                     </GridContainer>
 
-                    {!loadingRequest && isLastClass &&
+                    {!loadingRequest && isLastClass && courseData?.hasEndButton &&
                         (<div
                             style={{
                                 textAlign: "right"

@@ -73,7 +73,7 @@ export const getStaticProps = async (context) => {
     const classes = await collectionClasses.find().toArray();
 
     const filteredClasses = await classes.filter((grade) =>
-        classesCourse?.classes ? classesCourse.classes.includes(grade._id.toString()) : []
+        classesCourse?.classes ? classesCourse?.classes.includes(grade._id.toString()) : []
     )
 
     const classCourseProgress = await courseProgressCollection.findOne({

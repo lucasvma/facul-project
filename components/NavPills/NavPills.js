@@ -26,7 +26,7 @@ export default function NavPills(props) {
     useEffect(async () => {
         if (active !== undefined && props.active !== active) {
             await axios.put(`/api/course/progress/${props.courseId}`, { currentProgress: active })
-                .then(() => props.setActiveClass(active))
+                .then(() => props.setActiveClassIndex(active))
         }
     }, [active])
     const classes = useStyles();

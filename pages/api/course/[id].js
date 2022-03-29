@@ -14,7 +14,7 @@ export default async (request, response) => {
 
     switch (method) {
         case 'GET':
-            const course = await collection.findOne({_id: id})
+            const course = await collection.findOne({ _id: ObjectId(id) })
 
             return response
                 .status(200)

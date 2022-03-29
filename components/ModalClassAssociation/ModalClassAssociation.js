@@ -13,7 +13,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import DeleteIcon from "@material-ui/icons/Delete";
+import Remove from '@material-ui/icons/Remove';
 import CustomInput from "../CustomInput/CustomInput";
 import GridItem from "../Grid/GridItem";
 
@@ -31,6 +31,15 @@ export default function ModalClassAssociation(props) {
         props.handleCourses()
     }
 
+    const handleDisassociate = async (classTitle) => {
+        const actualClasses = classes.map((grade) => classTitle !== grade.title && grade).filter((grade) => grade)
+        const actualClassesIds = actualClasses.map((grade) => grade._id)
+        const actualClassesTitles = actualClasses.map((grade) => grade.title)
+        await axios
+            .patch(`/api/course/associate/${props.course._id}`, { classes: actualClassesIds })
+            .then(() => setClassTitles(actualClassesTitles))
+    }
+
     useEffect(async () => {
         await axios
             .get(`/api/course/classes/${props.course._id}`)
@@ -40,7 +49,7 @@ export default function ModalClassAssociation(props) {
     useEffect(() => {
         if (classes?.length > 0) {
             setClassTitles(classes
-                            .map((grade) => props.course.classes.includes(grade._id) && grade.title)
+                            .map((grade) => props.course?.classes?.includes(grade._id) && grade.title)
                             .filter((classTitle) => classTitle))
         }
     }, [classes])
@@ -59,11 +68,11 @@ export default function ModalClassAssociation(props) {
                                 setClasses(updatedClassObject)
 
                                 const classIds = classes.map((grade) => grade._id).filter((classId) => classId)
-                                const classTitle = classes.map((grade) => grade.title).filter((classTitle) => classTitle)
+                                const classTitlesUpdated = classes.map((grade) => grade.title).filter((classTitle) => classTitle)
 
                                 await axios
                                     .patch(`/api/course/associate/${props.course._id}`, { classes: classIds })
-                                    .then(() => setClassTitles(classTitle) && setClassInput(""))
+                                    .then(() => setClassTitles(classTitlesUpdated))
                             })
                     }
                 })
@@ -80,11 +89,16 @@ export default function ModalClassAssociation(props) {
                         <ListItem
                             key={value}
                             role="listitem"
-                            button
                         >
                             <ListItemText id={labelId} primary={value}/>
                             <ListItemIcon>
-                                <DeleteIcon/>
+                                <Button
+                                    justIcon
+                                    color="transparent"
+                                    onClick={() => handleDisassociate(value)}
+                                >
+                                    <Remove />
+                                </Button>
                             </ListItemIcon>
                         </ListItem>
                     );
@@ -123,7 +137,7 @@ export default function ModalClassAssociation(props) {
                     <Close className={props.classes.modalClose}/>
                 </IconButton>
                 <h4 className={props.classes.modalTitle}>
-                    Associe aulas ao curso
+                    Associe as aulas ao: <strong>{props.course.title}</strong>
                 </h4>
             </DialogTitle>
             <DialogContent
@@ -138,7 +152,6 @@ export default function ModalClassAssociation(props) {
                             formControlProps={{
                                 fullWidth: true,
                             }}
-                            value={classInput}
                             onKeyPress={(e) => e.key === 'Enter' && setClassInput(e.target.value)}
                         />
                     </GridItem>

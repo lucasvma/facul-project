@@ -4,7 +4,8 @@ import {getSession} from "next-auth/client";
 export default async (request, response) => {
     const {
         method,
-        body: {title, description, classes}
+        body: { title, initialDate, finalDate, hasWorkLand, hasPresence, hasEvaluation, hasExercises, hasEndButton,
+            description, classes, publicAccess }
     } = request
     const session = await getSession({ req: request })
     const email = session?.user?.email
@@ -21,9 +22,17 @@ export default async (request, response) => {
         case 'POST':
             await collection.insertOne({
                 title,
+                initialDate,
+                finalDate,
+                hasWorkLand,
+                hasPresence,
+                hasEvaluation,
+                hasExercises,
+                hasEndButton,
                 description,
-                visibility: 1,
                 classes,
+                publicAccess,
+                visibility: 1,
                 createBy: email,
                 createdAt: new Date()
             })
