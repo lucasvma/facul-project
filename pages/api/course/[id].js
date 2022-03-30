@@ -5,7 +5,8 @@ export default async (request, response) => {
     const {
         method,
         query: {id},
-        body: {title, description, visibility}
+        body: {title, initialDate, finalDate, hasWorkLand, hasPresence, hasEvaluation, hasExercises, hasEndButton,
+            description}
     } = request
 
     const {db} = await connectToDatabase();
@@ -23,11 +24,11 @@ export default async (request, response) => {
             await collection.updateOne(
                 {_id: ObjectId(id)},
                 {
-                    $set: {title, description, updateAt: new Date()}
+                    $set: {title, initialDate, finalDate, hasWorkLand, hasPresence, hasEvaluation, hasExercises,
+                        hasEndButton, description, updateAt: new Date()}
                 })
             return response
                 .status(204)
-                .json({message: 'A Aula foi cadastrada com sucesso'})
         case 'DELETE':
             await collection.deleteOne({_id: ObjectId(id)})
             console.log(`deleted: ${id}`)

@@ -68,16 +68,37 @@ export default function ModalCourse(props) {
     }
 
     async function handleUpdate() {
-        if (props.dataToChange.title !== title || props.dataToChange.description !== description) {
-            await axios.put(`/api/course/${props.dataToChange._id}`, {
+        if (props.dataToChange.title !== title || props.dataToChange.description !== description
+            || props.dataToChange.initialDate !== initialDate || props.dataToChange.finalDate !== finalDate
+            || props.dataToChange.hasWorkLand !== hasWorkLand || props.dataToChange.hasPresence !== hasPresence
+            || props.dataToChange.hasEvaluation !== hasEvaluation || props.dataToChange.hasExercises !== hasExercises
+            || props.dataToChange.hasEndButton !== hasEndButton) {
+            console.log('updatind course', {
                 title,
+                initialDate,
+                finalDate,
+                hasWorkLand,
+                hasPresence,
+                hasEvaluation,
+                hasExercises,
+                hasEndButton,
                 description
             })
-                .then(r => console.log('Updated with success', r.data))
-                .catch(e => console.log('An error occurred trying to update the course', e))
-
-            closeModal()
+            await axios.put(`/api/course/${props.dataToChange._id}`, {
+                title,
+                initialDate,
+                finalDate,
+                hasWorkLand,
+                hasPresence,
+                hasEvaluation,
+                hasExercises,
+                hasEndButton,
+                description,
+            })
+                .then(() => console.log('Updated with success'))
+                .catch(() => console.log('An error occurred trying to update the course'))
         }
+        closeModal()
     }
 
     function closeModal() {
@@ -110,7 +131,7 @@ export default function ModalCourse(props) {
                 className={props.classes.modalHeader}
                 style={{display: "flex", justifyContent: "space-between", paddingBottom: 0}}
             >
-                <div className={classes.typo} style={{marginLeft: "3%"}}>
+                <div className={props.classes.typo} style={{marginLeft: "3%"}}>
                     <h2 className={props.classes.modalTitle}>
                         <Small>{modalName}</Small>
                     </h2>

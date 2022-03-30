@@ -95,12 +95,11 @@ export default function CoursesPage(props) {
 
                                     <>
                                         <Button color="primary" round onClick={() => setModalEdit(true)}>
-                                                Novo Curso
-                                            </Button>
+                                            Novo Curso
+                                        </Button>
 
-                                            <ModalCourse modalEdit={modalEdit} setModalEdit={setModalEdit}
-                                                handleCourses={handleCourses} classes={classes} dataToChange={data} />
-
+                                        <ModalCourse modalEdit={modalEdit} setModalEdit={setModalEdit}
+                                            handleCourses={handleCourses} classes={classes} dataToChange={data} />
                                     </>
                                 </div>
                             </GridItem>
