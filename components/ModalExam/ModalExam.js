@@ -14,6 +14,8 @@ import axios from "axios";
 import GridItem from "../Grid/GridItem";
 import {TextareaAutosize, TextField} from "@material-ui/core";
 import Small from "../Typography/Small";
+import ReactMarkdown from "react-markdown";
+import ExamRender from "../ExamRender/ExamRender";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -142,19 +144,7 @@ export default function ModalExam(props) {
                 </GridItem>
 
                 <GridItem>
-                    <p>Para cadastrar uma avaliação deve serguir o seguinte formato:</p>
-                    <p>1. Título da Questão 1</p>
-                    <p>[x] Alternativa Correta</p>
-                    <p>[] Alternativa Incorreta</p>
-                    <p>[] Alternativa Incorreta</p>
-                    <p>[] Alternativa Incorreta</p>
-                    <p>---</p>
-                    <p>2. Título da Questão 2</p>
-                    <p>[] Alternativa Incorreta</p>
-                    <p>[] Alternativa Incorreta</p>
-                    <p>[x] Alternativa Correta</p>
-                    <p>[] Alternativa Incorreta</p>
-                    <p>---</p>
+                    <ExamRender classes={props.classes} exam={exam} minimumGrade={minimumGrade} maxTime={maxTime} />
                 </GridItem>
             </DialogContent>
             <DialogActions className={props.classes.modalFooter + " " + props.classes.modalFooterCenter}>
