@@ -45,6 +45,7 @@ async function readQuestion(exam) {
             question.title = line
         }
     })
+    console.log('questions', questions)
     return questions
 }
 
@@ -74,19 +75,30 @@ export default function ExamRender(props) {
                 })
             })
             setTemplate(returnedTemplate)
+            console.log('gabarito', template)
         }
     }, [props.exam])
 
-    const setAnswer = (answer, answersInThePosition) => {
-        const newAnswers = answers
-        newAnswers[answersInThePosition] = answer
-        console.log('postion on', newAnswers)
-        setAnswers(newAnswers)
-        exam[answersInThePosition].alternatives[answer].isChecked = answers[answersInThePosition] === answer
+    const handleFinishExam = () => {
+        return checkResult([0,0], [0,1], minimumGrade)
     }
 
-    const handleFinishExam = () => {
-        return checkResult(answers, template, minimumGrade)
+    useEffect(async () => {
+        console.log('changed on effectrs', exam)
+        console.log('teste', await checkResult([0,0], [0,1], minimumGrade))
+    }, [exam])
+
+    const setAlternative = (alternativeIndex, questionIndex) => {
+        const questions = exam.map(question => {
+            if(question === exam[questionIndex]) {
+                return {...question, alternatives: question.alternatives.map(alternative => {
+                    return {...alternative, isChecked: false};
+                })}
+            }
+            return {...question}
+        });
+        questions[questionIndex].alternatives[alternativeIndex].isChecked = !(exam[questionIndex].alternatives[alternativeIndex].isChecked);
+        setExam(questions);
     }
 
     return exam === null
@@ -104,8 +116,8 @@ export default function ExamRender(props) {
                                     control={
                                         <Radio
                                             defaultChecked={alternativeIndex === 0}
-                                            checked={exam[questionIndex].alternatives[alternativeIndex].isChecked}
-                                            onChange={() => setAnswer(alternativeIndex, questionIndex)}
+                                            checked={alternative.isChecked}
+                                            onChange={() => setAlternative(alternativeIndex, questionIndex)}
                                             value={alternativeIndex}
                                             name={`alternative-${question.title}`}
                                             aria-label={`${question.title}`}
