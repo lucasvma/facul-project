@@ -20,20 +20,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
 })
 
-export default function ModalExam(props) {
+export default function ModalPerformingExam(props) {
     const [exam, setExam] = useState('')
     const [minimumGrade, setMinimumGrade] = useState(1)
     const [maxTime, setMaxTime] = useState(0)
-    const [isUpdate, setIsUpdate] = useState(false)
-
-    const modalName = !isUpdate ? 'Adicione as alternativas da avaliação' : 'Atualize as alternativas da avaliação'
+    const [disableFinishExam, setDisableFinishExam] = useState(true)
+    const [finishingExam, setFinishingExam] = useState(false)
+    const [passedOnExam, setPassOnExam] = useState(false)
 
     useEffect(async () => {
         await axios.get(`/api/exam/${props.courseId}`)
             .then((response) => {
                 if (response?.data?.returnedExam) {
                     const returnedExam = response.data.returnedExam
-                    setIsUpdate(true)
                     setExam(returnedExam.exam)
                     setMinimumGrade(returnedExam.minimumGrade)
                     setMaxTime(returnedExam.maxTime)
@@ -41,26 +40,18 @@ export default function ModalExam(props) {
             })
     }, [])
 
-    async function handleCreate() {
-        await axios.post('/api/exams', { exam, minimumGrade, maxTime, courseId: props.courseId })
-            .then(r => console.log('Created with success', r.data))
-            .catch(e => console.log('An error occurred trying to create the class', e))
-
-        closeModal()
-    }
-
-    async function handleUpdate() {
-        await axios.put(`/api/exam/${props.courseId}`, { exam, minimumGrade, maxTime })
-            .then(() => closeModal())
-            .catch(() => console.log('An error occurred trying to update the exam'))
-    }
+    useEffect(async () => {
+        if (passedOnExam) {
+            props.setEndCourse(true);
+            // TODO show popup of passed or reproved
+        }
+    }, [passedOnExam])
 
     function closeModal() {
         if (props.dataToChange?.length > 0) {
             Object.assign(props.dataToChange, {})
         }
-
-        props.handleCloseModalExam()
+        props.handleCloseModalPerformingExam()
     }
 
     return (
@@ -69,11 +60,11 @@ export default function ModalExam(props) {
                 root: props.classes.center,
                 paper: props.classes.modal
             }}
-            open={props.modalExam}
+            open={props.modalPerformingExam}
             TransitionComponent={Transition}
             keepMounted
             fullWidth={true}
-            onClose={() => props.handleCloseModalExam()}
+            onClose={() => props.handleCloseModalPerformingExam()}
             aria-labelledby="modal-slide-title"
             aria-describedby="modal-slide-exam"
         >
@@ -85,7 +76,7 @@ export default function ModalExam(props) {
             >
                 <div className={props.classes.typo} style={{marginLeft: "3%"}}>
                     <h2 className={props.classes.modalTitle}>
-                        <Small>{modalName}</Small>
+                        <Small>Iniciou o seu exame, boa sorte!</Small>
                     </h2>
                 </div>
                 <IconButton
@@ -102,54 +93,17 @@ export default function ModalExam(props) {
                 id="modal-slide-exam"
                 className={props.classes.modalBody}
             >
-                <GridItem xs={12} style={{display: "flex", justifyContent: "space-between"}}>
-                    <TextField
-                        id="outlined-number"
-                        type="number"
-                        label="Nota mínima para concluir?"
-                        value={minimumGrade}
-                        onChange={(e) => setMinimumGrade(e.target.value)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                    <TextField
-                        id="outlined-number"
-                        type="number"
-                        label="Tempo limite (horas)?"
-                        value={maxTime}
-                        onChange={(e) => setMaxTime(e.target.value)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </GridItem>
-
                 <GridItem xs={12}>
-                    <TextareaAutosize
-                        required
-                        aria-label="minimum height"
-                        rowsMin={20}
-                        placeholder="Descrição da Avaliação"
-                        className={props.classes.textarea}
-                        style={{
-                            width: "100%",
-                            padding: "10px",
-                            marginTop: 10
-                        }}
-                        value={exam}
-                        onChange={(e) => setExam(e.target.value)}
-                    />
-                </GridItem>
-
-                <GridItem>
-                    <ExamRender classes={props.classes} exam={exam} minimumGrade={minimumGrade} maxTime={maxTime} />
+                    <ExamRender classes={props.classes} exam={exam} minimumGrade={minimumGrade} maxTime={maxTime}
+                                setDisableFinishExam={setDisableFinishExam} finishingExam={finishingExam}
+                                setPassOnExam={setPassOnExam} courseId={props.courseId} />
                 </GridItem>
             </DialogContent>
+
             <DialogActions className={props.classes.modalFooter + " " + props.classes.modalFooterCenter}>
                 <Button onClick={() => closeModal()} color="danger">Fechar</Button>
-                <Button onClick={() => !isUpdate ? handleCreate() : handleUpdate()} color="primary">
-                    {!isUpdate ? 'Cadastrar' : 'Atualizar'}
+                <Button onClick={() => setFinishingExam(true)} color="primary" disabled={disableFinishExam}>
+                    Finalizar
                 </Button>
             </DialogActions>
         </Dialog>

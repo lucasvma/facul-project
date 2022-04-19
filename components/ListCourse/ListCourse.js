@@ -17,6 +17,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/pillsStyle";
 import ReactMarkdown from 'react-markdown'
 import Small from "../Typography/Small";
+import ModalExam from "../ModalExam/ModalExam";
+import ModalPerformingExam from "../ModalPerformingExam/ModalPerformingExam";
 
 const useStyles = makeStyles(styles);
 
@@ -31,6 +33,9 @@ export default function ListCourse({ courseClasses }) {
     const [endCourse, setEndCourse] = useState(false)
     const [hasEndButton, setHasEndButton] = useState(false)
     const [courseData, setCourseData] = useState(null)
+    const [modalPerformingExam, setPerformingExam] = useState(false)
+    const handleOpenModalPerformingExam = () => setPerformingExam(true);
+    const handleCloseModalPerformingExam = () => setPerformingExam(false);
 
     useEffect(async () => {
         setLoadingRequest(true)
@@ -63,7 +68,10 @@ export default function ListCourse({ courseClasses }) {
     }, [endCourse])
 
     const handleEndCourse = () => {
-        setEndCourse(true)
+        if (courseData.hasEvaluation) {
+            handleOpenModalPerformingExam()
+        }
+        // setEndCourse(true)
     }
 
     const handleUpdate = async (data) => {
@@ -187,6 +195,11 @@ export default function ListCourse({ courseClasses }) {
                             </GridItem>
                         )}
                     </GridContainer>
+
+                    {modalPerformingExam
+                        && <ModalPerformingExam modalPerformingExam={modalPerformingExam}
+                                                handleCloseModalPerformingExam={handleCloseModalPerformingExam}
+                                                classes={classes} courseId={courseId} setEndCourse={setEndCourse} />}
 
                     {!loadingRequest && isLastClass && courseData?.hasEndButton &&
                         (<div

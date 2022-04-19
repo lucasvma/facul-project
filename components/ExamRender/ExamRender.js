@@ -6,6 +6,7 @@ import Small from "../Typography/Small";
 import Radio from "@material-ui/core/Radio";
 import FiberManualRecord from "@material-ui/icons/FiberManualRecord";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import axios from "axios";
 
 async function readQuestion(exam) {
     const lines = exam.split('\n')
@@ -45,20 +46,19 @@ async function readQuestion(exam) {
             question.title = line
         }
     })
-    console.log('questions', questions)
     return questions
 }
 
-async function checkResult(answers, template, minimumGrade) {
+function checkGrade(exam) {
     let reachedGrade = 0
-    answers.map((answer, index) => answer === template[index] ? reachedGrade += 1 : null)
-    return reachedGrade >= minimumGrade
+    exam.map(question => question.alternatives.findIndex((alternative) => alternative.isChecked && alternative.isRight ? reachedGrade += 1 : 0))
+    // OLD answers.map((answer, index) => answer === template[index] ? reachedGrade += 1 : 0)
+    return reachedGrade
 }
 
 export default function ExamRender(props) {
     const [exam, setExam] = useState(null)
     const [template, setTemplate] = useState([])
-    const [answers, setAnswers] = useState([])
     const minimumGrade = props.minimumGrade
     const [maxTime, setMaxTime] = useState(props.maxTime)
 
@@ -75,22 +75,30 @@ export default function ExamRender(props) {
                 })
             })
             setTemplate(returnedTemplate)
-            console.log('gabarito', template)
         }
     }, [props.exam])
 
-    const handleFinishExam = () => {
-        return checkResult([0,0], [0,1], minimumGrade)
-    }
+    useEffect(() => {
+        exam !== null && props.setDisableFinishExam(!canFinishExam());
+    }, [exam])
 
     useEffect(async () => {
-        console.log('changed on effectrs', exam)
-        console.log('teste', await checkResult([0,0], [0,1], minimumGrade))
-    }, [exam])
+        if (props.finishingExam) {
+            const gradeOnExam = checkGrade(exam)
+            await axios.post(`/api/exam/result/`, {
+                courseId: props.courseId,
+                exam,
+                gradeOnExam: checkGrade(exam),
+                passedOnExam: gradeOnExam === minimumGrade
+            })
+                .then(() => props.setPassOnExam(true))
+                .catch(() => console.log('An error occurred trying to finishing the exam'))
+        }
+    }, [props.finishingExam])
 
     const setAlternative = (alternativeIndex, questionIndex) => {
         const questions = exam.map(question => {
-            if(question === exam[questionIndex]) {
+            if (question === exam[questionIndex]) {
                 return {...question, alternatives: question.alternatives.map(alternative => {
                     return {...alternative, isChecked: false};
                 })}
@@ -99,6 +107,11 @@ export default function ExamRender(props) {
         });
         questions[questionIndex].alternatives[alternativeIndex].isChecked = !(exam[questionIndex].alternatives[alternativeIndex].isChecked);
         setExam(questions);
+    }
+
+    const canFinishExam = () => {
+        const answers = exam.map(question => question.alternatives.findIndex((alternative) => alternative.isChecked));
+        return answers.find((answer) => answer === -1) !== -1
     }
 
     return exam === null
