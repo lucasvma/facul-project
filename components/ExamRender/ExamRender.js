@@ -89,7 +89,7 @@ export default function ExamRender(props) {
                 courseId: props.courseId,
                 exam,
                 gradeOnExam: checkGrade(exam),
-                passedOnExam: gradeOnExam === minimumGrade
+                passedOnExam: gradeOnExam === parseInt(minimumGrade)
             })
                 .then(() => props.setPassOnExam(true))
                 .catch(() => console.log('An error occurred trying to finishing the exam'))
