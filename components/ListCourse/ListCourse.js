@@ -17,8 +17,9 @@ import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/pillsStyle";
 import ReactMarkdown from 'react-markdown'
 import Small from "../Typography/Small";
-import ModalExam from "../ModalExam/ModalExam";
 import ModalPerformingExam from "../ModalPerformingExam/ModalPerformingExam";
+import SnackbarContent from "../Snackbar/SnackbarContent";
+import Clearfix from "../Clearfix/Clearfix";
 
 const useStyles = makeStyles(styles);
 
@@ -36,6 +37,7 @@ export default function ListCourse({ courseClasses }) {
     const [modalPerformingExam, setPerformingExam] = useState(false)
     const handleOpenModalPerformingExam = () => setPerformingExam(true);
     const handleCloseModalPerformingExam = () => setPerformingExam(false);
+    const [toastState, setToastState] = useState(false);
 
     useEffect(async () => {
         setLoadingRequest(true)
@@ -62,9 +64,18 @@ export default function ListCourse({ courseClasses }) {
     }, [activeClassIndex])
 
     useEffect(async () => {
-        endCourse && await axios
-                        .put(`/api/course/progress/${courseId}`, { currentProgress: activeClassIndex, isComplete: 1 })
-                        .then(() =>  router.push('/courses'))
+        if (endCourse) {
+            handleCloseModalPerformingExam();
+            setToastState(true);
+            await axios
+                .put(`/api/course/progress/${courseId}`, { currentProgress: activeClassIndex, isComplete: 1 })
+                .then(() => {
+                    setTimeout(() => {
+                        setToastState(false);
+                        router.push('/courses');
+                    }, 5000)
+                })
+        }
     }, [endCourse])
 
     const handleEndCourse = () => {
@@ -216,6 +227,22 @@ export default function ListCourse({ courseClasses }) {
                             </Button>
                         </div>
                     )}
+                </div>
+
+                <div>
+                    {toastState
+                        && <SnackbarContent
+                            message={
+                                <span>
+                                    <b>PARABÉNS:</b> Você concluiu o curso com sucesso e atingiu a média do exame
+                                </span>
+                            }
+                            open={false}
+                            close
+                            color="success"
+                            icon={Check}
+                        />}
+                    <Clearfix/>
                 </div>
             </div>
         </div>

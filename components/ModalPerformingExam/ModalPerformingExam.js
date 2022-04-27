@@ -96,7 +96,7 @@ export default function ModalPerformingExam(props) {
                 <GridItem xs={12}>
                     <ExamRender classes={props.classes} exam={exam} minimumGrade={minimumGrade} maxTime={maxTime}
                                 setDisableFinishExam={setDisableFinishExam} finishingExam={finishingExam}
-                                setPassOnExam={setPassOnExam} courseId={props.courseId} />
+                                setPassOnExam={setPassOnExam} courseId={props.courseId} isPerformingExam={true} />
                 </GridItem>
             </DialogContent>
 

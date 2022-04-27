@@ -58,7 +58,6 @@ function checkGrade(exam) {
 
 export default function ExamRender(props) {
     const [exam, setExam] = useState(null)
-    const [template, setTemplate] = useState([])
     const minimumGrade = props.minimumGrade
     const [maxTime, setMaxTime] = useState(props.maxTime)
 
@@ -66,20 +65,11 @@ export default function ExamRender(props) {
         if (props.exam !== null) {
             const actualExam = await readQuestion(props.exam)
             setExam(actualExam)
-            let returnedTemplate = []
-            exam?.map((question, questionIndex) => {
-                question.alternatives.map((alternative, alternativeIndex) => {
-                    if (alternative.isRight) {
-                        returnedTemplate[questionIndex] = alternativeIndex
-                    }
-                })
-            })
-            setTemplate(returnedTemplate)
         }
     }, [props.exam])
 
     useEffect(() => {
-        exam !== null && props.setDisableFinishExam(!canFinishExam());
+        exam?.length > 0 && props.isPerformingExam && props.setDisableFinishExam(!canFinishExam());
     }, [exam])
 
     useEffect(async () => {

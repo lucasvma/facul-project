@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import FileUpload from 'react-material-file-upload';
 // material-ui components
 import Slide from "@material-ui/core/Slide";
 import Dialog from "@material-ui/core/Dialog";
@@ -12,9 +13,10 @@ import Close from "@material-ui/icons/Close";
 import Button from "../../components/CustomButtons/Button.js";
 import axios from "axios";
 import GridItem from "../Grid/GridItem";
-import {TextareaAutosize, TextField} from "@material-ui/core";
+import {ButtonBase, Input, TextareaAutosize, TextField} from "@material-ui/core";
 import Small from "../Typography/Small";
 import ExamRender from "../ExamRender/ExamRender";
+import CloudUpload from '@material-ui/icons/CloudUpload';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -25,8 +27,19 @@ export default function ModalExam(props) {
     const [minimumGrade, setMinimumGrade] = useState(1)
     const [maxTime, setMaxTime] = useState(0)
     const [isUpdate, setIsUpdate] = useState(false)
+    const ref = useRef();
 
     const modalName = !isUpdate ? 'Adicione as alternativas da avaliação' : 'Atualize as alternativas da avaliação'
+
+    const handleChangeFile = (e) => {
+        e.preventDefault()
+        const reader = new FileReader()
+        reader.onload = async (e) => {
+            const text = (e.target.result)
+            setExam(text)
+        };
+        reader.readAsText(e.target.files[0]);
+    }
 
     useEffect(async () => {
         await axios.get(`/api/exam/${props.courseId}`)
@@ -126,6 +139,20 @@ export default function ModalExam(props) {
                 </GridItem>
 
                 <GridItem xs={12}>
+                    <ButtonBase component="label" color="primary" round>
+                        Upload
+                        <CloudUpload style={{marginLeft: '10%'}} />
+                        <input
+                            ref={ref}
+                            type="file"
+                            hidden
+                            accept=".txt"
+                            onChange={handleChangeFile}
+                        />
+                    </ButtonBase>
+                </GridItem>
+
+                <GridItem xs={12}>
                     <TextareaAutosize
                         required
                         aria-label="minimum height"
@@ -143,7 +170,8 @@ export default function ModalExam(props) {
                 </GridItem>
 
                 <GridItem>
-                    <ExamRender classes={props.classes} exam={exam} minimumGrade={minimumGrade} maxTime={maxTime} />
+                    <ExamRender classes={props.classes} exam={exam} minimumGrade={minimumGrade} maxTime={maxTime}
+                                isPerformingExam={false} />
                 </GridItem>
             </DialogContent>
             <DialogActions className={props.classes.modalFooter + " " + props.classes.modalFooterCenter}>
