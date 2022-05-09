@@ -12,7 +12,7 @@ import axios from 'axios';
 
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
-import ModalCourse from "../../components/ModalCourse/ModalCourse";
+import ModalCourseCreate from "../../components/ModalCourseCreate/ModalCourseCreate";
 import ListCourses from "../../components/ListCourses/ListCourses";
 import {useSession} from "next-auth/client";
 
@@ -75,8 +75,8 @@ export default function CoursePage(props) {
                                             Novo Curso
                                         </Button>
 
-                                        <ModalCourse modal={modal} setModal={setModal} listClasses={handleCourses}
-                                                     classes={classes}/>
+                                        <ModalCourseCreate modal={modal} setModal={setModal} listClasses={handleCourses}
+                                                           classes={classes}/>
                                     </div>
                                 </div>
                             </GridItem>

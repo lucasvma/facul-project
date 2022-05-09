@@ -4,7 +4,7 @@ import {getSession} from "next-auth/client";
 export default async (request, response) => {
     const {
         method,
-        body: { title, initialDate, finalDate, hasWorkLand, hasPresence, hasEvaluation, hasExercises, hasEndButton,
+        body: { title, initialDate, finalDate, workLoad,hasWorkLoad, hasPresence, hasEvaluation, hasExercises, hasEndButton,
             description, classes, publicAccess }
     } = request
     const session = await getSession({ req: request })
@@ -24,7 +24,8 @@ export default async (request, response) => {
                 title,
                 initialDate,
                 finalDate,
-                hasWorkLand,
+                workLoad,
+                hasWorkLoad,
                 hasPresence,
                 hasEvaluation,
                 hasExercises,

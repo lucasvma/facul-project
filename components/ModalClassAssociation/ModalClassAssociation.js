@@ -16,6 +16,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Remove from '@material-ui/icons/Remove';
 import CustomInput from "../CustomInput/CustomInput";
 import GridItem from "../Grid/GridItem";
+import Input from "@material-ui/core/Input";
+import classNames from "classnames";
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -25,6 +27,7 @@ export default function ModalClassAssociation(props) {
     const [classes, setClasses] = useState([]);
     const [classTitles, setClassTitles] = useState([]);
     const [classInput, setClassInput] = useState("");
+    const [enter, setEnter] = useState(false);
 
     const closeModal = () => {
         props.handleCloseModalClass()
@@ -48,14 +51,12 @@ export default function ModalClassAssociation(props) {
 
     useEffect(() => {
         if (classes?.length > 0) {
-            setClassTitles(classes
-                            .map((grade) => props.course?.classes?.includes(grade._id) && grade.title)
-                            .filter((classTitle) => classTitle))
+            setClassTitles(classes.map((grade) => grade.title).filter((classTitle) => classTitle))
         }
     }, [classes])
 
-    useEffect(async() => {
-        if (classInput !== "") {
+    useEffect(async () => {
+        if (classInput !== "" && enter) {
             await axios.post('/api/classes',{ title: classInput, description: "", publicAccess: false })
                 .then(async (response) => {
                     const insertedId = response.data?.insertedId
@@ -72,12 +73,16 @@ export default function ModalClassAssociation(props) {
 
                                 await axios
                                     .patch(`/api/course/associate/${props.course._id}`, { classes: classIds })
-                                    .then(() => setClassTitles(classTitlesUpdated))
+                                    .then(() => {
+                                        setClassTitles(classTitlesUpdated)
+                                        setClassInput("")
+                                        setEnter(false)
+                                    })
                             })
                     }
                 })
         }
-    }, [classInput])
+    }, [enter])
 
     const customList = (items) => (
         <Paper fullWidth={true}>
@@ -145,14 +150,15 @@ export default function ModalClassAssociation(props) {
                 className={props.classes.modalBody}
             >
                 <Grid container justifyContent="center" alignItems="center">
-                    <GridItem item>
-                        <CustomInput
-                            labelText="Título da Nova Aula"
+                    <GridItem item style={{padding: 0}}>
+                        <Input
+                            placeholder="Título da Nova Aula"
+                            fullWidth={true}
                             id="input-new-class"
-                            formControlProps={{
-                                fullWidth: true,
-                            }}
-                            onKeyPress={(e) => e.key === 'Enter' && setClassInput(e.target.value)}
+                            value={classInput}
+                            onKeyPress={(e) => e.key === 'Enter' && setEnter(true)}
+                            onChange={(e) =>  setClassInput(e.target.value)}
+                            style={{marginBottom: "4%"}}
                         />
                     </GridItem>
                     <Grid item xs={12}>{customList(classTitles)}</Grid>

@@ -5,7 +5,7 @@ export default async (request, response) => {
     const {
         method,
         query: {id},
-        body: {title, initialDate, finalDate, hasWorkLand, hasPresence, hasEvaluation, hasExercises, hasEndButton,
+        body: {title, initialDate, finalDate, workLoad, hasWorkLoad, hasPresence, hasEvaluation, hasExercises, hasEndButton,
             description}
     } = request
 
@@ -24,7 +24,7 @@ export default async (request, response) => {
             await collection.updateOne(
                 {_id: ObjectId(id)},
                 {
-                    $set: {title, initialDate, finalDate, hasWorkLand, hasPresence, hasEvaluation, hasExercises,
+                    $set: {title, initialDate, finalDate, workLoad, hasWorkLoad, hasPresence, hasEvaluation, hasExercises,
                         hasEndButton, description, updateAt: new Date()}
                 })
             return response

@@ -14,10 +14,6 @@ const useStyles = makeStyles(styles);
 export default function ListCourses(props) {
     const classes = useStyles();
 
-    const handleUpdate = async (data) => {
-        props.setData(data)
-    }
-
     const handleRemove = async (id) => {
         await axios
             .delete(`/api/course/${id}`)
@@ -52,8 +48,8 @@ export default function ListCourses(props) {
                             className={classes.listItem}
                         />
 
-                        <CommonActionsCourse course={course} handleUpdate={handleUpdate} handleRemove={handleRemove}
-                            handleVisible={handleVisible} handleCourses={props.handleCourses} />
+                        <CommonActionsCourse course={course} handleRemove={handleRemove} handleVisible={handleVisible}
+                                             handleCourses={props.handleCourses} />
                     </ListItem>
                 ))}
             </List>

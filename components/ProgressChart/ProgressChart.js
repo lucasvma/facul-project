@@ -40,13 +40,10 @@ export default function ProgressChart({ courseId, classesCourseLength }) {
         let changedChartData = defaultData
 
         if (classCourseProgress?.isComplete === 1) {
-            console.log('finished')
             changedChartData.datasets[0].data = [100, 0]
         } else if (classCourseProgress?.currentProgress + 1 === classesCourseLength) {
-            console.log('almost finishing')
             changedChartData.datasets[0].data = [90, 10]
         } else {
-            console.log('in progress.')
             let green = ((classCourseProgress?.currentProgress + 1) * 100) / classesCourseLength
             let gray = 100 - green
             changedChartData.datasets[0].data = [green, gray]

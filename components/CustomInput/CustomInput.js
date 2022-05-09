@@ -25,6 +25,7 @@ export default function CustomInput(props) {
         white,
         inputRootCustomClasses,
         success,
+        value
     } = props;
 
     const labelClasses = classNames({
@@ -65,15 +66,17 @@ export default function CustomInput(props) {
                 </InputLabel>
             ) : null}
             <Input
+                {...inputProps}
                 classes={{
                     input: inputClasses,
                     root: marginTop,
                     disabled: classes.disabled,
                     underline: underlineClasses,
                 }}
+                onChange={props.onChange}
                 onKeyPress={props.onKeyPress}
+                defaultValue={value}
                 id={id}
-                {...inputProps}
             />
         </FormControl>
     );

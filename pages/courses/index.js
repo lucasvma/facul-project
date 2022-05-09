@@ -14,9 +14,13 @@ import Button from "../../components/CustomButtons/Button";
 import ListCourses from "../../components/ListCourses/ListCourses";
 import {useSession} from "next-auth/client";
 import axios from "axios";
-import ModalCourse from "../../components/ModalCourse/ModalCourse";
+import ModalCourseCreate from "../../components/ModalCourseCreate/ModalCourseCreate";
 
 const useStyles = makeStyles(styles);
+
+// const PdfDocument = dynamic(() => import('../../components/GenerateCertificate/GenerateCertificate'), {
+//     ssr: false
+// });
 
 export default function CoursesPage(props) {
     const classes = useStyles();
@@ -27,28 +31,17 @@ export default function CoursesPage(props) {
         classes.imgFluid
     )
 
-    const [modalEdit, setModalEdit] = useState(false)
-    const [modalAssociation, setModalAssociation] = useState(false)
+    const [modalCreate, setModalCreate] = useState(false)
     const [courses, setCourses] = useState([])
-    const [data, setData] = useState(null)
     const [session] = useSession()
     const [isAuthor, setIsAuthor] = useState(false)
     const [isAdmin, setIsAdmin] = useState(session?.isAdmin)
 
-    useEffect(() => {
-        handleCourses() && handleIsAuthor()
-    }, [])
-
-    useEffect(() => {
-        if (data != null) {
-            setModalEdit(true)
-        }
-    }, [data])
-
     useEffect(async () => {
         setIsAdmin(session?.isAdmin)
         if (isAdmin) {
-            handleCourses() && handleIsAuthor()
+            handleCourses();
+            handleIsAuthor()
         }
     }, [session])
 
@@ -94,19 +87,20 @@ export default function CoursesPage(props) {
                                     </div>
 
                                     <>
-                                        <Button color="primary" round onClick={() => setModalEdit(true)}>
+                                        <Button color="primary" round onClick={() => setModalCreate(true)}>
                                             Novo Curso
                                         </Button>
 
-                                        <ModalCourse modalEdit={modalEdit} setModalEdit={setModalEdit}
-                                            handleCourses={handleCourses} classes={classes} dataToChange={data} />
+                                        <ModalCourseCreate modalCreate={modalCreate} setModalCreate={setModalCreate}
+                                                           handleCourses={handleCourses} classes={classes} />
                                     </>
                                 </div>
                             </GridItem>
                         </GridContainer>
 
-                        <ListCourses setModalEdit={setModalEdit} handleCourses={handleCourses} courses={courses}
-                                     setData={setData} />
+                        {/*<GenerateCertificate />*/}
+
+                        <ListCourses handleCourses={handleCourses} courses={courses} />
                     </div>
                 </div>
             </div>

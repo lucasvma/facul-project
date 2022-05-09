@@ -25,89 +25,33 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
 })
 
-export default function ModalCourse(props) {
-    const [title, setTitle] = useState('')
-    const [initialDate, setInitialDate] = useState(new Date());
-    const [finalDate, setFinalDate] = useState(undefined);
-    const [hasWorkLand, setHasWorkLand] = useState(false);
-    const [hasPresence, setHasPresence] = useState(false);
-    const [hasEvaluation, setHasEvaluation] = useState(false);
-    const [hasExercises, setHasExercises] = useState(false);
-    const [hasEndButton, setHasEndButton] = useState(false);
-    const [workLand, setWorkLand] = useState(0);
-    const [description, setDescription] = useState('')
-    const [isUpdate, setIsUpdate] = useState(false)
-    const [classes, setClasses] = useState(props.classes)
+export default function ModalCourseCreate(props) {
+    const classes = props.classes;
 
-    useEffect(() => {
-        setIsUpdate(!!props.dataToChange)
-        setTitle(props.dataToChange ? props.dataToChange.title : '')
-        setDescription(props.dataToChange ? props.dataToChange.description : '')
-    }, [props.dataToChange])
-
-    const modalName = !isUpdate ? 'Cadastrar Novo Curso' : 'Atualizar curso'
+    const [creationData, setCreationData] = useState({
+        title: '',
+        initialDate: new Date(),
+        finalDate: undefined,
+        hasWorkLoad: false,
+        hasPresence: false,
+        hasEvaluation: false,
+        hasExercises: false,
+        hasEndButton: false,
+        description: '',
+        classes: [],
+        publicAccess: false
+    });
 
     async function handleCreate() {
-        await axios.post('/api/courses', {
-            title,
-            initialDate,
-            finalDate,
-            hasWorkLand,
-            hasPresence,
-            hasEvaluation,
-            hasExercises,
-            hasEndButton,
-            description,
-            classes: [],
-            publicAccess: false
-        })
+        await axios.post('/api/courses', creationData)
             .then(response => console.log('Created with success', response.data))
             .catch(e => console.log('An error occurred trying to create the course', e))
 
         closeModal()
     }
 
-    async function handleUpdate() {
-        if (props.dataToChange.title !== title || props.dataToChange.description !== description
-            || props.dataToChange.initialDate !== initialDate || props.dataToChange.finalDate !== finalDate
-            || props.dataToChange.hasWorkLand !== hasWorkLand || props.dataToChange.hasPresence !== hasPresence
-            || props.dataToChange.hasEvaluation !== hasEvaluation || props.dataToChange.hasExercises !== hasExercises
-            || props.dataToChange.hasEndButton !== hasEndButton) {
-            console.log('updatind course', {
-                title,
-                initialDate,
-                finalDate,
-                hasWorkLand,
-                hasPresence,
-                hasEvaluation,
-                hasExercises,
-                hasEndButton,
-                description
-            })
-            await axios.put(`/api/course/${props.dataToChange._id}`, {
-                title,
-                initialDate,
-                finalDate,
-                hasWorkLand,
-                hasPresence,
-                hasEvaluation,
-                hasExercises,
-                hasEndButton,
-                description,
-            })
-                .then(() => console.log('Updated with success'))
-                .catch(() => console.log('An error occurred trying to update the course'))
-        }
-        closeModal()
-    }
-
     function closeModal() {
-        if (props.dataToChange?.length > 0) {
-            Object.assign(props.dataToChange, {})
-        }
-
-        props.setModalEdit(false)
-
+        props.setModalCreate(false)
         props.handleCourses()
     }
 
@@ -117,11 +61,11 @@ export default function ModalCourse(props) {
                 root: props.classes.center,
                 paper: props.classes.modal
             }}
-            open={props.modalEdit}
+            open={props.modalCreate}
             TransitionComponent={Transition}
             keepMounted
             fullWidth={true}
-            onClose={() => props.setModalEdit(false)}
+            onClose={() => props.setModalCreate(false)}
             aria-labelledby="modal-slide-title"
             aria-describedby="modal-slide-description"
         >
@@ -133,7 +77,7 @@ export default function ModalCourse(props) {
             >
                 <div className={props.classes.typo} style={{marginLeft: "3%"}}>
                     <h2 className={props.classes.modalTitle}>
-                        <Small>{modalName}</Small>
+                        <Small>Cadastrar Novo Curso</Small>
                     </h2>
                 </div>
                 <IconButton
@@ -154,8 +98,8 @@ export default function ModalCourse(props) {
                     <TextField
                         id="title"
                         label="Título do Curso"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={creationData.title}
+                        onChange={(e) => setCreationData({...creationData, title: e.target.value})}
                         style={{
                             width: "100%",
                         }}
@@ -165,13 +109,13 @@ export default function ModalCourse(props) {
                 <GridItem xs={12} sm={12} md={6}>
                     <FormControl fullWidth>
                         <Datetime
-                            value={initialDate}
-                            onChange={(newInitialDate) => setInitialDate(newInitialDate)}
+                            value={creationData.initialDate}
+                            onChange={(newInitialDate) => setCreationData({...creationData, initialDate: newInitialDate})}
                             inputProps={{placeholder: "Data Inicial"}}
                         />
                         <Datetime
-                            value={finalDate}
-                            onChange={(newFinalDate) => setFinalDate(newFinalDate)}
+                            value={creationData.finalDate}
+                            onChange={(newFinalDate) => setCreationData({...creationData, finalDate: newFinalDate})}
                             inputProps={{placeholder: "Data Final"}}
                         />
                     </FormControl>
@@ -181,8 +125,8 @@ export default function ModalCourse(props) {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                onClick={() => setHasWorkLand(!hasWorkLand)}
-                                checked={hasWorkLand}
+                                onClick={() => setCreationData({...creationData, hasWorkLoad: !creationData.hasWorkLoad})}
+                                checked={creationData.hasWorkLoad}
                                 checkedIcon={<Check className={classes.checkedIcon}/>}
                                 icon={<Check className={classes.uncheckedIcon}/>}
                                 classes={{
@@ -198,9 +142,9 @@ export default function ModalCourse(props) {
                     <TextField
                         id="outlined-number"
                         type="number"
-                        value={workLand}
-                        disabled={!hasWorkLand}
-                        onChange={(e) => setWorkLand(e.target.value)}
+                        value={creationData.workLoad}
+                        disabled={!creationData.hasWorkLoad}
+                        onChange={(e) => setCreationData({...creationData, workLoad: e.target.value})}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -211,8 +155,8 @@ export default function ModalCourse(props) {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                onClick={() => setHasPresence(!hasPresence)}
-                                checked={hasPresence}
+                                onClick={() => setCreationData({...creationData, hasPresence: !creationData.hasPresence})}
+                                checked={creationData.hasPresence}
                                 checkedIcon={<Check className={classes.checkedIcon}/>}
                                 icon={<Check className={classes.uncheckedIcon}/>}
                                 classes={{
@@ -228,8 +172,8 @@ export default function ModalCourse(props) {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                onClick={() => setHasExercises(!hasExercises)}
-                                checked={hasExercises}
+                                onClick={() => setCreationData({...creationData, hasExercises: !creationData.hasExercises})}
+                                checked={creationData.hasExercises}
                                 checkedIcon={<Check className={classes.checkedIcon}/>}
                                 icon={<Check className={classes.uncheckedIcon}/>}
                                 classes={{
@@ -245,8 +189,8 @@ export default function ModalCourse(props) {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                onClick={() => setHasEvaluation(!hasEvaluation)}
-                                checked={hasEvaluation}
+                                onClick={() => setCreationData({...creationData, hasEvaluation: !creationData.hasEvaluation})}
+                                checked={creationData.hasEvaluation}
                                 checkedIcon={<Check className={classes.checkedIcon}/>}
                                 icon={<Check className={classes.uncheckedIcon}/>}
                                 classes={{
@@ -262,8 +206,8 @@ export default function ModalCourse(props) {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                onClick={() => setHasEndButton(!hasEndButton)}
-                                checked={hasEndButton}
+                                onClick={() => setCreationData({...creationData, hasEndButton: !creationData.hasEndButton})}
+                                checked={creationData.hasEndButton}
                                 checkedIcon={<Check className={classes.checkedIcon}/>}
                                 icon={<Check className={classes.uncheckedIcon}/>}
                                 classes={{
@@ -290,16 +234,16 @@ export default function ModalCourse(props) {
                             padding: "10px",
                             marginTop: 10
                         }}
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        value={creationData.description}
+                        onChange={(e) => setCreationData({...creationData, description: e.target.value})}
                     />
                 </GridItem>
 
             </DialogContent>
             <DialogActions className={props.classes.modalFooter + " " + props.classes.modalFooterCenter}>
                 <Button onClick={() => closeModal()} color="danger">Fechar</Button>
-                <Button onClick={() => !isUpdate ? handleCreate() : handleUpdate()} color="primary">
-                    {!isUpdate ? 'Cadastrar' : 'Atualizar'}
+                <Button onClick={() => handleCreate()} color="primary">
+                    Cadastrar
                 </Button>
             </DialogActions>
         </Dialog>

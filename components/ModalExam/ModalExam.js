@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import FileUpload from 'react-material-file-upload';
 // material-ui components
 import Slide from "@material-ui/core/Slide";
 import Dialog from "@material-ui/core/Dialog";
@@ -17,6 +16,7 @@ import {ButtonBase, Input, TextareaAutosize, TextField} from "@material-ui/core"
 import Small from "../Typography/Small";
 import ExamRender from "../ExamRender/ExamRender";
 import CloudUpload from '@material-ui/icons/CloudUpload';
+import {CloudDownload} from "@material-ui/icons";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -41,6 +41,12 @@ export default function ModalExam(props) {
         reader.readAsText(e.target.files[0]);
     }
 
+    async function downloadTemplate() {
+        console.log('donwloading the tempalte file')
+        await axios.get('/api/template')
+            .then((response) => console.log('donwload tempalte with success'))
+    }
+
     useEffect(async () => {
         await axios.get(`/api/exam/${props.courseId}`)
             .then((response) => {
@@ -62,10 +68,11 @@ export default function ModalExam(props) {
         closeModal()
     }
 
-    async function handleUpdate() {
-        await axios.put(`/api/exam/${props.courseId}`, { exam, minimumGrade, maxTime })
-            .then(() => closeModal())
+    function handleUpdate() {
+        axios.put(`/api/exam/${props.courseId}`, { exam, minimumGrade, maxTime })
+            .then(() => console.log('Updated with sucess'))
             .catch(() => console.log('An error occurred trying to update the exam'))
+        closeModal()
     }
 
     function closeModal() {
@@ -138,7 +145,7 @@ export default function ModalExam(props) {
                     />
                 </GridItem>
 
-                <GridItem xs={12}>
+                <GridItem xs={12} style={{display: "flex", justifyContent: "space-between"}}>
                     <ButtonBase component="label" color="primary" round>
                         Upload
                         <CloudUpload style={{marginLeft: '10%'}} />
@@ -149,6 +156,13 @@ export default function ModalExam(props) {
                             accept=".txt"
                             onChange={handleChangeFile}
                         />
+                    </ButtonBase>
+
+                    <ButtonBase component="label" color="primary" round>
+                        <a href="/api/template">
+                            Template
+                            <CloudDownload style={{marginLeft: '10%'}} />
+                        </a>
                     </ButtonBase>
                 </GridItem>
 
