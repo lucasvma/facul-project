@@ -39,11 +39,15 @@ export default function CoursesPage(props) {
 
     useEffect(async () => {
         setIsAdmin(session?.isAdmin)
-        if (isAdmin) {
+        if (isAdmin || isAuthor) {
             handleCourses();
-            handleIsAuthor()
+            handleIsAuthor();
         }
     }, [session])
+
+    useEffect(() => {
+        handleCourses();
+    }, [])
 
     async function handleCourses() {
         await axios

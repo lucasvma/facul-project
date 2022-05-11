@@ -37,21 +37,29 @@ export default function CommonActionsCourse({course, handleUpdate, handleRemove,
     }, [])
 
     function exportCertificate() {
-        return (
-            null
-            // <GenerateCertificate />
-        )
+        return axios.get(`/api/course/certificate/${courseId}`)
+            .then((response) => {
+                const link = document.createElement('a');
+                link.href = response.data.url;
+                link.setAttribute('download', 'certificado.pdf');
+                link.setAttribute('target', '_blank');
+                document.body.appendChild(link);
+                link.click();
+            });
     }
 
     return (isAdmin || isOwner) && (
         <div courseId={courseId}>
-            {passedOnExam && <Button
+            {passedOnExam &&
+            <Button
                 justIcon
                 color="transparent"
                 aria-label="Baixar Certificado"
                 onClick={() => exportCertificate()}
             >
-                {<PictureAsPdf/>}
+                {/*<a href={`/api/course/certificate/${courseId}`} download>*/}
+                    {<PictureAsPdf/>}
+                {/*</a>*/}
             </Button>}
 
 

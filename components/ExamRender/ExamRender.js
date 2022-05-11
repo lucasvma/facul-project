@@ -52,7 +52,6 @@ async function readQuestion(exam) {
 function checkGrade(exam) {
     let reachedGrade = 0
     exam.map(question => question.alternatives.findIndex((alternative) => alternative.isChecked && alternative.isRight ? reachedGrade += 1 : 0))
-    // OLD answers.map((answer, index) => answer === template[index] ? reachedGrade += 1 : 0)
     return reachedGrade
 }
 
@@ -79,7 +78,7 @@ export default function ExamRender(props) {
                 courseId: props.courseId,
                 exam,
                 gradeOnExam: checkGrade(exam),
-                passedOnExam: gradeOnExam === parseInt(minimumGrade)
+                passedOnExam: gradeOnExam >= parseInt(minimumGrade)
             })
                 .then(() => props.setPassOnExam(true))
                 .catch(() => console.log('An error occurred trying to finishing the exam'))

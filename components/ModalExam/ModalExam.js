@@ -41,12 +41,6 @@ export default function ModalExam(props) {
         reader.readAsText(e.target.files[0]);
     }
 
-    async function downloadTemplate() {
-        console.log('donwloading the tempalte file')
-        await axios.get('/api/template')
-            .then((response) => console.log('donwload tempalte with success'))
-    }
-
     useEffect(async () => {
         await axios.get(`/api/exam/${props.courseId}`)
             .then((response) => {
@@ -126,7 +120,7 @@ export default function ModalExam(props) {
                     <TextField
                         id="outlined-number"
                         type="number"
-                        label="Nota mínima para concluir?"
+                        label="Mínimo de questões corretas para concluir o curso?"
                         value={minimumGrade}
                         onChange={(e) => setMinimumGrade(e.target.value)}
                         InputLabelProps={{

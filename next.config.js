@@ -20,21 +20,4 @@ module.exports = withPlugins([[withImages]], {
         }
         return config;
     },
-    async headers() {
-        return [
-            {
-                source: '/course/:id',
-                headers: [
-                    {
-                        key: 'Cross-Origin-Embedder-Policy',
-                        value: 'require-corp',
-                    },
-                    {
-                        key: 'Cross-Origin-Opener-Policy',
-                        value: 'same-origin',
-                    },
-                ]
-            },
-        ]
-    }
 });

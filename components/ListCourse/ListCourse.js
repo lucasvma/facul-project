@@ -16,6 +16,7 @@ import GridItem from "../Grid/GridItem";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/pillsStyle";
 import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 import Small from "../Typography/Small";
 import ModalPerformingExam from "../ModalPerformingExam/ModalPerformingExam";
 import SnackbarContent from "../Snackbar/SnackbarContent";
@@ -83,6 +84,27 @@ export default function ListCourse({ courseClasses }) {
             handleOpenModalPerformingExam()
         }
         // setEndCourse(true)
+    }
+
+    function handleYoutubeVideo(markDownText) {
+        const lines = markDownText.split('\n');
+        let markDownReturn = '';
+        let videoId = '5qap5aO4i9A';
+
+        lines.forEach((line) => {
+            try {
+                videoId = line.includes('youtu.be') ? line.split('youtu.be/')[1] : line.split('v=')[1]
+                videoId = videoId.substring(0, 11)
+            } catch(e) {
+                videoId = '5qap5aO4i9A'
+            }
+            if (line.search('youtube') !== -1) {
+                markDownReturn += `<iframe width="500" height="500" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>  `;
+            } else {
+                markDownReturn += `${line}  \n`;
+            }
+        })
+        return markDownReturn;
     }
 
     const handleUpdate = async (data) => {
@@ -192,7 +214,10 @@ export default function ListCourse({ courseClasses }) {
                                                         </>
                                                         <>
                                                             <ReactMarkdown
-                                                                children={grade.description}
+                                                                rehypePlugins={[rehypeRaw]}
+                                                                children={
+                                                                    handleYoutubeVideo(grade.description)
+                                                                }
                                                                 escapeHtml={false}
                                                                 renderers={renderers}
                                                             />

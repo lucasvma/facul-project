@@ -30,7 +30,6 @@ export default function ModalClass(props) {
             setTitle('')
             setDescription('')
         } else {
-            console.log('dataToChange', props.dataToChange)
             setTitle(props.dataToChange.title)
             setDescription(props.dataToChange.description)
         }

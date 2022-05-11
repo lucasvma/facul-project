@@ -1,5 +1,4 @@
 import {connectToDatabase} from "../db/mongodb";
-const request = require("request");
 import {ObjectId} from "mongodb";
 
 export default async (req, res) => {
@@ -15,8 +14,6 @@ export default async (req, res) => {
 
             res.setHeader('Content-Type', 'text/plain');
             res.setHeader('Content-Disposition', 'attachment; filename=template.txt');
-
-            // request.get(process.env.NEXTAUTH_URL + '/public/template/template.txt').pipe(res);
 
             return res
                 .status(200)

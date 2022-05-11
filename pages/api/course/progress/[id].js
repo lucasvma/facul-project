@@ -51,7 +51,6 @@ export default async (request, response) => {
             await courseProgressCollection.updateOne(
                 { courseId, email },
                 { $set: { currentProgress, isComplete, updateAt: new Date() } })
-            console.log(`progress was updated to: ${currentProgress}`)
             return response
                 .status(200)
                 .json({message: 'Progresso atualizado com sucesso'})
