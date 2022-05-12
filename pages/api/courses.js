@@ -5,7 +5,7 @@ export default async (request, response) => {
     const {
         method,
         body: { title, initialDate, finalDate, workLoad,hasWorkLoad, hasPresence, hasEvaluation, hasExercises, hasEndButton,
-            description, classes, publicAccess }
+            description, classes, publicAccess, isPaid, value }
     } = request
     const session = await getSession({ req: request })
     const email = session?.user?.email
@@ -34,6 +34,8 @@ export default async (request, response) => {
                 classes,
                 publicAccess,
                 visibility: 1,
+                isPaid,
+                value,
                 createBy: email,
                 createdAt: new Date()
             })

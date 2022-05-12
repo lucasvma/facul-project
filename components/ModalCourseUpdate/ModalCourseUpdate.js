@@ -41,7 +41,9 @@ export default function ModalCourseUpdate(props) {
         hasEndButton: false,
         description: '',
         classes: [],
-        publicAccess: false
+        publicAccess: false,
+        isPaid: false,
+        value: 0,
     });
 
     useEffect(async () => {
@@ -60,7 +62,8 @@ export default function ModalCourseUpdate(props) {
             || oldData.initialDate !== updateData.initialDate || oldData.finalDate !== updateData.finalDate
             || oldData.workLoad !== updateData.workLoad || oldData.hasWorkLoad !== updateData.hasWorkLoad
             || oldData.hasPresence !== updateData.hasPresence || oldData.hasEvaluation !== updateData.hasEvaluation
-            || oldData.hasExercises !== updateData.hasExercises || oldData.hasEndButton !== updateData.hasEndButton) {
+            || oldData.hasExercises !== updateData.hasExercises || oldData.hasEndButton !== updateData.hasEndButton
+            || oldData.isPaid !== updateData.isPaid || oldData.value !== updateData.value) {
             axios.put(`/api/course/${props.courseId}`, updateData)
                 .then(() => console.log('Updated with success'))
                 .catch(() => console.log('An error occurred trying to update the course'))
@@ -155,7 +158,7 @@ export default function ModalCourseUpdate(props) {
                             />
                         }
                         classes={{label: classes.label, root: classes.labelRoot}}
-                        label="Possui carga horária?"
+                        label="Possui carga horária? (Horas)"
                     />
                     <TextField
                         id="outlined-number"
@@ -163,6 +166,36 @@ export default function ModalCourseUpdate(props) {
                         value={updateData.workLoad}
                         disabled={!updateData.hasWorkLoad}
                         onChange={(e) => setUpdateData({...updateData, workLoad: e.target.value})}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </GridItem>
+
+                <GridItem xs={12}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onClick={() => setUpdateData({...updateData, isPaid: !updateData.isPaid})}
+                                checked={updateData.isPaid}
+                                checkedIcon={<Check className={classes.checkedIcon}/>}
+                                icon={<Check className={classes.uncheckedIcon}/>}
+                                classes={{
+                                    checked: classes.checked,
+                                    root: classes.checkRoot,
+                                }}
+                                color="primary"
+                            />
+                        }
+                        classes={{label: classes.label, root: classes.labelRoot}}
+                        label="Curso pago? R$"
+                    />
+                    <TextField
+                        id="outlined-number"
+                        type="number"
+                        value={updateData.value}
+                        disabled={!updateData.isPaid}
+                        onChange={(e) => setUpdateData({...updateData, value: e.target.value})}
                         InputLabelProps={{
                             shrink: true,
                         }}

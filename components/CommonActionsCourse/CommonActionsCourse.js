@@ -28,8 +28,7 @@ export default function CommonActionsCourse({course, handleUpdate, handleRemove,
     const classes = useStyles();
     const courseId = course._id
     const [session] = useSession()
-    const isAdmin = session?.isAdmin
-    const isOwner = session?.user?.email === course?.createBy
+    const isAdminOrOwner = session?.isAdmin || (session?.user?.email === course?.createBy)
 
     useEffect(async () => {
         await axios.get(`/api/exam/passed/${courseId}`)
@@ -48,19 +47,19 @@ export default function CommonActionsCourse({course, handleUpdate, handleRemove,
             });
     }
 
-    return (isAdmin || isOwner) && (
+    return (isAdminOrOwner) && (
         <div courseId={courseId}>
             {passedOnExam &&
-            <Button
-                justIcon
-                color="transparent"
-                aria-label="Baixar Certificado"
-                onClick={() => exportCertificate()}
-            >
-                {/*<a href={`/api/course/certificate/${courseId}`} download>*/}
-                    {<PictureAsPdf/>}
-                {/*</a>*/}
-            </Button>}
+                <Button
+                    justIcon
+                    color="transparent"
+                    aria-label="Baixar Certificado"
+                    onClick={() => exportCertificate()}
+                >
+                    {/*<a href={`/api/course/certificate/${courseId}`} download>*/}
+                        {<PictureAsPdf/>}
+                    {/*</a>*/}
+                </Button>}
 
 
             {course.hasEvaluation && <Button

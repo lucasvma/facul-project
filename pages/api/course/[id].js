@@ -6,12 +6,12 @@ export default async (request, response) => {
         method,
         query: {id},
         body: {title, initialDate, finalDate, workLoad, hasWorkLoad, hasPresence, hasEvaluation, hasExercises, hasEndButton,
-            description}
+            description, isPaid, value}
     } = request
 
     const {db} = await connectToDatabase();
 
-    const collection = db.collection('courses')
+    const collection = db.collection('courses');
 
     switch (method) {
         case 'GET':
@@ -25,7 +25,7 @@ export default async (request, response) => {
                 {_id: ObjectId(id)},
                 {
                     $set: {title, initialDate, finalDate, workLoad, hasWorkLoad, hasPresence, hasEvaluation, hasExercises,
-                        hasEndButton, description, updateAt: new Date()}
+                        hasEndButton, description, isPaid, value, updateAt: new Date()}
                 })
             return response
                 .status(204)

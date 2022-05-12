@@ -39,7 +39,9 @@ export default function ModalCourseCreate(props) {
         hasEndButton: false,
         description: '',
         classes: [],
-        publicAccess: false
+        publicAccess: false,
+        isPaid: false,
+        value: 0,
     });
 
     async function handleCreate() {
@@ -137,7 +139,7 @@ export default function ModalCourseCreate(props) {
                             />
                         }
                         classes={{label: classes.label, root: classes.labelRoot}}
-                        label="Possui carga horária?"
+                        label="Possui carga horária? (Horas)"
                     />
                     <TextField
                         id="outlined-number"
@@ -145,6 +147,36 @@ export default function ModalCourseCreate(props) {
                         value={creationData.workLoad}
                         disabled={!creationData.hasWorkLoad}
                         onChange={(e) => setCreationData({...creationData, workLoad: e.target.value})}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </GridItem>
+
+                <GridItem xs={12}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onClick={() => setCreationData({...creationData, isPaid: !creationData.isPaid})}
+                                checked={creationData.isPaid}
+                                checkedIcon={<Check className={classes.checkedIcon}/>}
+                                icon={<Check className={classes.uncheckedIcon}/>}
+                                classes={{
+                                    checked: classes.checked,
+                                    root: classes.checkRoot,
+                                }}
+                                color="primary"
+                            />
+                        }
+                        classes={{label: classes.label, root: classes.labelRoot}}
+                        label="Curso pago? R$"
+                    />
+                    <TextField
+                        id="outlined-number"
+                        type="number"
+                        value={creationData.value}
+                        disabled={!creationData.isPaid}
+                        onChange={(e) => setCreationData({...creationData, value: e.target.value})}
                         InputLabelProps={{
                             shrink: true,
                         }}
