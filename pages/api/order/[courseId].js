@@ -1,11 +1,10 @@
 import {connectToDatabase} from "../db/mongodb";
-import {ObjectId} from "mongodb";
 import {getSession} from "next-auth/client";
 
 export default async (request, response) => {
     const {
         method,
-        body: { paymentStatus }
+        body: { paypalOrderId, paymentStatus, oldPaypalOrderId }
     } = request
 
     const session = await getSession({ req: request })
@@ -17,14 +16,14 @@ export default async (request, response) => {
 
     switch (method) {
         case 'GET':
-            const order = await collection.findOne({ email, courseId })
+            const order = await collection.find({ email, courseId }).sort({ createdAt: 1 }).limit(1).toArray();
 
             return response
                 .status(200)
-                .json({ order })
+                .json({ order: order[0] })
         case 'PUT':
             await collection.updateOne(
-                {_id: ObjectId(courseId)},
+                { paypalOrderId },
                 {
                     $set: {
                         paymentStatus,
@@ -32,11 +31,28 @@ export default async (request, response) => {
                     }
                 })
 
+            const updatedOrder = await collection.findOne({ paypalOrderId });
+
             return response
-                .status(204)
-                .json({message: `Alterado o status do pedido para ${paymentStatus}`})
+                .status(200)
+                .json({ order: updatedOrder })
+        case 'PATCH':
+            await collection.updateOne(
+                { paypalOrderId: oldPaypalOrderId },
+                {
+                    $set: {
+                        paypalOrderId,
+                        updateAt: new Date()
+                    }
+                })
+
+            const updatedIdOrder = await collection.findOne({ paypalOrderId });
+
+            return response
+                .status(200)
+                .json({ order: updatedIdOrder })
         default:
-            response.setHeader('Allow', ['GET','PUT'])
+            response.setHeader('Allow', ['GET','PUT','PATCH'])
             response.status(405).end(`Method ${method} Not Allowed`)
     }
 }

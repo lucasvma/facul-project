@@ -18,7 +18,7 @@ import {getSession} from "next-auth/client";
 
 const useStyles = makeStyles(styles);
 
-export default function CoursePage({courseClasses}) {
+export default function CoursePage({ courseClasses, accessStatus }) {
     const classes = useStyles()
 
     return (
@@ -46,7 +46,7 @@ export default function CoursePage({courseClasses}) {
                         </GridItem>
                     </GridContainer>
 
-                    <ListCourse courseClasses={courseClasses}/>
+                    <ListCourse courseClasses={courseClasses} accessStatus={accessStatus} />
                 </div>
             </div>
             <Footer/>
@@ -63,17 +63,18 @@ export const getStaticProps = async (context) => {
     // TODO fix hard coded email
     const email = "venturaml21@gmail.com"
 
-    const courseCollection = await db.collection("courses")
-    const collectionClasses = await db.collection("classes")
+    const courseCollection = await db.collection('courses')
+    const collectionClasses = await db.collection('classes')
     const courseProgressCollection = db.collection('courseProgress')
+    const orderCollection = db.collection('order')
 
-    const classesCourse = await courseCollection.findOne({
+    const course = await courseCollection.findOne({
         _id: ObjectId(courseId),
     });
     const classes = await collectionClasses.find().toArray();
 
     const filteredClasses = await classes.filter((grade) =>
-        classesCourse?.classes ? classesCourse?.classes.includes(grade._id.toString()) : []
+        course?.classes ? course?.classes.includes(grade._id.toString()) : []
     )
 
     const classCourseProgress = await courseProgressCollection.findOne({
@@ -91,9 +92,21 @@ export const getStaticProps = async (context) => {
         })
     }
 
+    let accessStatus = 'AVAILABLE'
+
+    if (course.isPaid) {
+        const orders = await orderCollection.find({ email, courseId }).toArray();
+        if (orders.length === 0) {
+            accessStatus = 'UNREALIZED'
+        } else {
+            accessStatus = orders.some(order => order.paymentStatus === 'APPROVED') ? 'AVAILABLE' : 'PENDING';
+        }
+    }
+
     return {
         props: {
-            courseClasses: JSON.parse(JSON.stringify(filteredClasses))
+            courseClasses: JSON.parse(JSON.stringify(filteredClasses)),
+            accessStatus: JSON.parse(JSON.stringify(accessStatus))
         }
     }
 }

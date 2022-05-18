@@ -5,7 +5,7 @@ import Button from "../CustomButtons/Button";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {ListAlt, VisibilityOff, PictureAsPdf} from "@material-ui/icons";
+import {ListAlt, VisibilityOff, PictureAsPdf, MoneySharp, AttachMoney} from "@material-ui/icons";
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/profilePage";
@@ -14,6 +14,7 @@ import ModalClassAssociation from "../ModalClassAssociation/ModalClassAssociatio
 import ModalExam from "../ModalExam/ModalExam";
 import axios from "axios";
 import ModalCourseUpdate from "../ModalCourseUpdate/ModalCourseUpdate";
+import ModalOrder from "../ModalOrder/ModalOrder";
 
 const useStyles = makeStyles(styles);
 
@@ -21,10 +22,12 @@ export default function CommonActionsCourse({course, handleUpdate, handleRemove,
     const [modalClass, setModalClass] = useState(false);
     const [modalExam, setModalExam] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
+    const [modalOrder, setModalOrder] = useState(false)
     const [passedOnExam, setPassedOnExam] = useState(false)
     const handleCloseModalClass = () => setModalClass(false);
     const handleCloseModalExam = () => setModalExam(false);
     const handleCloseModalUpdate = () => setModalUpdate(false);
+    const handleCloseModalOrder = () => setModalOrder(false);
     const classes = useStyles();
     const courseId = course._id
     const [session] = useSession()
@@ -48,7 +51,17 @@ export default function CommonActionsCourse({course, handleUpdate, handleRemove,
     }
 
     return (isAdminOrOwner) && (
-        <div courseId={courseId}>
+        <div>
+            {course?.isPaid &&
+                <Button
+                    justIcon
+                    color="transparent"
+                    aria-label="Comprar Curso"
+                    onClick={() => setModalOrder(true)}
+                >
+                    {<AttachMoney/>}
+                </Button>}
+
             {passedOnExam &&
                 <Button
                     justIcon
@@ -57,10 +70,9 @@ export default function CommonActionsCourse({course, handleUpdate, handleRemove,
                     onClick={() => exportCertificate()}
                 >
                     {/*<a href={`/api/course/certificate/${courseId}`} download>*/}
-                        {<PictureAsPdf/>}
+                    {<PictureAsPdf/>}
                     {/*</a>*/}
                 </Button>}
-
 
             {course.hasEvaluation && <Button
                 justIcon
@@ -113,6 +125,8 @@ export default function CommonActionsCourse({course, handleUpdate, handleRemove,
                                     handleCourses={handleCourses} classes={classes} course={course} />}
             {modalUpdate && <ModalCourseUpdate modalUpdate={modalUpdate} handleCloseModalUpdate={handleCloseModalUpdate}
                                                handleCourses={handleCourses} classes={classes} courseId={courseId} />}
+            {modalOrder && <ModalOrder modalOrder={modalOrder} handleCloseModalOrder={handleCloseModalOrder}
+                                               handleCourses={handleCourses} classes={classes} course={course} />}
         </div>
     );
 }

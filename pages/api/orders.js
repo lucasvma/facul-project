@@ -1,42 +1,46 @@
 import {connectToDatabase} from "./db/mongodb";
 import {getSession} from "next-auth/client";
+import {ObjectId} from "mongodb";
 
 export default async (request, response) => {
     const {
         method,
-        body: { courseId }
+        body: { courseId, paypalOrderId },
     } = request
     const session = await getSession({ req: request })
     const email = session?.user?.email
 
-    const {db} = await connectToDatabase();
+    const { db } = await connectToDatabase();
     const orderCollection = db.collection('order');
-    const courseCollection = db.collection('course');
+    const courseCollection = db.collection('courses');
 
     switch (method) {
         case 'GET':
-            const orders = await orderCollection.findOne({ email })
+            const orders = await orderCollection.find({ email }).toArray()
 
             return response
                 .status(200)
                 .json({ orders })
         case 'POST':
-            const courseValue = await courseCollection.findOne({
-                courseId,
+            const course = await courseCollection.findOne({
+                _id: ObjectId(courseId),
             }, { value: 1, _id: 0 });
 
-            await orderCollection.insertOne({
+            const data = {
                 email,
                 courseId,
-                total: courseValue,
-                paymentStatus: PaymentStatusEnum.PENDING,
+                paypalOrderId,
+                total: course.value,
+                paymentStatus: "PENDING",
                 createdAt: new Date(),
                 updateAt: new Date()
-            })
+            }
+
+            await orderCollection.insertOne(data)
 
             return response
                 .status(201)
-                .json({message: 'O pedido do curso foi efetuado com sucesso'})
+                .json({ order: data })
         default:
             response.setHeader('Allow', ['GET','POST'])
             response.status(405).end(`Method ${method} Not Allowed`)

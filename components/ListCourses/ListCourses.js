@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../styles/jss/nextjs-material-kit/pages/componentsSections/navbarsStyle";
 import { Link, List, ListItem, ListItemText } from "@material-ui/core";
@@ -7,12 +7,14 @@ import Grid from "@material-ui/core/Grid";
 import CommonActionsCourse from "../CommonActionsCourse/CommonActionsCourse";
 import {Chart, ArcElement} from 'chart.js'
 import ProgressChart from "../ProgressChart/ProgressChart";
+import Small from "../Typography/Small";
 Chart.register(ArcElement);
 
 const useStyles = makeStyles(styles);
 
 export default function ListCourses(props) {
     const classes = useStyles();
+    const [orders, setOrders] = useState([]);
 
     const handleRemove = async (id) => {
         await axios
@@ -26,6 +28,19 @@ export default function ListCourses(props) {
             .then(() => props.handleCourses())
     }
 
+    const courseHasBeenPaidOrItsFree = (course) => {
+        if (course.isPaid) {
+            return orders.some(order => order.courseId === course._id && order.paymentStatus === 'APPROVED');
+        }
+        return true;
+    }
+
+    useEffect(async () => {
+        await axios
+            .get('/api/orders')
+            .then((response) => setOrders(response.data.orders))
+    }, [])
+
     return (
         <Grid item xs={12} md={12}>
             <List className={classes.list}>
@@ -36,7 +51,7 @@ export default function ListCourses(props) {
                         <ListItemText
                             primary={
                                 <Link
-                                    href={`/course/${course._id}`}
+                                    href={courseHasBeenPaidOrItsFree(course) ? `/course/${course._id}` : '#'}
                                     className={classes.navLink}
                                     color="transparent"
                                 >

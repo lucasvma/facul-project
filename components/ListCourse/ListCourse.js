@@ -24,10 +24,9 @@ import Clearfix from "../Clearfix/Clearfix";
 
 const useStyles = makeStyles(styles);
 
-export default function ListCourse({ courseClasses }) {
+export default function ListCourse({ courseClasses, accessStatus }) {
     const classes = useStyles()
     const router = useRouter()
-    // TODO FIX - 0 useState when starting modifying the database but it can't
     const [activeClassIndex, setActiveClassIndex] = useState(undefined)
     const courseId = router.query.id
     const [loadingRequest, setLoadingRequest] = useState(false)
@@ -133,6 +132,76 @@ export default function ListCourse({ courseClasses }) {
                 style={{maxWidth: 475}}/>
         ),
     };
+
+    if (accessStatus === 'UNREALIZED') {
+        return (
+            <div className={classes.section}>
+                <div className={classes.container}>
+                    <div id="navigation-pills">
+                        <GridContainer justify="center">
+                            <Header
+                                color="transparent"
+                                leftLinks={
+                                    <ListItem>
+                                        <Button
+                                            justIcon
+                                            href="/courses"
+                                            color="primary"
+                                        >
+                                            <KeyboardBackspaceIcon/>
+                                        </Button>
+                                    </ListItem>
+                                }
+                                rightLinks={
+                                    <ListItem>
+                                        <h2>
+                                            <Small>Oppppss este é um curso pago.</Small>
+                                            <Small>Por favor, realize o pagamento deste curso para ter acesso às aulas.</Small>
+                                        </h2>
+                                    </ListItem>
+                                }
+                            />
+                        </GridContainer>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    if (accessStatus === 'PENDING') {
+        return (
+            <div className={classes.section}>
+                <div className={classes.container}>
+                    <div id="navigation-pills">
+                        <GridContainer justify="center">
+                            <Header
+                                color="transparent"
+                                leftLinks={
+                                    <ListItem>
+                                        <Button
+                                            justIcon
+                                            href="/courses"
+                                            color="primary"
+                                        >
+                                            <KeyboardBackspaceIcon/>
+                                        </Button>
+                                    </ListItem>
+                                }
+                                rightLinks={
+                                    <ListItem>
+                                        <h2>
+                                            <Small>Oppppss este é um curso pago.</Small>
+                                            <Small>Seu pagamento já está em processamento e em breve será liberado seu acesso.</Small>
+                                        </h2>
+                                    </ListItem>
+                                }
+                            />
+                        </GridContainer>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className={classes.section}>
