@@ -8,7 +8,21 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 
 // @material-ui/icons
-import {BorderColor, Class, ExitToApp, PeopleAlt, PictureAsPdf, PlaylistPlay, Settings} from "@material-ui/icons";
+import {
+    Assessment,
+    BorderColor,
+    Class,
+    ExitToApp,
+    PeopleAlt,
+    PictureAsPdf,
+    PlaylistAddCheck,
+    PlaylistAddCheckOutlined,
+    PlaylistAddCheckRounded,
+    PlaylistAddCheckSharp,
+    PlaylistAddCheckTwoTone,
+    PlaylistPlay,
+    Settings
+} from "@material-ui/icons";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 // core components
@@ -95,17 +109,39 @@ export default function HeaderLinks(props) {
                                 <PlaylistPlay className={classes.icons}/> Cursos
                             </Button>
                         </ListItem>,
-                        <ListItem className={classes.listItem}>
+                        (isAdmin) && (<ListItem className={classes.listItem}>
                             <Button
-                                onClick={(e) => handleClick(e, '/author')}
+                                onClick={(e) => handleClick(e, '/requests-admin')}
                                 color="transparent"
                                 target="_blank"
                                 className={classes.navLink}
                             >
-                                <BorderColor className={classes.icons}/> Autores
+                                <PlaylistAddCheckRounded className={classes.icons}/> Solicitações de Autores
                             </Button>
-                        </ListItem>,
-                        (isAdmin || isAuthor) &&
+                        </ListItem>),
+                        (!isAdmin) &&
+                        (<ListItem className={classes.listItem}>
+                            <Button
+                                onClick={(e) => handleClick(e, '/requests')}
+                                color="transparent"
+                                target="_blank"
+                                className={classes.navLink}
+                            >
+                                <BorderColor className={classes.icons}/> Requisições
+                            </Button>
+                        </ListItem>),
+                        (isAdmin) &&
+                        (<ListItem className={classes.listItem}>
+                            <Button
+                                onClick={(e) => handleClick(e, '/reports-admin')}
+                                color="transparent"
+                                target="_blank"
+                                className={classes.navLink}
+                            >
+                                <Assessment className={classes.icons}/> Relatórios Admin
+                            </Button>
+                        </ListItem>),
+                        (isAuthor) &&
                         (<ListItem className={classes.listItem}>
                             <Button
                                 onClick={(e) => handleClick(e, '/reports')}
@@ -113,7 +149,7 @@ export default function HeaderLinks(props) {
                                 target="_blank"
                                 className={classes.navLink}
                             >
-                                <PictureAsPdf className={classes.icons}/> Relatórios
+                                <PictureAsPdf className={classes.icons}/> Relatórios Gerenciais
                             </Button>
                         </ListItem>),
                         <ListItem className={classes.listItem}>
