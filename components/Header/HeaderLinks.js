@@ -144,7 +144,7 @@ export default function HeaderLinks(props) {
                         (isAuthor) &&
                         (<ListItem className={classes.listItem}>
                             <Button
-                                onClick={(e) => handleClick(e, '/reports')}
+                                onClick={(e) => handleClick(e, '/reports-author')}
                                 color="transparent"
                                 target="_blank"
                                 className={classes.navLink}

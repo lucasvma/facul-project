@@ -26,9 +26,12 @@ export default function NavPills(props) {
     useEffect(async () => {
         if (active !== undefined && props.active !== active) {
             await axios.put(`/api/course/progress/${props.courseId}`, { currentProgress: active })
-                .then(() => props.setActiveClassIndex(active))
+                .then((response) => {
+                    props.setAbleToFinish(response.data.watchedClasses.length === props.courseClassesLength);
+                    props.setActiveClassIndex(active);
+                })
         }
-    }, [active])
+    }, [active]);
     const classes = useStyles();
     const {tabs, color, horizontal, alignCenter} = props;
     const flexContainerClasses = classNames({

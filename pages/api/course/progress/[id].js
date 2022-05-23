@@ -40,7 +40,7 @@ export default async (request, response) => {
                 courseId,
                 email,
                 currentProgress: 0,
-                watchedClasses: [],
+                watchedClasses: [0],
                 createdAt: new Date()
             })
 
@@ -48,12 +48,24 @@ export default async (request, response) => {
                 .status(201)
                 .json({message: 'Progresso realizado com sucesso'})
         case 'PUT':
+            const watchedClasses = await courseProgressCollection.findOne({
+                courseId,
+                email
+            }, { watchedClasses: 1, _id: 0 })
+
+            if (!watchedClasses?.watchedClasses?.length) {
+                watchedClasses.watchedClasses = [currentProgress]
+            } else if (watchedClasses?.watchedClasses?.indexOf(currentProgress) === -1) {
+                watchedClasses.watchedClasses.push(currentProgress)
+            }
+
             await courseProgressCollection.updateOne(
                 { courseId, email },
-                { $set: { currentProgress, isComplete, updateAt: new Date() } })
+                { $set: { currentProgress, isComplete, watchedClasses: watchedClasses.watchedClasses, updateAt: new Date() } })
+
             return response
                 .status(200)
-                .json({message: 'Progresso atualizado com sucesso'})
+                .json({ watchedClasses: watchedClasses.watchedClasses })
         default:
             response.setHeader('Allow', ['GET', 'POST', 'PUT'])
             response.status(405).end(`Method ${method} Not Allowed`)

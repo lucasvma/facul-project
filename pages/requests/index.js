@@ -3,6 +3,7 @@ import classNames from "classnames";
 import {makeStyles} from "@material-ui/core/styles";
 import Header from "components/Header/Header.js";
 import Footer from "components/Footer/Footer.js";
+import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -11,7 +12,9 @@ import Parallax from "components/Parallax/Parallax.js";
 import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 
 import axios from "axios";
+import Requests from "../../components/Requests/Requests";
 import {useSession} from "next-auth/client";
+import RequestAuthor from "../../components/RequestAuthor/RequestAuthor";
 
 const useStyles = makeStyles(styles);
 
@@ -23,22 +26,34 @@ export default function ClassesPage(props) {
         classes.imgRoundedCircle,
         classes.imgFluid
     )
-    const [courseProgress, setCourseProgress] = useState([])
+    const [requests, setRequests] = useState([])
+    const [requestButton, setRequestButton] = useState(false)
     const [session, loading] = useSession()
     const email = session?.user.email
+    const isAdmin = session?.isAdmin
+
+    const requestToBeAnAuthor = async () => {
+        await axios.post('/api/request', { email, status: 0 })
+            .then((response) => console.log('Requisição feita com sucesso'))
+    }
 
     useEffect(async () => {
         if (loading) {
             return null
         }
-        console.log('getting by reportsIndex')
-        await axios.get('/api/course/progress')
-            .then((response) => setCourseProgress(response.data?.courseProgress))
+        if (!isAdmin) {
+            await axios.get('/api/request')
+                .then((response) => setRequests(response.data.request))
+        }
     }, [loading])
 
-    useEffect(() => {
-        console.log('courseProgress', courseProgress)
-    }, [courseProgress])
+    useEffect(async () => {
+        if (!requests) {
+            setRequestButton(true)
+        } else {
+            setRequestButton(false)
+        }
+    }, [requests])
 
     return (
         <>
@@ -66,20 +81,33 @@ export default function ClassesPage(props) {
                                         </>
                                     }
 
-                                    <>
-                                        <div className={classes.name}>
-                                            <h3 className={classes.title}>Relatório de progresso</h3>
-                                        </div>
-
+                                    {!isAdmin && (
                                         <>
-                                            <p>
-                                                Um autor pode criar e publicar novos conteúdos para o público.
-                                            </p>
+                                            <div className={classes.name}>
+                                                <h3 className={classes.title}>Seja um autor</h3>
+                                            </div>
+
+                                            <>
+                                                <p>
+                                                    Um autor pode criar e publicar novos conteúdos para o público.
+                                                </p>
+                                                {requestButton && (
+                                                    <Button
+                                                        color="primary"
+                                                        round
+                                                        onClick={() => requestToBeAnAuthor()}
+                                                    >
+                                                        Requisitar
+                                                    </Button>
+                                                )}
+                                            </>
                                         </>
-                                    </>
+                                    )}
                                 </div>
                             </GridItem>
                         </GridContainer>
+
+                        {requests && !isAdmin && <RequestAuthor request={requests} />}
                     </div>
                 </>
             </div>

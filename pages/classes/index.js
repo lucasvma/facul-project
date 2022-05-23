@@ -15,6 +15,8 @@ import styles from "styles/jss/nextjs-material-kit/pages/profilePage.js";
 import ModalClass from "../../components/ModalClass/ModalClass";
 import ListClasses from "../../components/ListClasses/ListClasses";
 import {useSession} from "next-auth/client";
+import CustomInput from "../../components/CustomInput/CustomInput";
+import Search from "@material-ui/icons/Search";
 
 const useStyles = makeStyles(styles);
 
@@ -28,12 +30,14 @@ export default function ClassesPage(props) {
     )
 
     const [modal, setModal] = useState(false)
+    const [allClasses, setAllClasses] = useState([])
     const [grades, setGrades] = useState([])
     const [data, setData] = useState(null)
+    const [search, setSearch] = useState('')
     const [session] = useSession()
 
-    useEffect(() => {
-        handleClasses()
+    useEffect(async () => {
+        await handleClasses()
     }, [])
 
     useEffect(() => {
@@ -45,7 +49,24 @@ export default function ClassesPage(props) {
     const handleClasses = async () => {
         await axios
             .get('/api/classes')
-            .then((response) => setGrades(response.data.classes))
+            .then((response) => setAllClasses(response.data.classes))
+    }
+
+    useEffect(async() => {
+        if (allClasses?.length > 0) {
+            setGrades(allClasses)
+        }
+    }, [allClasses])
+
+    useEffect(async() => {
+        await findClass()
+    }, [search])
+
+    async function findClass() {
+        let exp = new RegExp(search.toLowerCase().trim(), 'i')
+        setGrades(allClasses
+            .filter(classToSearch => exp.test(classToSearch.title.toLowerCase())
+                || exp.test(classToSearch.description.toLowerCase())))
     }
 
     return (
@@ -84,6 +105,36 @@ export default function ClassesPage(props) {
 
                                         <ModalClass modal={modal} setModal={setModal} handleClasses={handleClasses}
                                                     classes={classes} dataToChange={data}/>
+                                    </div>
+
+                                    <div>
+                                        <CustomInput
+                                            black
+                                            // inputRootCustomClasses={classes.inputRootCustomClasses}
+                                            formControlProps={{
+                                                // className: classes.formControl,
+                                                onChange: (e) => {
+                                                    setTimeout(() => {
+                                                        const newSearch = e.target.value.toLowerCase()
+                                                        if (search !== newSearch) {
+                                                            setSearch(newSearch)
+                                                        }
+                                                    }, 1000)
+                                                }
+                                            }}
+                                            inputProps={{
+                                                placeholder: "Pesquisar",
+                                                inputProps: {
+                                                    "aria-label": "Pesquisar",
+                                                    className: classes.searchInput,
+                                                },
+                                            }}
+                                            value={search}
+                                        />
+                                        <Button justIcon round color="white"
+                                                onClick={() => findClass()}>
+                                            <Search className={classes.searchIcon}/>
+                                        </Button>
                                     </div>
                                 </div>
                             </GridItem>

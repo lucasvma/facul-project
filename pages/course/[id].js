@@ -87,7 +87,7 @@ export const getStaticProps = async (context) => {
             courseId,
             email,
             currentProgress: 0,
-            watchedClasses: [],
+            watchedClasses: [0],
             createdAt: new Date()
         })
     }

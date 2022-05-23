@@ -32,11 +32,6 @@ export default function ClassesPage(props) {
     const email = session?.user.email
     const isAdmin = session?.isAdmin
 
-    const requestToBeAnAuthor = async () => {
-        await axios.post('/api/request', { email, status: 0 })
-            .then((response) => console.log('Requisição feita com sucesso'))
-    }
-
     useEffect(async () => {
         if (loading) {
             return null
@@ -44,9 +39,6 @@ export default function ClassesPage(props) {
         if (isAdmin) {
             await axios.get('/api/requests')
                 .then((response) => setRequests(response.data.requests))
-        } else {
-            await axios.get('/api/request')
-                .then((response) => setRequests(response.data.request))
         }
     }, [loading])
 
@@ -91,38 +83,11 @@ export default function ClassesPage(props) {
                                             </div>
                                         </>
                                     )}
-
-                                    {!isAdmin && (
-                                        <>
-                                            <div className={classes.name}>
-                                                <h3 className={classes.title}>Seja um autor</h3>
-                                            </div>
-
-                                            <>
-                                                <p>
-                                                    Um autor pode criar e publicar novos conteúdos para o público.
-                                                </p>
-                                                {requestButton && (
-                                                    <Button
-                                                        color="primary"
-                                                        round
-                                                        onClick={() => requestToBeAnAuthor()}
-                                                    >
-                                                        Requisitar
-                                                    </Button>
-                                                )}
-                                            </>
-                                        </>
-                                    )}
                                 </div>
                             </GridItem>
                         </GridContainer>
 
-                        {requests && (
-                            (isAdmin && <Requests requests={requests} />)
-                            ||
-                            (!isAdmin && <RequestAuthor request={requests} />)
-                        )}
+                        {requests && isAdmin && <Requests requests={requests} />}
                     </div>
                 </>
             </div>

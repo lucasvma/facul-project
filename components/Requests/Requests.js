@@ -127,6 +127,8 @@ export default function Requests({requests}) {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [session, loading] = useSession()
 
+    // TODO Auto refresh table, make better UI
+
     if (loading) {
         return <CircularProgress/>
     }

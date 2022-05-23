@@ -38,6 +38,7 @@ export default function ListCourse({ courseClasses, accessStatus }) {
     const handleOpenModalPerformingExam = () => setPerformingExam(true);
     const handleCloseModalPerformingExam = () => setPerformingExam(false);
     const [toastState, setToastState] = useState(false);
+    const [ableToFinish, setAbleToFinish] = useState(false);
 
     useEffect(async () => {
         setLoadingRequest(true)
@@ -106,9 +107,8 @@ export default function ListCourse({ courseClasses, accessStatus }) {
         return markDownReturn;
     }
 
-    const handleUpdate = async (data) => {
-        console.log('handleUpdate')
-        // props.setData(data)
+    const isAbleToFinishCourse = () => {
+        return !loadingRequest && isLastClass && courseData?.hasEndButton && ableToFinish;
     }
 
     const handleRemove = async (id) => {
@@ -271,6 +271,8 @@ export default function ListCourse({ courseClasses, accessStatus }) {
                                         active={activeClassIndex}
                                         setActiveClassIndex={setActiveClassIndex}
                                         setHasEndButton={setHasEndButton}
+                                        setAbleToFinish={setAbleToFinish}
+                                        courseClassesLength={courseClasses?.length}
                                         courseId={courseId}
                                         tabs={courseClasses.map((grade) => ({
                                                 tabButton: grade.title,
@@ -306,8 +308,8 @@ export default function ListCourse({ courseClasses, accessStatus }) {
                                                 handleCloseModalPerformingExam={handleCloseModalPerformingExam}
                                                 classes={classes} courseId={courseId} setEndCourse={setEndCourse} />}
 
-                    {!loadingRequest && isLastClass && courseData?.hasEndButton &&
-                        (<div
+                    {isAbleToFinishCourse() &&
+                     (<div
                             style={{
                                 textAlign: "right"
                             }}

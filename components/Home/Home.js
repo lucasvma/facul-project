@@ -53,8 +53,6 @@ export default function Home(props) {
                                 onChange: (e) => {
                                     setTimeout(() => {
                                         if (search !== e.target.value) {
-                                            console.log('seting search to ', e.target.value)
-
                                             setSearch(e.target.value)
                                             findClass()
                                         }
